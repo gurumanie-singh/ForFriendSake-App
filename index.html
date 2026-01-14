@@ -17,6 +17,7 @@
             color: #ffffff;
             background: #000000;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
         /* Animated gradient background matching the app */
@@ -110,7 +111,7 @@
 
         /* Hero Section - Above the fold */
         .hero {
-            min-height: 100vh;
+            min-height: 100vh; /* Default for desktop */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -148,60 +149,32 @@
             animation: fadeInUp 0.8s ease-out 0.4s both;
         }
 
-        .hero-cta {
+        /* Coming Soon Badge (Replaces Button) */
+        .coming-soon-badge {
             display: inline-block;
-            padding: 1.2rem 3rem;
-            background: linear-gradient(135deg, #9933cc, #6666cc);
-            color: white;
-            text-decoration: none;
+            padding: 0.8rem 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(153, 51, 204, 0.5);
+            color: #fff;
             border-radius: 50px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 40px rgba(153, 51, 204, 0.4);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             animation: fadeInUp 0.8s ease-out 0.6s both;
-            position: relative;
-            overflow: hidden;
+            cursor: default;
         }
-
-        .hero-cta::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .hero-cta:hover::before {
-            left: 100%;
-        }
-
-        .hero-cta:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 50px rgba(153, 51, 204, 0.6);
+        
+        .coming-soon-badge span {
+            background: linear-gradient(135deg, #d4aaff, #a3a3ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .app-preview {
             margin-top: 4rem;
             animation: fadeInUp 0.8s ease-out 0.8s both, float 3s ease-in-out infinite;
-        }
-
-        .phone-mockup {
-            width: 300px;
-            height: 600px;
-            background: linear-gradient(135deg, rgba(153, 51, 204, 0.2), rgba(51, 102, 204, 0.2));
-            border-radius: 40px;
-            border: 8px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 30px 80px rgba(153, 51, 204, 0.3);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 1rem;
         }
 
         .phone-mockup-img {
@@ -210,12 +183,6 @@
             border-radius: 40px;
             box-shadow: 0 30px 80px rgba(153, 51, 204, 0.5);
             border: 8px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        @media (max-width: 768px) {
-            .phone-mockup-img {
-                width: 250px;
-            }
         }
 
         /* Features Section */
@@ -371,63 +338,102 @@
             text-decoration: none;
             margin: 0 1rem;
             transition: color 0.3s ease;
+            display: inline-block; /* Helps with touch targets */
+            padding: 5px;
         }
 
         footer a:hover {
             color: #9933cc;
         }
 
-        /* Mobile Responsive */
+        /* Mobile Responsive Improvements */
         @media (max-width: 768px) {
+            /* Fix A: Remove strict 100vh height to avoid cutoff on small screens */
+            .hero {
+                min-height: auto;
+                padding-top: 4rem;
+                padding-bottom: 4rem;
+            }
+
+            .logo {
+                font-size: 2.5rem; /* Slightly smaller logo */
+            }
+
+            /* Fix B: Make headlines smaller to fit screen width */
             .headline {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
+                padding: 0 10px; /* Prevent text touching edges */
             }
 
             .subheadline {
                 font-size: 1.1rem;
+                margin-bottom: 2rem;
+                padding: 0 10px;
             }
 
-            .hero-cta {
-                font-size: 1rem;
-                padding: 1rem 2rem;
+            /* Fix C: Scale phone mockup relative to screen width */
+            .app-preview {
+                margin-top: 2.5rem; /* Reduce gap */
             }
 
-            .phone-mockup {
-                width: 250px;
-                height: 500px;
+            .phone-mockup-img {
+                width: 65%; /* Relative width instead of fixed px */
+                max-width: 250px; /* Cap it at original size */
+                min-width: 200px;
+            }
+
+            /* Adjust feature grid for mobile */
+            .features {
+                padding: 4rem 0;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr; /* Stack vertically */
+                gap: 1.5rem;
             }
 
             .section-title {
                 font-size: 2rem;
+                line-height: 1.3;
             }
 
-            .features-grid {
-                grid-template-columns: 1fr;
+            /* Adjust CTA section */
+            .final-cta {
+                padding: 4rem 0;
             }
 
             .final-cta-title {
-                font-size: 2rem;
+                font-size: 1.8rem;
+                padding: 0 10px;
+            }
+            
+            /* Footer stacking */
+            footer div {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                margin-bottom: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Animated Background -->
     <div class="animated-background">
         <div class="gradient-layer-1"></div>
         <div class="gradient-layer-2"></div>
         <div class="gradient-layer-3"></div>
     </div>
 
-    <!-- Content -->
     <div class="content">
-        <!-- Hero Section (Above the Fold) -->
         <section class="hero">
             <div class="container">
                 <div class="logo">ForFriendSake</div>
                 <h1 class="headline">Never Let Distance Diminish Friendship</h1>
                 <p class="subheadline">Stay connected with the people who matter most. Get gentle reminders, track meaningful interactions, and strengthen bonds—one conversation at a time.</p>
-                <a href="#waitlist" class="hero-cta">Join the Waitlist</a>
+                
+                <div class="coming-soon-badge">
+                    <span>Coming Soon to iOS</span>
+                </div>
                 
                 <div class="app-preview">
                     <img src="iPhoneSimulatorLandingPage.png" alt="ForFriendSake App Preview" class="phone-mockup-img">
@@ -435,7 +441,6 @@
             </div>
         </section>
 
-        <!-- Features Section -->
         <section class="features">
             <div class="container">
                 <div class="section-header">
@@ -477,7 +482,6 @@
             </div>
         </section>
 
-        <!-- FAQ Section -->
         <section class="faq">
             <div class="container">
                 <div class="section-header">
@@ -507,22 +511,22 @@
 
                     <div class="faq-item">
                         <h3 class="faq-question">When will ForFriendSake launch?</h3>
-                        <p class="faq-answer">We're working hard to bring ForFriendSake to you soon. Join our waitlist to be among the first to know when we launch!</p>
+                        <p class="faq-answer">We're working hard to bring ForFriendSake to you soon. Stay tuned for updates on our official release!</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Final CTA -->
         <section class="final-cta" id="waitlist">
             <div class="container">
                 <h2 class="final-cta-title">Ready to Strengthen Your Friendships?</h2>
-                <p class="final-cta-text">Join thousands of people who are committed to nurturing the relationships that matter most.</p>
-                <a href="#" class="hero-cta">Join the Waitlist</a>
+                <p class="final-cta-text">Be part of the future of meaningful connections.</p>
+                <div class="coming-soon-badge">
+                    <span>Coming Soon to iOS</span>
+                </div>
             </div>
         </section>
 
-        <!-- Footer -->
         <footer>
             <div class="container">
                 <p style="margin-bottom: 1rem; color: rgba(255,255,255,0.5);">Built with care for meaningful connections</p>
