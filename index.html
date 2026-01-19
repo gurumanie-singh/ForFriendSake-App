@@ -445,8 +445,9 @@
         }
         
         @media (max-width: 768px) {
-            nav .container > div:last-child {
-                display: none;
+            /* Hide the desktop navigation links on mobile */
+            nav .container > div:nth-child(2) {
+                display: none !important;
             }
             
             .mobile-menu-btn {
@@ -580,7 +581,6 @@
     <div class="content">
         <section class="hero">
             <div class="container">
-                <div class="logo">ForFriendSake</div>
                 <h1 class="headline">Never Let Distance Diminish Friendship</h1>
                 <p class="subheadline">Turn online friendships into real-world adventures. Create squads, plan activities, and compete with friends to see who hangs out the most—because friendships are meant to be lived, not just liked.</p>                
                 <div class="coming-soon-badge">
