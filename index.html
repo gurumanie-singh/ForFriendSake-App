@@ -155,55 +155,35 @@
             font-weight: 400;
         }
 
-        .coming-soon-badge {
+        /* App Store Badge Styling - Per Apple Guidelines */
+        .app-store-badge-wrapper {
             display: inline-block;
-            padding: 1rem 2.5rem;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1.5px solid rgba(153, 51, 204, 0.4);
-            color: #fff;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(153, 51, 204, 0.2);
-            animation: fadeInUp 0.8s ease-out 0.6s both, badge-pulse 3s ease-in-out infinite;
-            cursor: default;
-            position: relative;
-            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+            /* Clear space = 1/4 badge height (82px / 4 = 20.5px) per Apple guidelines */
+            margin: 20px;
         }
         
-        .coming-soon-badge::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(153, 51, 204, 0.3), transparent 70%);
-            transform: translate(-50%, -50%) scale(0);
-            animation: badge-glow 3s ease-in-out infinite;
+        .app-store-badge-wrapper a {
+            display: inline-block;
+            transition: opacity 0.2s ease, transform 0.2s ease;
         }
         
-        @keyframes badge-pulse {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 4px 20px rgba(153, 51, 204, 0.2);
-            }
-            50% {
-                transform: scale(1.02);
-                box-shadow: 0 6px 30px rgba(153, 51, 204, 0.4);
-            }
+        .app-store-badge-wrapper a:hover {
+            opacity: 0.85;
+            transform: translateY(-2px);
         }
         
-        @keyframes badge-glow {
-            0%, 100% {
-                transform: translate(-50%, -50%) scale(0);
-                opacity: 0;
-            }
-            50% {
-                transform: translate(-50%, -50%) scale(2);
-                opacity: 1;
-            }
+        .app-store-badge-wrapper a:active {
+            transform: translateY(0);
+        }
+        
+        .app-store-badge-wrapper img {
+            /* Apple guideline: minimum 40px height for screen, we use 82px for clarity */
+            height: 82px;
+            width: auto;
+            max-width: 100%;
+            vertical-align: middle;
+            object-fit: contain;
         }
         
         .coming-soon-badge span {
@@ -533,6 +513,16 @@
                 line-height: 1.3;
             }
 
+            /* App Store badge mobile optimization */
+            .app-store-badge-wrapper {
+                margin: 15px;
+            }
+            
+            .app-store-badge-wrapper img {
+                /* Slightly smaller on mobile but still above Apple's 40px minimum */
+                height: 60px;
+            }
+
             /* Adjust CTA section */
             .final-cta {
                 padding: 4rem 0;
@@ -584,8 +574,10 @@
             <div class="container">
                 <h1 class="headline">Never Let Distance Diminish Friendship</h1>
                 <p class="subheadline">Turn online friendships into real-world adventures. Create squads, plan activities, and compete with friends to see who hangs out the most—because friendships are meant to be lived, not just liked.</p>                
-                <div class="coming-soon-badge">
-                    <span>Coming Soon to iOS</span>
+                <div class="app-store-badge-wrapper">
+                    <a href="https://apps.apple.com/us/app/forfriendsake/id6757169962?itscg=30200&itsct=apps_box_badge&mttnsubad=6757169962" aria-label="Download ForFriendSake on the App Store">
+                        <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1769558400" alt="Download on the App Store">
+                    </a>
                 </div>
                 
                 <div class="app-preview">
@@ -728,8 +720,10 @@
             <div class="container">
                 <h2 class="final-cta-title">Ready to Turn Plans Into Adventures?</h2>
                 <p class="final-cta-text">Join squads, create activities, dominate leaderboards. Stop talking about hanging out and start actually doing it.</p>
-                <div class="coming-soon-badge">
-                    <span>Coming Soon to iOS</span>
+                <div class="app-store-badge-wrapper">
+                    <a href="https://apps.apple.com/us/app/forfriendsake/id6757169962?itscg=30200&itsct=apps_box_badge&mttnsubad=6757169962" aria-label="Download ForFriendSake on the App Store">
+                        <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1769558400" alt="Download on the App Store">
+                    </a>
                 </div>
             </div>
         </section>
@@ -743,6 +737,7 @@
                     <a href="https://www.forfriendsake.com/privacy/">Privacy Policy</a>
                 </div>
                 <p style="margin-top: 1.5rem; color: rgba(255,255,255,0.3); font-size: 0.9rem;">© 2026 ForFriendSake. All rights reserved.</p>
+                <p style="margin-top: 1rem; color: rgba(255,255,255,0.25); font-size: 0.8rem;">Apple and the Apple logo are trademarks of Apple Inc., registered in the U.S. and other countries. App Store is a service mark of Apple Inc.</p>
             </div>
         </footer>
     </div>
