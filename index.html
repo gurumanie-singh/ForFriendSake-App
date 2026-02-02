@@ -310,6 +310,12 @@
         .screenshot-gallery {
             padding: 4rem 0;
             overflow: hidden;
+            background: linear-gradient(
+                180deg,
+                transparent 0%,
+                rgba(153, 51, 204, 0.02) 50%,
+                transparent 100%
+            );
         }
         
         .screenshot-scroll-container {
@@ -336,6 +342,28 @@
             scroll-snap-align: center;
             width: 280px;
             transition: transform 0.3s ease;
+            position: relative;
+        }
+        
+        .screenshot-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 30px;
+            pointer-events: none;
+            background: 
+                linear-gradient(to bottom,
+                    transparent 0%,
+                    transparent 70%,
+                    rgba(0, 0, 0, 0.3) 90%,
+                    rgba(0, 0, 0, 0.6) 100%
+                ),
+                linear-gradient(to right,
+                    rgba(0, 0, 0, 0.15) 0%,
+                    transparent 5%,
+                    transparent 95%,
+                    rgba(0, 0, 0, 0.15) 100%
+                );
         }
         
         .screenshot-item:hover {
@@ -349,7 +377,8 @@
             box-shadow: 
                 0 30px 60px rgba(153, 51, 204, 0.4),
                 0 15px 30px rgba(153, 51, 204, 0.3);
-            border: 8px solid rgba(255, 255, 255, 0.1);
+            border: none; /* Remove the hard border */
+            display: block;
         }
         
         /* Scroll indicators */
