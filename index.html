@@ -196,31 +196,6 @@
             z-index: 1;
         }
 
-        .app-preview {
-            margin-top: 4rem;
-            animation: fadeInUp 0.8s ease-out 0.8s both, float 3s ease-in-out infinite;
-        }
-
-        .phone-mockup-img {
-            width: 300px;
-            height: auto;
-            border-radius: 40px;
-            box-shadow: 
-                0 50px 100px rgba(153, 51, 204, 0.6),
-                0 20px 40px rgba(153, 51, 204, 0.4),
-                0 0 80px rgba(153, 51, 204, 0.3);
-            border: 10px solid rgba(255, 255, 255, 0.12);
-            transition: all 0.4s ease;
-        }
-        
-        .phone-mockup-img:hover {
-            transform: scale(1.03) translateY(-5px);
-            box-shadow: 
-                0 60px 120px rgba(153, 51, 204, 0.7),
-                0 25px 50px rgba(153, 51, 204, 0.5),
-                0 0 100px rgba(153, 51, 204, 0.4);
-        }
-
         /* Features Section */
         .features {
             padding: 6rem 0;
@@ -331,6 +306,77 @@
             line-height: 1.7;
         }
 
+        /* Screenshot Gallery */
+        .screenshot-gallery {
+            padding: 4rem 0;
+            overflow: hidden;
+        }
+        
+        .screenshot-scroll-container {
+            display: flex;
+            gap: 1.5rem;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+            padding: 1rem 0;
+            cursor: grab;
+        }
+        
+        .screenshot-scroll-container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari */
+        }
+        
+        .screenshot-scroll-container:active {
+            cursor: grabbing;
+        }
+        
+        .screenshot-item {
+            flex: 0 0 auto;
+            scroll-snap-align: center;
+            width: 280px;
+            transition: transform 0.3s ease;
+        }
+        
+        .screenshot-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .screenshot-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 30px;
+            box-shadow: 
+                0 30px 60px rgba(153, 51, 204, 0.4),
+                0 15px 30px rgba(153, 51, 204, 0.3);
+            border: 8px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Scroll indicators */
+        .scroll-indicator {
+            text-align: center;
+            margin-top: 1rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+        
+        @media (min-width: 768px) {
+            .screenshot-scroll-container {
+                justify-content: center;
+                overflow-x: visible;
+                flex-wrap: wrap;
+                gap: 2rem;
+            }
+            
+            .screenshot-item {
+                width: 300px;
+            }
+            
+            .scroll-indicator {
+                display: none;
+            }
+        }
+        
         /* FAQ Section */
         .faq {
             padding: 6rem 0;
@@ -488,17 +534,6 @@
                 padding: 0 10px;
             }
 
-            /* Fix C: Scale phone mockup relative to screen width */
-            .app-preview {
-                margin-top: 2.5rem; /* Reduce gap */
-            }
-
-            .phone-mockup-img {
-                width: 65%; /* Relative width instead of fixed px */
-                max-width: 250px; /* Cap it at original size */
-                min-width: 200px;
-            }
-
             /* Adjust feature grid for mobile */
             .features {
                 padding: 4rem 0;
@@ -580,13 +615,44 @@
                         <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1769558400" alt="Download on the App Store">
                     </a>
                 </div>
-                
-                <div class="app-preview">
-                    <img src="iPhoneSimulatorLandingPage.png" alt="ForFriendSake App Preview" class="phone-mockup-img">
-                </div>
             </div>
         </section>
-
+        
+        <section class="screenshot-gallery">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">See ForFriendSake in Action</h2>
+                    <p class="section-subtitle">Swipe through to explore the app's features</p>
+                </div>
+                
+                <div class="screenshot-scroll-container">
+                    <div class="screenshot-item">
+                        <img src="CreateJoinView.png" alt="Create / Join / View sqauds and leaderboards">
+                    </div>
+                    <div class="screenshot-item">
+                        <img src="CheckIn.png" alt="Check-In to your squad's activities">
+                    </div>
+                    <div class="screenshot-item">
+                        <img src="Request.png" alt="Request to join activities">
+                    </div>
+                    <div class="screenshot-item">
+                        <img src="Connect.png" alt="Connect with your squads">
+                    </div>
+                    <div class="screenshot-item">
+                        <img src="Create.png" alt="Create activities for your squad">
+                    </div>
+                    <div class="screenshot-item">
+                        <img src="View.png" alt="View your activity chats">
+                    </div>
+                    <div class="screenshot-item">
+                        <img src="Customize.png" alt="Customize your app's theme">
+                    </div>
+                </div>
+                
+                <div class="scroll-indicator">← Swipe to see more →</div>
+            </div>
+        </section>
+        
         <section class="features" id="features">
             <div class="container">
                 <div class="section-header">
