@@ -4,7 +4,6 @@
 
 [![Website](https://img.shields.io/badge/Website-forfriendsake.com-9933cc)](https://forfriendsake.com)
 [![Platform](https://img.shields.io/badge/Platform-iOS%2018.0%2B-blue)](https://www.apple.com/ios/)
-[![Status](https://img.shields.io/badge/Status-Coming%20Soon-orange)](https://forfriendsake.com)
 [![License](https://img.shields.io/badge/License-Proprietary-red)](LICENSE)
 
 ## 🌟 About
