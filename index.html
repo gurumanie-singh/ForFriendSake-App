@@ -591,12 +591,7 @@
             </div>
             <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
         </div>
-        
-        <div class="mobile-menu" id="mobileMenu">
-            <a href="#features" onclick="toggleMobileMenu()">Features</a>
-            <a href="#how-it-works" onclick="toggleMobileMenu()">How It Works</a>
-            <a href="#faq" onclick="toggleMobileMenu()">FAQ</a>
-        </div>
+        <div class="mobile-menu" id="mobileMenu"></div>
     </nav>
     
     <div class="animated-background">
@@ -870,10 +865,18 @@
         });
     </script>
     <script>
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('active');
+    function toggleMobileMenu() {
+        const menu = document.getElementById('mobileMenu');
+    
+        if (!menu.dataset.built) {
+            const desktopLinks = document.querySelector('.desktop-nav').cloneNode(true);
+            desktopLinks.classList.remove('desktop-nav');
+            menu.appendChild(desktopLinks);
+            menu.dataset.built = 'true';
         }
+    
+        menu.classList.toggle('active');
+    }
     </script>
 </body>
 </html>
