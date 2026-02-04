@@ -15,7 +15,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             line-height: 1.6;
@@ -26,24 +25,28 @@
             min-height: 100vh;
             position: relative; 
         }
-
-        /* Animated gradient background matching the app - FIXED FOR MOBILE */
+        /* Animated gradient background - FIXED FOR MOBILE */
         .animated-background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            /* CHANGE: Use min-height with dvh (dynamic viewport height) for mobile */
-            min-height: 100dvh; /* Falls back to 100vh on unsupported browsers */
+            /* CRITICAL FIX: Use both vh and dvh, plus a minimum to ensure full coverage */
+            min-height: 100vh;
+            min-height: 100dvh; /* Dynamic viewport height for mobile browsers */
+            /* Add extra height buffer for mobile browsers with dynamic toolbars */
+            padding-bottom: env(safe-area-inset-bottom, 0);
             z-index: 0;
             overflow: hidden;
         }
-
         .gradient-layer-1 {
             position: absolute;
             width: 200%;
             height: 200%;
+            /* Ensure gradient layers also cover full height */
+            min-height: 100vh;
+            min-height: 100dvh;
             background: radial-gradient(circle at 20% 20%, 
                 rgba(153, 51, 204, 0.8) 0%, 
                 rgba(51, 102, 204, 0.6) 30%, 
@@ -51,22 +54,24 @@
             filter: blur(60px);
             animation: rotate1 15s ease-in-out infinite alternate;
         }
-
         .gradient-layer-2 {
             position: absolute;
             width: 200%;
             height: 200%;
+            min-height: 100vh;
+            min-height: 100dvh;
             background: radial-gradient(circle at 80% 80%, 
                 rgba(204, 51, 153, 0.4) 0%, 
                 transparent 50%);
             filter: blur(80px);
             animation: rotate2 15s ease-in-out infinite alternate-reverse;
         }
-
         .gradient-layer-3 {
             position: absolute;
             width: 100%;
             height: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
             background: linear-gradient(135deg, 
                 rgba(153, 51, 204, 0.15) 0%, 
                 transparent 50%, 
@@ -74,22 +79,18 @@
             filter: blur(40px);
             animation: flow 20s linear infinite;
         }
-
         @keyframes rotate1 {
             0% { transform: translate(-10%, -10%) rotate(0deg); }
             100% { transform: translate(10%, 10%) rotate(360deg); }
         }
-
         @keyframes rotate2 {
             0% { transform: translate(10%, 10%) rotate(0deg); }
             100% { transform: translate(-10%, -10%) rotate(-360deg); }
         }
-
         @keyframes flow {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -100,24 +101,20 @@
                 transform: translateY(0);
             }
         }
-
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
         }
-
         /* Content container */
         .content {
             position: relative;
             z-index: 1;
         }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
-
         /* Hero Section - Above the fold */
         .hero {
             min-height: 100vh; /* Default for desktop */
@@ -128,7 +125,6 @@
             text-align: center;
             padding: 6rem 0 2rem 0;
         }
-
         .logo {
             font-size: 3rem;
             font-weight: 800;
@@ -139,7 +135,6 @@
             margin-bottom: 1.5rem;
             animation: fadeInUp 0.8s ease-out;
         }
-
         .headline {
             font-size: 3.5rem;
             font-weight: 700;
@@ -159,7 +154,6 @@
             animation: fadeInUp 0.8s ease-out 0.4s both;
             font-weight: 400;
         }
-
         /* App Store Badge Styling - Per Apple Guidelines */
         .app-store-badge-wrapper {
             display: inline-block;
@@ -199,17 +193,14 @@
             position: relative;
             z-index: 1;
         }
-
         /* Features Section */
         .features {
             padding: 6rem 0;
         }
-
         .section-header {
             text-align: center;
             margin-bottom: 4rem;
         }
-
         .section-title {
             font-size: 2.5rem;
             font-weight: 700;
@@ -224,14 +215,12 @@
             margin: 0 auto;
             line-height: 1.6;
         }
-
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
             margin-top: 3rem;
         }
-
         .feature-card {
             background: linear-gradient(135deg, rgba(153, 51, 204, 0.08), rgba(51, 102, 204, 0.08));
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -297,19 +286,16 @@
             display: block;
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
         .feature-title {
             font-size: 1.5rem;
             font-weight: 600;
             margin-bottom: 1rem;
             color: #ffffff;
         }
-
         .feature-description {
             color: rgba(255, 255, 255, 0.7);
             line-height: 1.7;
         }
-
         /* Screenshot Gallery */
         .screenshot-gallery {
             padding: 4rem 0;
@@ -419,14 +405,12 @@
             padding: 6rem 0;
             background: linear-gradient(180deg, transparent, rgba(153, 51, 204, 0.05));
         }
-
         .faq-grid {
             display: grid;
             gap: 1.5rem;
             max-width: 800px;
             margin: 0 auto;
         }
-
         .faq-item {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -435,36 +419,30 @@
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
         }
-
         .faq-item:hover {
             background: rgba(255, 255, 255, 0.08);
             border-color: rgba(153, 51, 204, 0.3);
         }
-
         .faq-question {
             font-size: 1.25rem;
             font-weight: 600;
             margin-bottom: 0.75rem;
             color: #ffffff;
         }
-
         .faq-answer {
             color: rgba(255, 255, 255, 0.7);
             line-height: 1.7;
         }
-
         /* Final CTA Section */
         .final-cta {
             padding: 6rem 0;
             text-align: center;
         }
-
         .final-cta-title {
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 1.5rem;
         }
-
         .final-cta-text {
             font-size: 1.2rem;
             color: rgba(255, 255, 255, 0.7);
@@ -473,14 +451,12 @@
             margin-left: auto;
             margin-right: auto;
         }
-
         /* Footer */
         footer {
             padding: 3rem 0;
             text-align: center;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
-
         footer a {
             color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
@@ -489,11 +465,9 @@
             display: inline-block; /* Helps with touch targets */
             padding: 5px;
         }
-
         footer a:hover {
             color: #9933cc;
         }
-
         .mobile-menu-btn {
             display: none;
             background: none;
@@ -502,7 +476,6 @@
             font-size: 1.5rem;
             cursor: pointer;
         }
-
         /* Add this inside your @media (max-width: 768px) block or before it */
         nav a:hover {
             color: #9933cc !important;
@@ -545,7 +518,6 @@
                 padding: 0.5rem 0;
             }
         }
-
         /* Mobile Responsive Improvements */
         @media (max-width: 768px) {
             /* Fix A: Remove strict 100vh height to avoid cutoff on small screens */
@@ -554,23 +526,19 @@
                 padding-top: 6rem;
                 padding-bottom: 4rem;
             }
-
             .logo {
                 font-size: 2.5rem; /* Slightly smaller logo */
             }
-
             /* Fix B: Make headlines smaller to fit screen width */
             .headline {
                 font-size: 2.2rem;
                 padding: 0 10px; /* Prevent text touching edges */
             }
-
             .subheadline {
                 font-size: 1.1rem;
                 margin-bottom: 2rem;
                 padding: 0 10px;
             }
-
             /* Adjust feature grid for mobile */
             .features {
                 padding: 4rem 0;
@@ -580,12 +548,10 @@
                 grid-template-columns: 1fr; /* Stack vertically */
                 gap: 1.5rem;
             }
-
             .section-title {
                 font-size: 2rem;
                 line-height: 1.3;
             }
-
             /* App Store badge mobile optimization */
             .app-store-badge-wrapper {
                 margin: 15px;
@@ -595,12 +561,10 @@
                 /* Slightly smaller on mobile but still above Apple's 40px minimum */
                 height: 60px;
             }
-
             /* Adjust CTA section */
             .final-cta {
                 padding: 4rem 0;
             }
-
             .final-cta-title {
                 font-size: 1.8rem;
                 padding: 0 10px;
@@ -641,7 +605,6 @@
         <div class="gradient-layer-2"></div>
         <div class="gradient-layer-3"></div>
     </div>
-
     <div class="content">
         <section class="hero">
             <div class="container">
@@ -696,7 +659,6 @@
                     <h2 class="section-title">From Group Chats to Real Hangouts</h2>
                     <p class="section-subtitle">ForFriendSake transforms your friend groups into active squads. Plan activities, discover what's happening nearby, and compete on leaderboards—all in one app.</p>
                 </div>
-
                 <div class="features-grid">
                     <div class="feature-card">
                         <span class="feature-icon">👥</span>
@@ -736,7 +698,6 @@
                 </div>
             </div>
         </section>
-
         <section class="how-it-works" id="how-it-works" style="padding: 6rem 0; background: linear-gradient(180deg, rgba(153, 51, 204, 0.05), transparent);">
             <div class="container">
                 <div class="section-header">
@@ -785,7 +746,6 @@
                 <div class="section-header">
                     <h2 class="section-title">Frequently Asked Questions</h2>
                 </div>
-
                 <div class="faq-grid">
                     <div class="faq-item">
                         <h3 class="faq-question">How do squads work?</h3>
@@ -819,7 +779,6 @@
                 </div>
             </div>
         </section>
-
         <section class="final-cta" id="waitlist">
             <div class="container">
                 <h2 class="final-cta-title">Ready to Turn Plans Into Adventures?</h2>
@@ -831,7 +790,6 @@
                 </div>
             </div>
         </section>
-
         <footer>
             <div class="container">
                 <p style="margin-bottom: 1rem; color: rgba(255,255,255,0.5);">Built with care for meaningful connections</p>
@@ -845,7 +803,6 @@
             </div>
         </footer>
     </div>
-
     <script>
         // Intersection Observer for fade-in animations
         const observerOptions = {
@@ -875,7 +832,6 @@
             card.style.transitionDelay = `${index * 0.1}s`;
         });
     </script>
-
     <script>
         // Make FAQ items collapsible
         document.querySelectorAll('.faq-item').forEach(item => {
@@ -914,7 +870,6 @@
             });
         });
     </script>
-
     <script>
         function toggleMobileMenu() {
             const menu = document.getElementById('mobileMenu');
