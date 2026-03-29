@@ -1,412 +1,892 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Support - ForFriendSake</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            background-color: white;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #1a1a1a;
-            border-bottom: 3px solid #007AFF;
-            padding-bottom: 10px;
-        }
-        h2 {
-            color: #2c3e50;
-            margin-top: 30px;
-        }
-        h3 {
-            color: #34495e;
-            margin-top: 20px;
-        }
-        .last-updated {
-            color: #7f8c8d;
-            font-style: italic;
-            margin-bottom: 30px;
-        }
-        ul {
-            padding-left: 20px;
-        }
-        li {
-            margin-bottom: 8px;
-        }
-        .contact-info {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-left: 4px solid #007AFF;
-            margin-top: 30px;
-            border-radius: 4px;
-        }
-        .faq-item {
-            background-color: #f8f9fa;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-radius: 6px;
-            border-left: 3px solid #007AFF;
-        }
-        .faq-question {
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 10px;
-            font-size: 1.05em;
-        }
-        .faq-answer {
-            color: #555;
-        }
-        a {
-            color: #007AFF;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .feature-list {
-            background-color: #e8f4f8;
-            padding: 20px;
-            border-radius: 6px;
-            margin: 15px 0;
-        }
-        .warning-box {
-            background-color: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 4px;
-        }
-        .success-box {
-            background-color: #d4edda;
-            border-left: 4px solid #28a745;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 4px;
-        }
-        .btn-primary {
-            display: inline-block;
-            background-color: #007AFF;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 6px;
-            text-decoration: none;
-            margin-top: 10px;
-            transition: background-color 0.3s;
-        }
-        .btn-primary:hover {
-            background-color: #0056b3;
-            text-decoration: none;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ForFriendSake — Support</title>
+  <meta name="description" content="Support, troubleshooting guides, and FAQs for ForFriendSake — the iOS app for turning online friendships into real-world adventures." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:             #f7f7f5;
+      --bg2:            #f0f0ec;
+      --surface:        rgba(255,255,255,0.72);
+      --surface-border: rgba(0,0,0,0.07);
+      --text:           #111110;
+      --text2:          #5a5a56;
+      --text3:          #9a9a94;
+      --accent:         #9933cc;
+      --accent-rgb:     153,51,204;
+      --accent-soft:    rgba(153,51,204,0.10);
+      --accent-softer:  rgba(153,51,204,0.05);
+      --radius:         20px;
+      --transition:     0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    [data-theme="dark"] {
+      --bg:             #0d0d0c;
+      --bg2:            #131312;
+      --surface:        rgba(255,255,255,0.04);
+      --surface-border: rgba(255,255,255,0.08);
+      --text:           #f0f0ec;
+      --text2:          #9a9a94;
+      --text3:          #5a5a56;
+      --accent:         #b366e0;
+      --accent-rgb:     179,102,224;
+      --accent-soft:    rgba(179,102,224,0.12);
+      --accent-softer:  rgba(179,102,224,0.06);
+    }
+
+    html { scroll-behavior: smooth; }
+    html, body { scroll-snap-type: none; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background var(--transition), color var(--transition);
+      overflow-x: hidden;
+    }
+
+    #particle-canvas {
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(24px, 5vw, 64px);
+      height: 64px;
+      background: rgba(247,247,245,0.82);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--surface-border);
+      transition: background var(--transition), border-color var(--transition);
+    }
+    [data-theme="dark"] nav { background: rgba(13,13,12,0.88); }
+
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem; color: var(--text);
+      text-decoration: none; letter-spacing: -0.02em;
+    }
+
+    .nav-right { display: flex; align-items: center; gap: 14px; }
+
+    .nav-back {
+      font-size: 0.8125rem; font-weight: 500;
+      color: var(--text3); text-decoration: none;
+      letter-spacing: 0.01em; transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--text); }
+
+    .theme-toggle {
+      width: 36px; height: 36px; border-radius: 50%; border: none;
+      background: transparent; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text2); transition: all 0.25s ease;
+    }
+    .theme-toggle:hover { color: var(--accent); }
+    .theme-toggle svg { width: 15px; height: 15px; stroke-width: 2; }
+
+    /* ── MAIN ── */
+    main {
+      position: relative; z-index: 1;
+      max-width: 760px; margin: 0 auto;
+      padding: 120px clamp(24px, 6vw, 48px) 100px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); background: var(--accent-soft);
+      border: 1px solid rgba(var(--accent-rgb),0.2);
+      padding: 6px 14px; border-radius: 100px; margin-bottom: 32px;
+      opacity: 0; transform: translateY(12px);
+      animation: fadeUp 0.7s 0.05s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+
+    .page-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      line-height: 0.95; letter-spacing: -0.03em;
+      color: var(--text); margin-bottom: 20px;
+      opacity: 0; transform: translateY(16px);
+      animation: fadeUp 0.8s 0.15s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+
+    .page-meta {
+      font-size: 0.875rem; font-weight: 300;
+      color: var(--text3); margin-bottom: 64px;
+      opacity: 0; transform: translateY(12px);
+      animation: fadeUp 0.8s 0.25s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+
+    /* ── NOTICE CARD ── */
+    .notice-card {
+      background: var(--accent-soft);
+      border: 1px solid rgba(var(--accent-rgb),0.18);
+      border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 56px;
+      font-size: 0.9rem; font-weight: 300;
+      color: var(--text2); line-height: 1.65;
+      opacity: 0; transform: translateY(12px);
+      animation: fadeUp 0.8s 0.35s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    .notice-card strong { font-weight: 500; color: var(--accent); }
+
+    /* ── SECTIONS ── */
+    .support-section {
+      margin-bottom: 56px;
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .support-section.visible { opacity: 1; transform: translateY(0); }
+
+    .section-number {
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 10px;
+    }
+
+    .section-heading {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.4rem, 3vw, 1.9rem);
+      line-height: 1.1; letter-spacing: -0.02em;
+      color: var(--text); margin-bottom: 20px;
+    }
+
+    .section-body {
+      font-size: 0.9375rem; font-weight: 300;
+      color: var(--text2); line-height: 1.75;
+    }
+    .section-body p { margin-bottom: 16px; }
+    .section-body p:last-child { margin-bottom: 0; }
+    .section-body strong { font-weight: 500; color: var(--text); }
+    .section-body a {
+      color: var(--accent); text-decoration: none;
+      border-bottom: 1px solid rgba(var(--accent-rgb),0.3);
+      transition: border-color 0.2s;
+    }
+    .section-body a:hover { border-color: var(--accent); }
+
+    /* ── SUBSECTION HEADING ── */
+    .sub-heading {
+      font-size: 1rem; font-weight: 500;
+      color: var(--text); margin: 28px 0 12px;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── DIVIDER ── */
+    .section-divider {
+      height: 1px; background: var(--surface-border); margin: 56px 0;
+    }
+
+    /* ── PILL TAG ── */
+    .pill-tag {
+      display: inline-flex; align-items: center;
+      font-size: 0.75rem; font-weight: 500;
+      padding: 3px 10px; border-radius: 100px;
+      background: var(--accent-soft); color: var(--accent);
+      margin: 2px 4px 2px 0; white-space: nowrap;
+    }
+
+    /* ── HIGHLIGHT BLOCK ── */
+    .highlight-block {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 12px 12px 0;
+      padding: 16px 20px; margin: 20px 0;
+      font-size: 0.9rem; font-weight: 300;
+      color: var(--text2); line-height: 1.65;
+      backdrop-filter: blur(12px);
+    }
+    .highlight-block strong { font-weight: 500; color: var(--text); }
+
+    .warning-block {
+      background: rgba(255,180,0,0.08);
+      border: 1px solid rgba(255,180,0,0.2);
+      border-left: 3px solid #e6a817;
+      border-radius: 0 12px 12px 0;
+      padding: 16px 20px; margin: 20px 0;
+      font-size: 0.9rem; font-weight: 300;
+      color: var(--text2); line-height: 1.65;
+    }
+    .warning-block strong { font-weight: 500; color: var(--text); }
+
+    /* ── FAQ CARDS ── */
+    .faq-grid { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+
+    .faq-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 16px; overflow: hidden;
+      backdrop-filter: blur(16px);
+      transition: border-color 0.2s;
+    }
+    .faq-card:hover { border-color: rgba(var(--accent-rgb),0.3); }
+
+    .faq-question {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 20px; cursor: pointer;
+      font-size: 0.9375rem; font-weight: 500;
+      color: var(--text); gap: 12px;
+      user-select: none;
+    }
+
+    .faq-question .arrow {
+      flex-shrink: 0; width: 18px; height: 18px;
+      color: var(--text3); transition: transform 0.3s ease;
+    }
+    .faq-card.open .arrow { transform: rotate(180deg); }
+
+    .faq-answer {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.16,1,0.3,1);
+    }
+    .faq-card.open .faq-answer { max-height: 400px; }
+
+    .faq-answer-inner {
+      padding: 0 20px 18px;
+      font-size: 0.9rem; font-weight: 300;
+      color: var(--text2); line-height: 1.7;
+      border-top: 1px solid var(--surface-border);
+      padding-top: 14px;
+    }
+    .faq-answer-inner a {
+      color: var(--accent); text-decoration: none;
+      border-bottom: 1px solid rgba(var(--accent-rgb),0.3);
+    }
+
+    /* ── STEPS LIST ── */
+    .steps-list {
+      display: flex; flex-direction: column; gap: 2px;
+      margin: 16px 0;
+    }
+
+    .step-item {
+      display: flex; gap: 16px; align-items: flex-start;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      padding: 14px 18px;
+      backdrop-filter: blur(12px);
+    }
+    .step-item:first-child { border-radius: 16px 16px 0 0; }
+    .step-item:last-child  { border-radius: 0 0 16px 16px; }
+    .step-item:only-child  { border-radius: 16px; }
+
+    .step-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem; color: var(--accent);
+      opacity: 0.5; flex-shrink: 0; width: 20px;
+      line-height: 1.6;
+    }
+
+    .step-text {
+      font-size: 0.9rem; font-weight: 300;
+      color: var(--text2); line-height: 1.65;
+    }
+    .step-text strong { font-weight: 500; color: var(--text); }
+
+    /* ── BULLET LIST ── */
+    .bullet-list {
+      display: flex; flex-direction: column; gap: 8px; margin: 16px 0;
+    }
+    .bullet-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      font-size: 0.9rem; font-weight: 300; color: var(--text2); line-height: 1.6;
+    }
+    .bullet-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--accent); flex-shrink: 0; margin-top: 8px;
+    }
+
+    /* ── TABLE ── */
+    .table-wrap {
+      background: var(--surface); border: 1px solid var(--surface-border);
+      border-radius: var(--radius); overflow: hidden;
+      backdrop-filter: blur(16px); margin: 20px 0;
+    }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    .data-table th {
+      text-align: left; font-weight: 500;
+      font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--text3); padding: 10px 16px;
+      border-bottom: 1px solid var(--surface-border);
+    }
+    .data-table td {
+      padding: 12px 16px; border-bottom: 1px solid var(--surface-border);
+      color: var(--text2); font-weight: 300; line-height: 1.55; vertical-align: top;
+    }
+    .data-table td:first-child { font-weight: 500; color: var(--text); }
+    .data-table tr:last-child td { border-bottom: none; }
+
+    /* ── CONTACT CARDS ── */
+    .contact-card {
+      background: var(--surface); border: 1px solid var(--surface-border);
+      border-radius: var(--radius); padding: 28px 32px; margin-top: 12px;
+      backdrop-filter: blur(16px); display: flex; align-items: center; gap: 16px;
+    }
+    .contact-card-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--accent-soft);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; color: var(--accent);
+    }
+    .contact-card-icon svg { width: 20px; height: 20px; stroke-width: 1.75; }
+    .contact-card-text { flex: 1; }
+    .contact-card-label {
+      font-size: 0.8rem; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text3); margin-bottom: 4px;
+    }
+    .contact-card-value { font-size: 1rem; font-weight: 400; color: var(--text); }
+    .contact-card-value a { color: var(--accent); text-decoration: none; }
+    .contact-card-sub {
+      font-size: 0.8125rem; font-weight: 300;
+      color: var(--text3); margin-top: 2px;
+    }
+
+    /* ── CTA BUTTON ── */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent); color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9375rem; font-weight: 500;
+      padding: 14px 28px; border-radius: 100px;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 8px 32px rgba(var(--accent-rgb),0.28);
+      margin-top: 20px;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(var(--accent-rgb),0.38); }
+    .btn-primary svg { width: 16px; height: 16px; stroke-width: 2; }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1;
+      padding: 32px clamp(24px, 6vw, 64px);
+      border-top: 1px solid var(--surface-border);
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    }
+    .footer-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1rem; color: var(--text);
+      letter-spacing: -0.02em; text-decoration: none;
+    }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a {
+      font-size: 0.8125rem; color: var(--text3);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-text { font-size: 0.8125rem; color: var(--text3); }
+
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 640px) {
+      footer { justify-content: center; text-align: center; }
+      .footer-links { justify-content: center; }
+      .contact-card { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>ForFriendSake Support</h1>
-        <p class="last-updated">Last Updated: January 3, 2026</p>
 
-        <div class="contact-info" style="margin-bottom: 30px;">
-            <h2 style="margin-top: 0; color: #1a1a1a;">📧 Contact Us</h2>
-            <p style="font-size: 1.1em; margin-bottom: 15px;"><strong>Need immediate help? We're here for you!</strong></p>
-            
-            <p><strong>Email Support:</strong><br>
-            <a href="mailto:support@forfriendsake.com" style="font-size: 1.1em;">support@forfriendsake.com</a></p>
-            
-            <p><strong>Developer:</strong> Gurumanie Singh Dhiman<br>
-            <strong>Location:</strong> Ames, Iowa, United States</p>
-            
-            <p><strong>Response Time:</strong> We typically respond within 24-48 hours on business days (Monday-Friday)</p>
-            
-            <a href="mailto:support@forfriendsake.com?subject=ForFriendSake Support Request&body=Please describe your issue:%0D%0A%0D%0AYour username:%0D%0ADevice model:%0D%0AiOS version:%0D%0AApp version:" class="btn-primary" style="display: inline-block; margin-top: 15px;">Email Support Now</a>
-        </div>
+  <canvas id="particle-canvas"></canvas>
 
-        <p>Welcome to ForFriendSake support! Below you'll find answers to common questions, troubleshooting guides, and helpful resources. If you can't find what you're looking for, please contact us using the information above.</p>
-
-        <h2>1. Getting Started</h2>
-        
-        <h3>1.1 Creating Your Account</h3>
-        <p>To start using ForFriendSake:</p>
-        <ul>
-            <li>Download the app from the iOS App Store</li>
-            <li>Sign up with your email address or phone number</li>
-            <li>Verify your account through the confirmation email or SMS</li>
-            <li>Set up your profile with a username and optional profile photo</li>
-            <li>Grant necessary permissions (location, notifications) for full functionality</li>
-        </ul>
-
-        <h3>1.2 System Requirements</h3>
-        <ul>
-            <li><strong>iOS Version:</strong> iOS 18.0 or later</li>
-            <li><strong>Device:</strong> iPhone or iPad</li>
-            <li><strong>Storage:</strong> Minimum 100MB free space</li>
-            <li><strong>Internet:</strong> Active internet connection required</li>
-            <li><strong>Location Services:</strong> Required for check-ins and activity features</li>
-        </ul>
-
-        <h2>2. Frequently Asked Questions</h2>
-
-        <div class="faq-item">
-            <div class="faq-question">Q: How do I create a squad?</div>
-            <div class="faq-answer">Navigate to the Squads tab, tap the "+" button, enter your squad name and details, and invite friends via their username or email. You can customize squad settings including visibility and member permissions.</div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">Q: How do I earn points?</div>
-            <div class="faq-answer">Points are earned by checking in to activities, completing challenges, and participating in squad events. Each activity has a point value, and you must be within the designated location to successfully check in.</div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">Q: Why can't I check in to an activity?</div>
-            <div class="faq-answer">Ensure you're within the activity's location radius, have location services enabled, and the activity is currently active. Check-ins may be restricted by time windows set by the activity creator.</div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">Q: Can I join multiple squads?</div>
-            <div class="faq-answer">Yes! You can join multiple squads and participate in activities across all of them. Set a favorite squad in your profile settings for quick access.</div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">Q: How do I leave a squad?</div>
-            <div class="faq-answer">Go to the squad page, tap the settings icon, and select "Leave Squad." Note that leaving a squad will remove your access to squad activities and chat history.</div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">Q: Are my location data and personal information secure?</div>
-            <div class="faq-answer">Yes. We use industry-standard encryption and security measures. Location data is only collected when you actively use location features. Review our <a href="privacy-policy.html">Privacy Policy</a> for detailed information.</div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">Q: How do leaderboards work?</div>
-            <div class="faq-answer">Leaderboards rank squad members based on points earned within specific time periods. There are weekly, monthly, and all-time leaderboards. Points reset at the beginning of each period.</div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">Q: Can I change my username?</div>
-            <div class="faq-answer">Yes, go to Settings > Profile > Edit Username. Note that usernames must be unique and follow our community guidelines.</div>
-        </div>
-
-        <h2>3. Troubleshooting Common Issues</h2>
-
-        <h3>3.1 App Crashes or Won't Open</h3>
-        <ul>
-            <li>Force close the app and restart it</li>
-            <li>Ensure you have the latest version from the App Store</li>
-            <li>Restart your device</li>
-            <li>Check for iOS updates</li>
-            <li>Reinstall the app if the issue persists</li>
-        </ul>
-
-        <h3>3.2 Location Issues</h3>
-        <div class="warning-box">
-            <strong>Important:</strong> Location services must be enabled for check-ins and activity creation.
-        </div>
-        <p>If you're having location issues:</p>
-        <ul>
-            <li>Go to Settings > Privacy & Security > Location Services</li>
-            <li>Ensure Location Services are ON</li>
-            <li>Find ForFriendSake and set to "While Using the App" or "Always"</li>
-            <li>Enable "Precise Location" for accurate check-ins</li>
-            <li>Try toggling Airplane Mode on and off to refresh GPS</li>
-        </ul>
-
-        <h3>3.3 Push Notifications Not Working</h3>
-        <ul>
-            <li>Go to Settings > Notifications > ForFriendSake</li>
-            <li>Ensure "Allow Notifications" is enabled</li>
-            <li>Check notification settings within the app</li>
-            <li>Verify Do Not Disturb is not enabled</li>
-            <li>Log out and back in to refresh notification tokens</li>
-        </ul>
-
-        <h3>3.4 Login or Authentication Problems</h3>
-        <ul>
-            <li>Verify your email address or phone number is correct</li>
-            <li>Check for verification emails (including spam folder)</li>
-            <li>Use the "Forgot Password" option to reset your password</li>
-            <li>Ensure you have a stable internet connection</li>
-            <li>Clear app cache or reinstall if issues persist</li>
-        </ul>
-
-        <h3>3.5 Data Not Loading or Syncing</h3>
-        <ul>
-            <li>Check your internet connection (WiFi or cellular data)</li>
-            <li>Pull down to refresh on list screens</li>
-            <li>Log out and back in to force a sync</li>
-            <li>Check if other apps can access the internet</li>
-            <li>Contact support if the issue continues</li>
-        </ul>
-
-        <h2>4. Feature Guides</h2>
-
-        <h3>4.1 Creating Activities</h3>
-        <div class="feature-list">
-            <strong>Steps to create an activity:</strong>
-            <ol>
-                <li>Navigate to the Activities tab</li>
-                <li>Tap the "Create Activity" button</li>
-                <li>Enter activity name, description, and point value</li>
-                <li>Set date, time, and duration</li>
-                <li>Add a location (tap map to set precise location)</li>
-                <li>Choose which squads can see and join</li>
-                <li>Set check-in radius and time window</li>
-                <li>Tap "Create" to publish</li>
-            </ol>
-        </div>
-
-        <h3>4.2 Managing Your Squad</h3>
-        <p>Squad admins can:</p>
-        <ul>
-            <li>Invite and remove members</li>
-            <li>Assign moderator roles</li>
-            <li>Customize squad settings and description</li>
-            <li>Create squad-specific activities</li>
-            <li>Manage chat permissions</li>
-            <li>View squad analytics and engagement</li>
-        </ul>
-
-        <h3>4.3 Using the Map View</h3>
-        <ul>
-            <li>Tap the Map tab to view nearby activities</li>
-            <li>Pins show active activities in your area</li>
-            <li>Tap a pin to view activity details</li>
-            <li>Use filters to show specific squad activities</li>
-            <li>Zoom and pan to explore different areas</li>
-        </ul>
-
-        <h2>5. Account Management</h2>
-
-        <h3>5.1 Updating Profile Information</h3>
-        <p>To update your profile:</p>
-        <ul>
-            <li>Go to Settings > Profile</li>
-            <li>Tap any field to edit (username, email, photo)</li>
-            <li>Upload a new profile photo from your camera or library</li>
-            <li>Save changes when complete</li>
-        </ul>
-
-        <h3>5.2 Privacy Settings</h3>
-        <ul>
-            <li>Control who can see your profile</li>
-            <li>Manage activity visibility</li>
-            <li>Block specific users</li>
-            <li>Adjust data sharing preferences</li>
-        </ul>
-
-        <h3>5.3 Deleting Your Account</h3>
-        <div class="warning-box">
-            <strong>Warning:</strong> Account deletion is permanent and cannot be undone. All your data, including squads you created, activities, and chat history will be permanently deleted.
-        </div>
-        <p>To delete your account:</p>
-        <ul>
-            <li>Go to Settings > Account > Delete Account</li>
-            <li>Read the warning carefully</li>
-            <li>Enter your password to confirm</li>
-            <li>Your data will be permanently deleted within 30 days</li>
-        </ul>
-
-        <h2>6. Safety and Community Guidelines</h2>
-
-        <h3>6.1 Reporting Inappropriate Content</h3>
-        <p>If you encounter inappropriate content or behavior:</p>
-        <ul>
-            <li>Tap the three-dot menu on the content</li>
-            <li>Select "Report"</li>
-            <li>Choose the reason for reporting</li>
-            <li>Provide additional details if needed</li>
-            <li>Our team will review within 24-48 hours</li>
-        </ul>
-
-        <h3>6.2 Blocking Users</h3>
-        <ul>
-            <li>Go to the user's profile</li>
-            <li>Tap the three-dot menu</li>
-            <li>Select "Block User"</li>
-            <li>Blocked users cannot see your activities or contact you</li>
-        </ul>
-
-        <h2>7. Known Issues</h2>
-        <p>We're actively working on the following known issues:</p>
-        <ul>
-            <li>Occasional delay in leaderboard updates (refreshes within 5 minutes)</li>
-            <li>Map pins may cluster at high zoom levels</li>
-            <li>Push notifications may arrive with slight delay during peak hours</li>
-        </ul>
-        <p>Updates addressing these issues are coming in future releases.</p>
-
-        <h2>8. Feedback and Feature Requests</h2>
-        <div class="success-box">
-            <strong>We love hearing from you!</strong> Your feedback helps us improve ForFriendSake.
-        </div>
-        <p>To submit feedback or feature requests:</p>
-        <ul>
-            <li>Use the in-app feedback form (Settings > Send Feedback)</li>
-            <li>Email us directly with your suggestions</li>
-            <li>Rate and review the app on the App Store</li>
-        </ul>
-
-        <h2>9. How to Contact Support</h2>
-        <div class="contact-info">
-            <p><strong>Still Need Help?</strong></p>
-            <p>If you couldn't find the answer to your question or need additional assistance, please reach out!</p>
-            
-            <p><strong>📧 Primary Contact Method:</strong><br>
-            Email: <a href="mailto:support@forfriendsake.com">support@forfriendsake.com</a></p>
-            
-            <p><strong>📱 In-App Support:</strong><br>
-            Open the app → Settings → "Contact Support" to send a message directly</p>
-            
-            <p><strong>⏱️ Response Time:</strong><br>
-            We typically respond within 24-48 hours on business days (Monday-Friday, 9 AM - 5 PM CST)</p>
-            
-            <p><strong>When contacting us, please include:</strong></p>
-            <ul style="margin-top: 10px;">
-                <li>Your username and registered email address</li>
-                <li>Device model (e.g., iPhone 15 Pro)</li>
-                <li>iOS version (found in Settings > General > About)</li>
-                <li>App version (found in ForFriendSake > Settings > About)</li>
-                <li>Detailed description of your issue or question</li>
-                <li>Screenshots or screen recordings if applicable</li>
-                <li>Steps you've already tried to resolve the issue</li>
-            </ul>
-
-            <a href="mailto:support@forfriendsake.com?subject=ForFriendSake Support Request&body=Please describe your issue:%0D%0A%0D%0AYour username:%0D%0AYour email:%0D%0ADevice model:%0D%0AiOS version:%0D%0AApp version:%0D%0A%0D%0ASteps to reproduce (if applicable):%0D%0A1.%0D%0A2.%0D%0A3." class="btn-primary">Send Support Email</a>
-        </div>
-
-        <div class="success-box" style="margin-top: 20px;">
-            <strong>💬 We Value Your Feedback!</strong><br>
-            Your questions, suggestions, and feedback help us improve ForFriendSake for everyone. Whether you're experiencing an issue or have an idea for a new feature, we want to hear from you. Every message is read and considered by our development team.
-        </div>
-
-        <h2>10. Additional Resources</h2>
-        <ul>
-            <li><a href="https://www.forfriendsake.com/privacy/">Privacy Policy</a> - Learn how we protect your data</li>
-            <li><a href="https://www.forfriendsake.com/">Return to Home</a> - Go back to the main website</li>
-        </ul>
-
-        <hr style="margin: 40px 0; border: none; border-top: 1px solid #ddd;">
-
-        <div style="background-color: #f8f9fa; padding: 25px; border-radius: 8px; text-align: center;">
-            <h3 style="margin-top: 0; color: #1a1a1a;">Contact Information</h3>
-            <p style="font-size: 1.1em; margin-bottom: 15px;">
-                <strong>Developer:</strong> Gurumanie Singh Dhiman<br>
-                <strong>Email:</strong> <a href="mailto:support@forfriendsake.com">support@forfriendsake.comm</a><br>
-                <strong>Location:</strong> Ames, Iowa, United States
-            </p>
-            <p style="color: #7f8c8d; font-size: 0.95em; margin-top: 20px;">
-                <strong>ForFriendSake</strong><br>
-                © 2026 Gurumanie Singh Dhiman
-            </p>
-        </div>
+  <nav>
+    <a href="https://www.forfriendsake.com/" class="nav-logo">ForFriendSake</a>
+    <div class="nav-right">
+      <a href="https://www.forfriendsake.com/" class="nav-back">← back</a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"></button>
     </div>
+  </nav>
+
+  <main>
+
+    <div class="page-eyebrow">help & support</div>
+    <h1 class="page-title">support<br />centre.</h1>
+    <p class="page-meta">Last updated: January 3, 2026 &nbsp;·&nbsp; Response time 24–48 hours</p>
+
+    <div class="notice-card">
+      <strong>Need help fast?</strong> Email us at <a href="mailto:support@forfriendsake.com" style="color:var(--accent);border-bottom:1px solid rgba(var(--accent-rgb),0.3);">support@forfriendsake.com</a> — we respond within 24–48 hours on business days. Browse the sections below for instant answers to common questions.
+    </div>
+
+    <!-- 01 CONTACT -->
+    <div class="support-section">
+      <div class="section-number">01</div>
+      <h2 class="section-heading">Contact Us</h2>
+
+      <div class="contact-card">
+        <div class="contact-card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        </div>
+        <div class="contact-card-text">
+          <div class="contact-card-label">email support</div>
+          <div class="contact-card-value"><a href="mailto:support@forfriendsake.com">support@forfriendsake.com</a></div>
+          <div class="contact-card-sub">24–48 hours · Monday–Friday, 9 AM–5 PM CST</div>
+        </div>
+      </div>
+
+      <div class="contact-card">
+        <div class="contact-card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg>
+        </div>
+        <div class="contact-card-text">
+          <div class="contact-card-label">in-app support</div>
+          <div class="contact-card-value">Settings → Contact Support</div>
+          <div class="contact-card-sub">Send a message directly from within the app</div>
+        </div>
+      </div>
+
+      <div class="contact-card">
+        <div class="contact-card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="contact-card-text">
+          <div class="contact-card-label">developer</div>
+          <div class="contact-card-value">Gurumanie Singh Dhiman</div>
+          <div class="contact-card-sub">Ames, Iowa, United States</div>
+        </div>
+      </div>
+
+      <a href="mailto:support@forfriendsake.com?subject=ForFriendSake Support Request&body=Please describe your issue:%0D%0A%0D%0AYour username:%0D%0AYour email:%0D%0ADevice model:%0D%0AiOS version:%0D%0AApp version:%0D%0A%0D%0ASteps to reproduce (if applicable):%0D%0A1.%0D%0A2.%0D%0A3." class="btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="16" height="16" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        Send Support Email
+      </a>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 02 GETTING STARTED -->
+    <div class="support-section">
+      <div class="section-number">02</div>
+      <h2 class="section-heading">Getting Started</h2>
+
+      <div class="section-body">
+        <p>New to ForFriendSake? Here's everything you need to get up and running.</p>
+      </div>
+
+      <div class="sub-heading">Creating your account</div>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num">1</div><div class="step-text">Download the app from the iOS App Store</div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-text">Sign up with your email address or phone number</div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-text">Verify your account via the confirmation email or SMS</div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-text">Set up your profile with a username and optional profile photo</div></div>
+        <div class="step-item"><div class="step-num">5</div><div class="step-text">Grant location and notification permissions for full functionality</div></div>
+      </div>
+
+      <div class="sub-heading">System requirements</div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>requirement</th><th>details</th></tr></thead>
+          <tbody>
+            <tr><td>iOS Version</td><td>iOS 18.0 or later</td></tr>
+            <tr><td>Device</td><td>iPhone or iPad</td></tr>
+            <tr><td>Storage</td><td>Minimum 100 MB free space</td></tr>
+            <tr><td>Internet</td><td>Active connection required</td></tr>
+            <tr><td>Location Services</td><td>Required for check-ins and activity features</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 03 FAQ -->
+    <div class="support-section">
+      <div class="section-number">03</div>
+      <h2 class="section-heading">Frequently Asked Questions</h2>
+
+      <div class="faq-grid">
+
+        <div class="faq-card">
+          <div class="faq-question">
+            How do I create a squad?
+            <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          <div class="faq-answer"><div class="faq-answer-inner">Navigate to the Squads tab, tap the "+" button, enter your squad name and details, and invite friends via their username or email. You can customise squad settings including visibility and member permissions.</div></div>
+        </div>
+
+        <div class="faq-card">
+          <div class="faq-question">
+            How do I earn points?
+            <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          <div class="faq-answer"><div class="faq-answer-inner">Points are earned by checking in to activities, completing challenges, and participating in squad events. Each activity has a point value and you must be within the designated location to successfully check in.</div></div>
+        </div>
+
+        <div class="faq-card">
+          <div class="faq-question">
+            Why can't I check in to an activity?
+            <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          <div class="faq-answer"><div class="faq-answer-inner">Ensure you're within the activity's location radius, have location services enabled, and the activity is currently active. Check-ins may also be restricted by time windows set by the activity creator.</div></div>
+        </div>
+
+        <div class="faq-card">
+          <div class="faq-question">
+            Can I join multiple squads?
+            <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          <div class="faq-answer"><div class="faq-answer-inner">Yes. You can join multiple squads and participate in activities across all of them. Set a favourite squad in your profile settings for quick access.</div></div>
+        </div>
+
+        <div class="faq-card">
+          <div class="faq-question">
+            How do I leave a squad?
+            <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          <div class="faq-answer"><div class="faq-answer-inner">Go to the squad page, tap the settings icon, and select "Leave Squad." Leaving a squad removes your access to its activities and chat history.</div></div>
+        </div>
+
+        <div class="faq-card">
+          <div class="faq-question">
+            How do leaderboards work?
+            <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          <div class="faq-answer"><div class="faq-answer-inner">Leaderboards rank squads based on points earned within specific time periods. There are weekly, monthly, and all-time rankings. Points reset at the beginning of each period. Squads must have 3 or more members to appear.</div></div>
+        </div>
+
+        <div class="faq-card">
+          <div class="faq-question">
+            Can I change my username?
+            <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          <div class="faq-answer"><div class="faq-answer-inner">Yes. Go to Settings → Profile → Edit Username. Usernames must be unique and follow our community guidelines.</div></div>
+        </div>
+
+        <div class="faq-card">
+          <div class="faq-question">
+            Is my location data secure?
+            <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          <div class="faq-answer"><div class="faq-answer-inner">Yes. Location data is only collected when you actively use location features — it is never tracked in the background. All data is encrypted in transit and at rest. See our <a href="https://www.forfriendsake.com/privacy/">Privacy Policy</a> for full details.</div></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 04 TROUBLESHOOTING -->
+    <div class="support-section">
+      <div class="section-number">04</div>
+      <h2 class="section-heading">Troubleshooting</h2>
+
+      <div class="sub-heading">App crashes or won't open</div>
+      <div class="bullet-list">
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Force close the app and restart it</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Ensure you have the latest version from the App Store</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Restart your device</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Check for iOS updates in Settings → General → Software Update</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Reinstall the app if the issue persists</div></div>
+      </div>
+
+      <div class="sub-heading">Location not working</div>
+      <div class="warning-block">
+        <strong>Important:</strong> Location services must be enabled for check-ins and activity creation. Precise location is required for accurate GPS verification.
+      </div>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num">1</div><div class="step-text">Go to <strong>Settings → Privacy & Security → Location Services</strong></div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-text">Ensure Location Services are toggled <strong>On</strong></div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-text">Find ForFriendSake and set to <strong>"While Using the App"</strong> or <strong>"Always"</strong></div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-text">Enable <strong>Precise Location</strong> for accurate check-ins</div></div>
+        <div class="step-item"><div class="step-num">5</div><div class="step-text">Try toggling Airplane Mode on and off to refresh GPS</div></div>
+      </div>
+
+      <div class="sub-heading">Push notifications not arriving</div>
+      <div class="bullet-list">
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Go to <strong>Settings → Notifications → ForFriendSake</strong> and ensure "Allow Notifications" is on</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Check notification settings within the app</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Verify Do Not Disturb or Focus mode is not active</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Log out and back in to refresh your notification token</div></div>
+      </div>
+
+      <div class="sub-heading">Login or authentication problems</div>
+      <div class="bullet-list">
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Verify your email address or phone number is correct</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Check for verification emails — including your spam folder</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Use "Forgot Password" to reset your password</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Ensure you have a stable internet connection</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Clear app cache or reinstall if issues persist</div></div>
+      </div>
+
+      <div class="sub-heading">Data not loading or syncing</div>
+      <div class="bullet-list">
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Check your internet connection (Wi-Fi or cellular)</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Pull down to refresh on list screens</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Log out and back in to force a sync</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Check if other apps can access the internet</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Contact support if the issue continues</div></div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 05 FEATURE GUIDES -->
+    <div class="support-section">
+      <div class="section-number">05</div>
+      <h2 class="section-heading">Feature Guides</h2>
+
+      <div class="sub-heading">Creating an activity</div>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num">1</div><div class="step-text">Navigate to the Activities tab</div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-text">Tap the <strong>"Create Activity"</strong> button</div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-text">Enter activity name, description, and point value</div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-text">Set date, time, and duration</div></div>
+        <div class="step-item"><div class="step-num">5</div><div class="step-text">Add a location — tap the map to set a precise location</div></div>
+        <div class="step-item"><div class="step-num">6</div><div class="step-text">Choose which squads can see and join</div></div>
+        <div class="step-item"><div class="step-num">7</div><div class="step-text">Set check-in radius and time window</div></div>
+        <div class="step-item"><div class="step-num">8</div><div class="step-text">Tap <strong>"Create"</strong> to publish</div></div>
+      </div>
+
+      <div class="sub-heading">Managing your squad</div>
+      <div class="section-body" style="margin-bottom:12px;"><p>Squad admins can:</p></div>
+      <div class="bullet-list">
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Invite and remove members</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Assign moderator roles</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Customise squad settings and description</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Create squad-specific activities</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Manage chat permissions</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>View squad analytics and engagement</div></div>
+      </div>
+
+      <div class="sub-heading">Using the Map view</div>
+      <div class="bullet-list">
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Tap the Map tab to view nearby activities</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Pins show active activities in your area</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Tap a pin to view activity details and request to join</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Use filters to show specific squad activities</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Zoom and pan to explore different areas</div></div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 06 ACCOUNT -->
+    <div class="support-section">
+      <div class="section-number">06</div>
+      <h2 class="section-heading">Account Management</h2>
+
+      <div class="sub-heading">Updating your profile</div>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num">1</div><div class="step-text">Go to <strong>Settings → Profile</strong></div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-text">Tap any field to edit — username, email, or photo</div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-text">Upload a new profile photo from your camera or library</div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-text">Save changes when complete</div></div>
+      </div>
+
+      <div class="sub-heading">Privacy settings</div>
+      <div class="bullet-list">
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Control who can see your profile</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Manage activity visibility</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Block specific users</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Adjust data sharing preferences</div></div>
+      </div>
+
+      <div class="sub-heading">Deleting your account</div>
+      <div class="warning-block">
+        <strong>Warning:</strong> Account deletion is permanent and cannot be undone. All your data — including squads you created, activities, and chat history — will be permanently deleted within 30 days.
+      </div>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num">1</div><div class="step-text">Go to <strong>Settings → Account → Delete Account</strong></div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-text">Read the warning carefully</div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-text">Enter your password to confirm</div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-text">Your data will be permanently deleted within 30 days</div></div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 07 SAFETY -->
+    <div class="support-section">
+      <div class="section-number">07</div>
+      <h2 class="section-heading">Safety & Community</h2>
+
+      <div class="sub-heading">Reporting inappropriate content</div>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num">1</div><div class="step-text">Tap the three-dot menu on the content</div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-text">Select <strong>"Report"</strong></div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-text">Choose the reason for reporting</div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-text">Provide additional details if needed — our team reviews within 24–48 hours</div></div>
+      </div>
+
+      <div class="sub-heading">Blocking a user</div>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num">1</div><div class="step-text">Go to the user's profile</div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-text">Tap the three-dot menu</div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-text">Select <strong>"Block User"</strong> — blocked users cannot see your activities or contact you</div></div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 08 KNOWN ISSUES -->
+    <div class="support-section">
+      <div class="section-number">08</div>
+      <h2 class="section-heading">Known Issues</h2>
+      <div class="section-body">
+        <p>We're actively working on the following — fixes are coming in future releases:</p>
+      </div>
+      <div class="bullet-list">
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Occasional delay in leaderboard updates — refreshes within 5 minutes</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Map pins may cluster at high zoom levels</div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Push notifications may arrive with slight delay during peak hours</div></div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 09 FEEDBACK -->
+    <div class="support-section">
+      <div class="section-number">09</div>
+      <h2 class="section-heading">Feedback & Feature Requests</h2>
+      <div class="section-body">
+        <p>Your feedback helps us make ForFriendSake better for everyone. Every message is read and considered by the development team.</p>
+      </div>
+      <div class="highlight-block">
+        <strong>We love hearing from you.</strong> Whether you're reporting a bug, suggesting a feature, or just sharing your experience — reach out via email, the in-app feedback form, or leave a review on the App Store.
+      </div>
+      <div class="bullet-list">
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Use the in-app feedback form at <strong>Settings → Send Feedback</strong></div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Email us directly at <a href="mailto:support@forfriendsake.com" style="color:var(--accent);">support@forfriendsake.com</a></div></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><div>Rate and review the app on the App Store</div></div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 10 CONTACT AGAIN -->
+    <div class="support-section">
+      <div class="section-number">10</div>
+      <h2 class="section-heading">Still Need Help?</h2>
+      <div class="section-body">
+        <p>If you couldn't find the answer above, please reach out. When you email us, including the details below helps us resolve your issue faster:</p>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>include in your email</th><th>where to find it</th></tr></thead>
+          <tbody>
+            <tr><td>Username & email</td><td>Your ForFriendSake profile</td></tr>
+            <tr><td>Device model</td><td>e.g. iPhone 15 Pro</td></tr>
+            <tr><td>iOS version</td><td>Settings → General → About</td></tr>
+            <tr><td>App version</td><td>ForFriendSake → Settings → About</td></tr>
+            <tr><td>Issue description</td><td>As much detail as possible</td></tr>
+            <tr><td>Screenshots or recordings</td><td>If applicable</td></tr>
+            <tr><td>Steps you've already tried</td><td>Helps us skip duplicate suggestions</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <a href="mailto:support@forfriendsake.com?subject=ForFriendSake Support Request&body=Please describe your issue:%0D%0A%0D%0AYour username:%0D%0AYour email:%0D%0ADevice model:%0D%0AiOS version:%0D%0AApp version:%0D%0A%0D%0ASteps to reproduce (if applicable):%0D%0A1.%0D%0A2.%0D%0A3." class="btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="16" height="16" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        Send Support Email
+      </a>
+    </div>
+
+  </main>
+
+  <footer>
+    <a href="https://www.forfriendsake.com/" class="footer-logo">ForFriendSake</a>
+    <div class="footer-links">
+      <a href="https://www.forfriendsake.com/">Home</a>
+      <a href="https://www.forfriendsake.com/privacy/">Privacy</a>
+    </div>
+    <p class="footer-text">© 2026 ForFriendSake. All rights reserved.</p>
+  </footer>
+
+  <script>
+    if (history.scrollRestoration) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+  </script>
+
+  <script>
+    // THEME
+    const toggle  = document.getElementById('themeToggle');
+    const root    = document.documentElement;
+    const sunSVG  = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>`;
+    const moonSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+
+    function applyTheme(t) {
+      root.setAttribute('data-theme', t);
+      toggle.innerHTML = t === 'dark' ? moonSVG : sunSVG;
+    }
+    applyTheme(localStorage.getItem('theme') || 'light');
+    toggle.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next); localStorage.setItem('theme', next);
+    });
+
+    // PARTICLES
+    const canvas = document.getElementById('particle-canvas');
+    const ctx    = canvas.getContext('2d');
+    let W, H;
+    function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+    resize(); window.addEventListener('resize', resize);
+
+    function getAccentRgb() {
+      return root.getAttribute('data-theme') === 'dark' ? '179,102,224' : '153,51,204';
+    }
+
+    class Particle {
+      constructor(s) { this.init(s); }
+      init(s) {
+        this.x = Math.random() * W; this.y = s ? Math.random() * H : -8;
+        this.r = Math.random() * 1.8 + 0.4;
+        this.vy = Math.random() * 0.55 + 0.18; this.vx = (Math.random() - 0.5) * 0.12;
+        this.alpha = Math.random() * 0.22 + 0.04;
+      }
+      update() {
+        this.y += this.vy; this.x += this.vx;
+        if (this.y > H + 10) this.init(false);
+        if (this.x < -5) this.x = W + 5;
+        if (this.x > W + 5) this.x = -5;
+      }
+      draw() {
+        ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${getAccentRgb()},${this.alpha})`; ctx.fill();
+      }
+    }
+    const particles = [];
+    for (let i = 0; i < 70; i++) particles.push(new Particle(true));
+    (function loop() {
+      ctx.clearRect(0, 0, W, H);
+      particles.forEach(p => { p.update(); p.draw(); });
+      requestAnimationFrame(loop);
+    })();
+
+    // SCROLL REVEAL
+    const sections = document.querySelectorAll('.support-section');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.06 });
+    sections.forEach(s => io.observe(s));
+
+    // FAQ ACCORDION
+    document.querySelectorAll('.faq-card').forEach(card => {
+      card.querySelector('.faq-question').addEventListener('click', () => {
+        const isOpen = card.classList.contains('open');
+        document.querySelectorAll('.faq-card').forEach(c => c.classList.remove('open'));
+        if (!isOpen) card.classList.add('open');
+      });
+    });
+  </script>
+
 </body>
 </html>
