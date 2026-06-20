@@ -1,0 +1,30 @@
+<!-- WebAssets/AppIcon-placeholder.svg -->
+<!--
+  Placeholder app icon for Vocabrawl.
+  NOTE: The final App Store icon must be a 1024x1024 PNG with NO alpha channel
+  and NO rounded corners (the App Store rounds it automatically). Export this
+  artwork (or a refined version) to that spec before submission.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b2230"/>
+      <stop offset="1" stop-color="#0e1116"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+
+  <!-- subtle 5x1 tile grid motif -->
+  <g transform="translate(112,540)">
+    <rect x="0"   y="0" width="150" height="150" rx="20" fill="#6aa84f"/>
+    <rect x="170" y="0" width="150" height="150" rx="20" fill="#3a3f47"/>
+    <rect x="340" y="0" width="150" height="150" rx="20" fill="#c9a227"/>
+    <rect x="510" y="0" width="150" height="150" rx="20" fill="#3a3f47"/>
+    <rect x="680" y="0" width="150" height="150" rx="20" fill="#6aa84f"/>
+  </g>
+
+  <!-- bold rounded "V" -->
+  <text x="512" y="430" text-anchor="middle"
+        font-family="-apple-system, Helvetica, Arial, sans-serif"
+        font-size="520" font-weight="800" fill="#ffffff">V</text>
+</svg>
