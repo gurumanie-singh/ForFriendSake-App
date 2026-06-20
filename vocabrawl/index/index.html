@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vocabrawl — Word Duels for iPhone</title>
+  <meta name="description" content="Vocabrawl is a multiplayer word game for iPhone. Race friends to crack the five-letter word in real time, or trade guesses turn by turn. Play solo or online via Game Center." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:              #f7f7f5;
+      --bg2:             #f0f0ec;
+      --surface:         rgba(255,255,255,0.72);
+      --surface-border:  rgba(0,0,0,0.07);
+      --text:            #111110;
+      --text2:           #5a5a56;
+      --text3:           #9a9a94;
+      --accent:          #4a7c3f;
+      --accent-rgb:      74,124,63;
+      --accent-soft:     rgba(74,124,63,0.10);
+      --accent-softer:   rgba(74,124,63,0.05);
+      --yellow:          #c9a227;
+      --yellow-soft:     rgba(201,162,39,0.12);
+      --radius:          20px;
+      --transition:      0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    [data-theme="dark"] {
+      --bg:             #0d0d0c;
+      --bg2:            #131312;
+      --surface:        rgba(255,255,255,0.04);
+      --surface-border: rgba(255,255,255,0.08);
+      --text:           #f0f0ec;
+      --text2:          #9a9a94;
+      --text3:          #5a5a56;
+      --accent:         #6aa84f;
+      --accent-rgb:     106,168,79;
+      --accent-soft:    rgba(106,168,79,0.12);
+      --accent-softer:  rgba(106,168,79,0.06);
+      --yellow:         #d4a82a;
+      --yellow-soft:    rgba(212,168,42,0.12);
+    }
+
+    html { scroll-behavior: smooth; }
+    html, body { scroll-snap-type: none; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background var(--transition), color var(--transition);
+      overflow-x: hidden;
+    }
+
+    #particle-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(24px, 5vw, 64px);
+      height: 64px;
+      background: rgba(247,247,245,0.82);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--surface-border);
+      transition: background var(--transition), border-color var(--transition);
+    }
+    [data-theme="dark"] nav { background: rgba(13,13,12,0.88); }
+
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+
+    .nav-link {
+      font-size: 0.8125rem; font-weight: 500;
+      color: var(--text3); text-decoration: none;
+      letter-spacing: 0.01em; transition: color 0.2s;
+    }
+    .nav-link:hover { color: var(--text); }
+
+    .theme-toggle {
+      width: 36px; height: 36px;
+      border-radius: 50%; border: none;
+      background: transparent; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text2); transition: all 0.25s ease;
+    }
+    .theme-toggle:hover { color: var(--accent); }
+    .theme-toggle svg { width: 15px; height: 15px; stroke-width: 2; }
+
+    @media (max-width: 640px) { .nav-links { display: none; } }
+
+    main { position: relative; z-index: 1; }
+    section { position: relative; }
+
+    /* ── HERO ── */
+    .hero {
+      height: 100dvh;
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: calc(64px + 48px) clamp(24px, 6vw, 80px) 60px;
+    }
+
+    /* Wordle tile strip in hero */
+    .hero-tiles {
+      display: flex; gap: 8px;
+      justify-content: center;
+      margin-bottom: 36px;
+      opacity: 0; transform: translateY(16px);
+      animation: fadeUp 0.8s 0.0s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+
+    .hero-tile {
+      width: 48px; height: 48px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem; font-weight: 700; color: #fff;
+      letter-spacing: 0;
+    }
+    .hero-tile.g { background: var(--accent); }
+    .hero-tile.y { background: var(--yellow); }
+    .hero-tile.x { background: var(--surface-border); color: var(--text2); border: 2px solid var(--surface-border); }
+
+    [data-theme="dark"] .hero-tile.x { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.10); color: var(--text2); }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid rgba(var(--accent-rgb),0.2);
+      padding: 6px 14px; border-radius: 100px;
+      margin-bottom: 36px;
+      opacity: 0; transform: translateY(16px);
+      animation: fadeUp 0.8s 0.1s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+
+    .hero-eyebrow-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%,100% { opacity:1; transform:scale(1); }
+      50%      { opacity:0.4; transform:scale(0.7); }
+    }
+
+    .hero-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.8rem, 8vw, 7rem);
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 24px;
+      opacity: 0; transform: translateY(20px);
+      animation: fadeUp 0.9s 0.18s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    .hero-title em { font-style: italic; color: var(--accent); }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2.2vw, 1.15rem); font-weight: 300;
+      color: var(--text2); max-width: 480px;
+      line-height: 1.65; margin-bottom: 44px;
+      opacity: 0; transform: translateY(20px);
+      animation: fadeUp 0.9s 0.3s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+
+    .hero-actions {
+      display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+      opacity: 0; transform: translateY(20px);
+      animation: fadeUp 0.9s 0.44s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent); color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9375rem; font-weight: 500;
+      padding: 14px 28px; border-radius: 100px;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 8px 32px rgba(var(--accent-rgb),0.28);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(var(--accent-rgb),0.38); }
+    .btn-primary svg { width: 16px; height: 16px; stroke-width: 2; }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--surface); color: var(--text2);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9375rem; font-weight: 400;
+      padding: 14px 28px; border-radius: 100px;
+      text-decoration: none;
+      border: 1px solid var(--surface-border);
+      backdrop-filter: blur(12px);
+      transition: all 0.25s ease;
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    /* ── SHARED SECTION LAYOUT ── */
+    .section-inner {
+      max-width: 1100px; margin: 0 auto;
+      padding: 100px clamp(24px, 6vw, 64px);
+    }
+
+    .section-label {
+      font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 4.5vw, 3.5rem);
+      line-height: 1.05; letter-spacing: -0.025em;
+      color: var(--text); margin-bottom: 20px;
+    }
+    .section-title em { font-style: italic; color: var(--accent); }
+
+    .section-desc {
+      font-size: 1.0625rem; font-weight: 300;
+      color: var(--text2); max-width: 540px; line-height: 1.65;
+    }
+
+    /* ── FEATURES ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px; margin-top: 60px;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius); padding: 32px;
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      transition: all 0.35s ease;
+      opacity: 0; transform: translateY(24px);
+    }
+    .feature-card.visible { opacity: 1; transform: translateY(0); }
+    .feature-card:hover {
+      border-color: rgba(var(--accent-rgb),0.3);
+      box-shadow: 0 0 0 1px rgba(var(--accent-rgb),0.08), 0 20px 60px rgba(0,0,0,0.05);
+      transform: translateY(-4px);
+    }
+    [data-theme="dark"] .feature-card:hover {
+      box-shadow: 0 0 0 1px rgba(var(--accent-rgb),0.15), 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .feature-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--accent-soft);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px; color: var(--accent);
+    }
+    .feature-icon svg { width: 20px; height: 20px; stroke-width: 1.75; }
+
+    .feature-name {
+      font-size: 1rem; font-weight: 500;
+      color: var(--text); margin-bottom: 8px; letter-spacing: -0.01em;
+    }
+
+    .feature-desc {
+      font-size: 0.9rem; font-weight: 300;
+      color: var(--text2); line-height: 1.6;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .hiw-bg { background: var(--bg2); transition: background var(--transition); }
+
+    .hiw-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2px; margin-top: 60px;
+      border-radius: var(--radius); overflow: hidden;
+      border: 1px solid var(--surface-border);
+    }
+
+    .hiw-step {
+      padding: 44px 36px;
+      background: var(--surface);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      transition: all 0.3s ease;
+      opacity: 0; transform: translateY(20px);
+    }
+    .hiw-step.visible { opacity: 1; transform: translateY(0); }
+    .hiw-step:hover { background: var(--accent-softer); }
+
+    .step-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 3rem; color: var(--accent);
+      opacity: 0.35; line-height: 1; margin-bottom: 20px;
+    }
+
+    .step-title {
+      font-size: 1.0625rem; font-weight: 500;
+      color: var(--text); margin-bottom: 10px; letter-spacing: -0.01em;
+    }
+
+    .step-desc {
+      font-size: 0.9rem; font-weight: 300;
+      color: var(--text2); line-height: 1.6;
+    }
+
+    /* ── TILE LEGEND ── */
+    .legend-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: center;
+    }
+    @media (max-width: 768px) { .legend-inner { grid-template-columns: 1fr; gap: 40px; } }
+
+    .legend-visual {
+      border-radius: var(--radius); overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      padding: 28px;
+      backdrop-filter: blur(16px);
+      position: relative;
+    }
+
+    .legend-visual-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 30% 30%, var(--accent-soft) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .legend-label {
+      font-size: 0.7rem; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text3);
+      font-weight: 500; margin-bottom: 20px;
+      position: relative; z-index: 1;
+    }
+
+    .legend-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--surface-border);
+      position: relative; z-index: 1;
+      opacity: 0; transform: translateX(-12px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .legend-row:last-child { border-bottom: none; }
+    .legend-row.visible { opacity: 1; transform: translateX(0); }
+
+    .legend-tile {
+      width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1rem; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+    }
+    .legend-tile.g { background: var(--accent); }
+    .legend-tile.y { background: var(--yellow); }
+    .legend-tile.x { background: rgba(var(--accent-rgb),0.15); color: var(--text2); }
+
+    .legend-row-text { flex: 1; }
+    .legend-row-name {
+      font-size: 0.9rem; font-weight: 500; color: var(--text);
+    }
+    .legend-row-name small {
+      display: block; font-size: 0.75rem;
+      font-weight: 300; color: var(--text3);
+    }
+
+    .legend-pts {
+      font-size: 0.875rem; font-weight: 500; color: var(--accent);
+    }
+
+    /* ── MODES ── */
+    .modes-bg { background: var(--bg2); transition: background var(--transition); }
+
+    .modes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px; margin-top: 60px;
+    }
+
+    .mode-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius); padding: 36px;
+      backdrop-filter: blur(16px);
+      opacity: 0; transform: translateY(20px); transition: all 0.4s ease;
+    }
+    .mode-card.visible { opacity: 1; transform: translateY(0); }
+    .mode-card:hover { border-color: rgba(var(--accent-rgb),0.3); transform: translateY(-3px); }
+
+    .mode-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent); background: var(--accent-soft);
+      border: 1px solid rgba(var(--accent-rgb),0.2);
+      padding: 4px 12px; border-radius: 100px;
+      margin-bottom: 20px;
+    }
+
+    .mode-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.6rem; color: var(--text);
+      letter-spacing: -0.02em; margin-bottom: 12px;
+    }
+
+    .mode-desc {
+      font-size: 0.9375rem; font-weight: 300;
+      color: var(--text2); line-height: 1.65;
+    }
+
+    .mode-rules {
+      margin-top: 20px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+
+    .mode-rule {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.875rem; font-weight: 300; color: var(--text2);
+    }
+    .mode-rule svg { width: 15px; height: 15px; stroke-width: 2; color: var(--accent); flex-shrink: 0; }
+
+    /* ── DESIGN PILLS ── */
+    .design-pills { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 36px; }
+
+    .design-pill {
+      font-size: 0.875rem; font-weight: 400;
+      padding: 8px 18px; border-radius: 100px;
+      border: 1px solid var(--surface-border);
+      background: var(--surface); color: var(--text2);
+      backdrop-filter: blur(10px); transition: all 0.25s ease;
+    }
+    .design-pill:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── PRIVACY ── */
+    .privacy-bg { background: var(--bg2); transition: background var(--transition); }
+
+    .privacy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px; margin-top: 60px;
+    }
+
+    .privacy-card {
+      background: var(--surface); border: 1px solid var(--surface-border);
+      border-radius: var(--radius); padding: 28px;
+      backdrop-filter: blur(16px);
+      opacity: 0; transform: translateY(20px); transition: all 0.4s ease;
+    }
+    .privacy-card.visible { opacity: 1; transform: translateY(0); }
+
+    .privacy-card-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--accent-soft);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent); margin-bottom: 14px;
+    }
+    .privacy-card-icon svg { width: 18px; height: 18px; stroke-width: 1.75; }
+
+    .privacy-card-title {
+      font-size: 0.9375rem; font-weight: 500;
+      color: var(--text); margin-bottom: 8px;
+    }
+
+    .privacy-card-desc {
+      font-size: 0.875rem; font-weight: 300;
+      color: var(--text2); line-height: 1.6;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      padding: 120px clamp(24px, 6vw, 64px);
+      text-align: center;
+    }
+
+    .cta-card {
+      max-width: 700px; margin: 0 auto;
+      background: var(--surface); border: 1px solid var(--surface-border);
+      border-radius: 32px;
+      padding: clamp(52px,8vw,80px) clamp(32px,6vw,72px);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      position: relative; overflow: hidden;
+      opacity: 0; transform: translateY(24px); transition: all 0.5s ease;
+    }
+    .cta-card.visible { opacity: 1; transform: translateY(0); }
+
+    .cta-card-glow {
+      position: absolute; top: -60px; left: 50%;
+      transform: translateX(-50%);
+      width: 400px; height: 200px;
+      background: radial-gradient(ellipse, var(--accent-soft) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      line-height: 1.1; letter-spacing: -0.025em;
+      color: var(--text); margin-bottom: 16px;
+      position: relative; z-index: 1;
+    }
+    .cta-title em { font-style: italic; color: var(--accent); }
+
+    .cta-sub {
+      font-size: 1rem; font-weight: 300;
+      color: var(--text2); margin-bottom: 40px; line-height: 1.6;
+      position: relative; z-index: 1;
+    }
+
+    .cta-actions {
+      display: flex; gap: 12px; justify-content: center;
+      flex-wrap: wrap; position: relative; z-index: 1;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 32px clamp(24px, 6vw, 64px);
+      border-top: 1px solid var(--surface-border);
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    }
+
+    .footer-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1rem; color: var(--text);
+      letter-spacing: -0.02em; text-decoration: none;
+    }
+
+    .footer-links { display: flex; gap: 24px; align-items: center; }
+
+    .footer-links a {
+      font-size: 0.8125rem; color: var(--text3);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--accent); }
+
+    .footer-text { font-size: 0.8125rem; color: var(--text3); }
+
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 640px) {
+      .hero-title { letter-spacing: -0.02em; }
+      .features-grid { grid-template-columns: 1fr; }
+      .hiw-steps { grid-template-columns: 1fr; }
+      .modes-grid { grid-template-columns: 1fr; }
+      footer { justify-content: center; text-align: center; }
+      .footer-links { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="particle-canvas"></canvas>
+
+  <nav>
+    <a href="#" class="nav-logo">Vocabrawl</a>
+    <div class="nav-right">
+      <div class="nav-links" style="display:flex;gap:24px;">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#how-to-play" class="nav-link">How to Play</a>
+        <a href="#modes" class="nav-link">Game Modes</a>
+        <a href="#privacy" class="nav-link">Privacy</a>
+      </div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"></button>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-tiles">
+        <div class="hero-tile g">V</div>
+        <div class="hero-tile y">O</div>
+        <div class="hero-tile x">C</div>
+        <div class="hero-tile g">A</div>
+        <div class="hero-tile y">B</div>
+      </div>
+      <div class="hero-eyebrow">
+        <span class="hero-eyebrow-dot"></span>
+        available on the App Store
+      </div>
+      <h1 class="hero-title">
+        word duels for<br />
+        your <em>group chat.</em>
+      </h1>
+      <p class="hero-sub">
+        Race friends to crack the five-letter word in real time, or trade guesses turn by turn. Solo mode available any time — no sign-in required.
+      </p>
+      <div class="hero-actions">
+        <!-- TODO: [Pre-publish] — update href with real App Store ID once listing is live -->
+        <a href="https://apps.apple.com/app/vocabrawl/idXXXXXXXXX" class="btn-primary">
+          <i data-lucide="download"></i>
+          Download on iOS
+        </a>
+        <a href="#features" class="btn-ghost">
+          Explore features
+        </a>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features">
+      <div class="section-inner">
+        <p class="section-label">what it does</p>
+        <h2 class="section-title">five letters.<br /><em>infinite rivalry.</em></h2>
+        <p class="section-desc">Vocabrawl takes the five-letter guessing game you already love and makes it social. Every match is a quick brain workout — compete in real time or take your turn whenever.</p>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon"><i data-lucide="zap"></i></div>
+            <div class="feature-name">Real-Time Competitive</div>
+            <div class="feature-desc">All players race to solve the same hidden word simultaneously. See your rivals' colored tile progress without seeing their guesses.</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><i data-lucide="rotate-cw"></i></div>
+            <div class="feature-name">Turn-Based Duels</div>
+            <div class="feature-desc">Take turns, one guess at a time. Score points for every correct tile and earn a bonus if you crack the word. Highest score wins.</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><i data-lucide="user"></i></div>
+            <div class="feature-name">Solo Mode</div>
+            <div class="feature-desc">Jump straight in with no sign-in required. Sharpen your word skills against simulated opponents any time, anywhere.</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><i data-lucide="gamepad-2"></i></div>
+            <div class="feature-name">Game Center Integration</div>
+            <div class="feature-desc">Invite friends, get matched with opponents, and manage turn-based matches — all through Apple's native Game Center.</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><i data-lucide="shield"></i></div>
+            <div class="feature-name">No Account Required</div>
+            <div class="feature-desc">Play solo without any sign-in. Go online any time by connecting your existing Apple ID — no separate account to create.</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><i data-lucide="sun-moon"></i></div>
+            <div class="feature-name">Light &amp; Dark Mode</div>
+            <div class="feature-desc">Plays beautifully in both light and dark mode, adapting to your system preference or your choice in Settings.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="hiw-bg" id="how-to-play">
+      <div class="section-inner">
+        <p class="section-label">how to play</p>
+        <h2 class="section-title">three rules.<br /><em>endless strategy.</em></h2>
+        <div class="hiw-steps">
+          <div class="hiw-step">
+            <div class="step-num">01</div>
+            <div class="step-title">Guess a five-letter word</div>
+            <div class="step-desc">Type any valid five-letter English word and submit your guess. You have up to six attempts to find the answer.</div>
+          </div>
+          <div class="hiw-step">
+            <div class="step-num">02</div>
+            <div class="step-title">Read the color clues</div>
+            <div class="step-desc">Green means right letter, right place. Yellow means right letter, wrong place. Gray means the letter isn't in the word.</div>
+          </div>
+          <div class="hiw-step">
+            <div class="step-num">03</div>
+            <div class="step-title">Outsmart your opponents</div>
+            <div class="step-desc">Use the clues strategically. In Competitive mode, finish in fewer guesses. In Turn-Based, maximize your tile score each round.</div>
+          </div>
+          <div class="hiw-step">
+            <div class="step-num">04</div>
+            <div class="step-title">Climb the leaderboard</div>
+            <div class="step-desc">Ranked by fewest guesses, then fastest time. Win enough and you'll be the undisputed word champion of your friend group.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TILE LEGEND -->
+    <section id="scoring">
+      <div class="section-inner">
+        <div class="legend-inner">
+          <div>
+            <p class="section-label">scoring</p>
+            <h2 class="section-title">every tile<br /><em>counts.</em></h2>
+            <p class="section-desc">In Turn-Based mode, every tile you reveal earns points. A correct word bonus rewards decisive play. The player with the highest total wins.</p>
+            <div class="design-pills" style="margin-top:36px;">
+              <div class="design-pill">Green = +2 pts</div>
+              <div class="design-pill">Yellow = +1 pt</div>
+              <div class="design-pill">Gray = 0 pts</div>
+              <div class="design-pill">Correct word = +10 bonus</div>
+            </div>
+          </div>
+          <div class="legend-visual">
+            <div class="legend-visual-bg"></div>
+            <div class="legend-label">Turn-Based Scoring</div>
+            <div class="legend-row" id="lr1">
+              <div class="legend-tile g">A</div>
+              <div class="legend-row-text">
+                <div class="legend-row-name">Correct position<small>Right letter, right place</small></div>
+              </div>
+              <div class="legend-pts">+2 pts</div>
+            </div>
+            <div class="legend-row" id="lr2">
+              <div class="legend-tile y">E</div>
+              <div class="legend-row-text">
+                <div class="legend-row-name">Wrong position<small>Right letter, wrong place</small></div>
+              </div>
+              <div class="legend-pts">+1 pt</div>
+            </div>
+            <div class="legend-row" id="lr3">
+              <div class="legend-tile x">Z</div>
+              <div class="legend-row-text">
+                <div class="legend-row-name">Absent<small>Letter not in the word</small></div>
+              </div>
+              <div class="legend-pts">+0 pts</div>
+            </div>
+            <div class="legend-row" id="lr4">
+              <div class="legend-tile g">✓</div>
+              <div class="legend-row-text">
+                <div class="legend-row-name">Word solved<small>Crack the word on your turn</small></div>
+              </div>
+              <div class="legend-pts">+10 bonus</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GAME MODES -->
+    <section class="modes-bg" id="modes">
+      <div class="section-inner">
+        <p class="section-label">game modes</p>
+        <h2 class="section-title">play your<br /><em>way.</em></h2>
+        <p class="section-desc">Three ways to play, one word game. Pick the mode that fits your mood and your schedule.</p>
+        <div class="modes-grid">
+          <div class="mode-card">
+            <div class="mode-badge"><i data-lucide="zap" style="width:12px;height:12px;stroke-width:2;"></i> Online</div>
+            <div class="mode-title">Competitive</div>
+            <div class="mode-desc">Everyone solves the same hidden word independently and simultaneously. No time limit — just pure guessing skill.</div>
+            <div class="mode-rules">
+              <div class="mode-rule"><i data-lucide="eye-off"></i> See rivals' tile patterns — never their letters</div>
+              <div class="mode-rule"><i data-lucide="trophy"></i> Ranked by fewest guesses, then speed</div>
+              <div class="mode-rule"><i data-lucide="users"></i> 2–5 players via Game Center</div>
+            </div>
+          </div>
+          <div class="mode-card">
+            <div class="mode-badge"><i data-lucide="rotate-cw" style="width:12px;height:12px;stroke-width:2;"></i> Online</div>
+            <div class="mode-title">Turn-Based</div>
+            <div class="mode-desc">One guess per turn. Rounds rotate so every player gets to go first. Score points for every correct tile you reveal.</div>
+            <div class="mode-rules">
+              <div class="mode-rule"><i data-lucide="clock"></i> Play at your own pace via Game Center</div>
+              <div class="mode-rule"><i data-lucide="star"></i> Highest total score wins</div>
+              <div class="mode-rule"><i data-lucide="users"></i> 2–5 players, rounds = player count</div>
+            </div>
+          </div>
+          <div class="mode-card">
+            <div class="mode-badge"><i data-lucide="user" style="width:12px;height:12px;stroke-width:2;"></i> Solo</div>
+            <div class="mode-title">Solo Play</div>
+            <div class="mode-desc">No sign-in, no waiting. Play against simulated opponents any time. Perfect for warm-ups or just scratching that word-game itch.</div>
+            <div class="mode-rules">
+              <div class="mode-rule"><i data-lucide="wifi-off"></i> Fully offline — no connection needed</div>
+              <div class="mode-rule"><i data-lucide="play"></i> Available immediately on first launch</div>
+              <div class="mode-rule"><i data-lucide="cpu"></i> Simulated opponents with realistic play</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESIGN -->
+    <section id="design">
+      <div class="section-inner">
+        <p class="section-label">design</p>
+        <h2 class="section-title">minimal. native.<br /><em>intentional.</em></h2>
+        <p class="section-desc">Built entirely in SwiftUI for iOS. Clean typography, smooth animations, and a focused interface that gets out of the way and lets you play.</p>
+        <div class="design-pills">
+          <div class="design-pill">SwiftUI native</div>
+          <div class="design-pill">Game Center</div>
+          <div class="design-pill">Light + dark mode</div>
+          <div class="design-pill">Haptic feedback</div>
+          <div class="design-pill">Accessible controls</div>
+          <div class="design-pill">No ads</div>
+          <div class="design-pill">No account needed for solo</div>
+          <div class="design-pill">Free to play</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRIVACY -->
+    <section class="privacy-bg" id="privacy">
+      <div class="section-inner">
+        <p class="section-label">privacy</p>
+        <h2 class="section-title">your data stays<br /><em>yours.</em></h2>
+        <p class="section-desc">Vocabrawl is private by design. No accounts, no email addresses, no tracking. Online play is handled entirely by Apple's Game Center.</p>
+        <div class="privacy-grid">
+          <div class="privacy-card">
+            <div class="privacy-card-icon"><i data-lucide="ban"></i></div>
+            <div class="privacy-card-title">No data collected</div>
+            <div class="privacy-card-desc">Vocabrawl does not collect, store, or transmit any personal data. No name, no email, no analytics.</div>
+          </div>
+          <div class="privacy-card">
+            <div class="privacy-card-icon"><i data-lucide="apple"></i></div>
+            <div class="privacy-card-title">Apple handles identity</div>
+            <div class="privacy-card-desc">Online play uses Apple Game Center. Your identity is managed by Apple under their privacy policy — not ours.</div>
+          </div>
+          <div class="privacy-card">
+            <div class="privacy-card-icon"><i data-lucide="smartphone"></i></div>
+            <div class="privacy-card-title">On-device only</div>
+            <div class="privacy-card-desc">Solo games run entirely on your device. No custom servers. No backend. No cloud storage of any kind.</div>
+          </div>
+          <div class="privacy-card">
+            <div class="privacy-card-icon"><i data-lucide="shield-check"></i></div>
+            <div class="privacy-card-title">GDPR &amp; COPPA compliant</div>
+            <div class="privacy-card-desc">Because we collect no personal data, compliance is straightforward. We do not track. We do not sell. Ever.</div>
+          </div>
+        </div>
+        <a href="/vocabrawl/privacy-policy"
+           style="display:inline-flex;align-items:center;gap:6px;margin-top:32px;font-size:0.8125rem;font-weight:500;color:var(--accent);background:var(--accent-soft);border:1px solid rgba(var(--accent-rgb),0.2);padding:8px 16px;border-radius:100px;text-decoration:none;transition:background 0.2s,border-color 0.2s;"
+           onmouseover="this.style.background='rgba(var(--accent-rgb),0.18)'"
+           onmouseout="this.style.background='var(--accent-soft)'">
+          View full privacy policy →
+        </a>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <div class="cta-card" id="ctaCard">
+        <div class="cta-card-glow"></div>
+        <h2 class="cta-title">ready to<br /><em>brawl?</em></h2>
+        <p class="cta-sub">Vocabrawl is free on the App Store. Your word rivals are waiting.</p>
+        <div class="cta-actions">
+          <!-- TODO: [Pre-publish] — update href with real App Store ID once listing is live -->
+          <a href="https://apps.apple.com/app/vocabrawl/idXXXXXXXXX" class="btn-primary">
+            <i data-lucide="download"></i>
+            Download on the App Store
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <a href="#" class="footer-logo">Vocabrawl</a>
+    <div class="footer-links">
+      <a href="mailto:privacy@forfriendsake.com">Support</a>
+      <a href="/vocabrawl/privacy-policy">Privacy</a>
+    </div>
+    <p class="footer-text">© 2026 Vocabrawl. All rights reserved.</p>
+  </footer>
+
+  <script>
+    if (history.scrollRestoration) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+  </script>
+
+  <script>
+    // LUCIDE
+    function initLucide() {
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+    initLucide();
+    window.addEventListener('load', initLucide);
+
+    // THEME
+    const toggle  = document.getElementById('themeToggle');
+    const root    = document.documentElement;
+    const sunSVG  = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>`;
+    const moonSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+
+    function applyTheme(theme) {
+      root.setAttribute('data-theme', theme);
+      toggle.innerHTML = theme === 'dark' ? moonSVG : sunSVG;
+    }
+    applyTheme(localStorage.getItem('theme') || 'dark');
+    toggle.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      localStorage.setItem('theme', next);
+    });
+
+    // PARTICLES
+    const canvas = document.getElementById('particle-canvas');
+    const ctx    = canvas.getContext('2d');
+    let W, H;
+    function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function getAccentRgb() {
+      return root.getAttribute('data-theme') === 'dark' ? '106,168,79' : '74,124,63';
+    }
+
+    class Particle {
+      constructor(spread) { this.init(spread); }
+      init(spread) {
+        this.x     = Math.random() * W;
+        this.y     = spread ? Math.random() * H : -8;
+        this.r     = Math.random() * 1.8 + 0.4;
+        this.vy    = Math.random() * 0.5 + 0.18;
+        this.vx    = (Math.random() - 0.5) * 0.1;
+        this.alpha = Math.random() * 0.22 + 0.04;
+      }
+      update() {
+        this.y += this.vy; this.x += this.vx;
+        if (this.y > H + 10) this.init(false);
+        if (this.x < -5) this.x = W + 5;
+        if (this.x > W + 5) this.x = -5;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${getAccentRgb()},${this.alpha})`;
+        ctx.fill();
+      }
+    }
+
+    const particles = [];
+    for (let i = 0; i < 80; i++) particles.push(new Particle(true));
+    (function loop() {
+      ctx.clearRect(0, 0, W, H);
+      particles.forEach(p => { p.update(); p.draw(); });
+      requestAnimationFrame(loop);
+    })();
+
+    // SCROLL REVEAL
+    const revealEls = document.querySelectorAll(
+      '.feature-card, .hiw-step, .mode-card, .privacy-card, .cta-card'
+    );
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const idx = Array.from(e.target.parentElement?.children || []).indexOf(e.target);
+          setTimeout(() => e.target.classList.add('visible'), idx * 80);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => io.observe(el));
+
+    // LEGEND ROWS REVEAL
+    ['lr1','lr2','lr3','lr4'].forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const lbIo = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            setTimeout(() => e.target.classList.add('visible'), i * 100);
+            lbIo.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      lbIo.observe(el);
+    });
+  </script>
+
+</body>
+</html>
