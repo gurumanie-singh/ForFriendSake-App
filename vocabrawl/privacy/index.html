@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vocabrawl — Privacy Policy</title>
+  <meta name="description" content="Privacy policy for Vocabrawl, a multiplayer word game for iPhone. We collect no personal data — read how it works." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:             #f7f7f5;
+      --bg2:            #f0f0ec;
+      --surface:        rgba(255,255,255,0.72);
+      --surface-border: rgba(0,0,0,0.07);
+      --text:           #111110;
+      --text2:          #5a5a56;
+      --text3:          #9a9a94;
+      --accent:         #4a7c3f;
+      --accent-rgb:     74,124,63;
+      --accent-soft:    rgba(74,124,63,0.10);
+      --accent-softer:  rgba(74,124,63,0.05);
+      --radius:         20px;
+      --transition:     0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    [data-theme="dark"] {
+      --bg:             #0d0d0c;
+      --bg2:            #131312;
+      --surface:        rgba(255,255,255,0.04);
+      --surface-border: rgba(255,255,255,0.08);
+      --text:           #f0f0ec;
+      --text2:          #9a9a94;
+      --text3:          #5a5a56;
+      --accent:         #6aa84f;
+      --accent-rgb:     106,168,79;
+      --accent-soft:    rgba(106,168,79,0.12);
+      --accent-softer:  rgba(106,168,79,0.06);
+    }
+
+    html { scroll-behavior: smooth; }
+    html, body { scroll-snap-type: none; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background var(--transition), color var(--transition);
+      overflow-x: hidden;
+    }
+
+    #particle-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(24px, 5vw, 64px);
+      height: 64px;
+      background: rgba(247,247,245,0.82);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--surface-border);
+      transition: background var(--transition), border-color var(--transition);
+    }
+    [data-theme="dark"] nav { background: rgba(13,13,12,0.88); }
+
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-right { display: flex; align-items: center; gap: 14px; }
+
+    .nav-back {
+      font-size: 0.8125rem; font-weight: 500;
+      color: var(--text3); text-decoration: none;
+      letter-spacing: 0.01em; transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--text); }
+
+    .theme-toggle {
+      width: 36px; height: 36px;
+      border-radius: 50%; border: none;
+      background: transparent; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text2); transition: all 0.25s ease;
+    }
+    .theme-toggle:hover { color: var(--accent); }
+    .theme-toggle svg { width: 15px; height: 15px; stroke-width: 2; }
+
+    /* ── MAIN ── */
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 120px clamp(24px, 6vw, 48px) 100px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid rgba(var(--accent-rgb),0.2);
+      padding: 6px 14px; border-radius: 100px;
+      margin-bottom: 32px;
+      opacity: 0; transform: translateY(12px);
+      animation: fadeUp 0.7s 0.05s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+
+    .page-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      line-height: 0.95; letter-spacing: -0.03em;
+      color: var(--text); margin-bottom: 20px;
+      opacity: 0; transform: translateY(16px);
+      animation: fadeUp 0.8s 0.15s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+
+    .page-meta {
+      font-size: 0.875rem; font-weight: 300;
+      color: var(--text3); margin-bottom: 64px;
+      opacity: 0; transform: translateY(12px);
+      animation: fadeUp 0.8s 0.25s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+
+    /* ── NOTICE CARD ── */
+    .notice-card {
+      background: var(--accent-soft);
+      border: 1px solid rgba(var(--accent-rgb),0.18);
+      border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 56px;
+      font-size: 0.9rem; font-weight: 300;
+      color: var(--text2); line-height: 1.65;
+      opacity: 0; transform: translateY(12px);
+      animation: fadeUp 0.8s 0.35s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    .notice-card strong { font-weight: 500; color: var(--accent); }
+
+    /* ── POLICY SECTIONS ── */
+    .policy-section {
+      margin-bottom: 56px;
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .policy-section.visible { opacity: 1; transform: translateY(0); }
+
+    .section-number {
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 10px;
+    }
+
+    .section-heading {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.4rem, 3vw, 1.9rem);
+      line-height: 1.1; letter-spacing: -0.02em;
+      color: var(--text); margin-bottom: 20px;
+    }
+
+    .section-body {
+      font-size: 0.9375rem; font-weight: 300;
+      color: var(--text2); line-height: 1.75;
+    }
+    .section-body p { margin-bottom: 16px; }
+    .section-body p:last-child { margin-bottom: 0; }
+    .section-body strong { font-weight: 500; color: var(--text); }
+    .section-body a {
+      color: var(--accent); text-decoration: none;
+      border-bottom: 1px solid rgba(var(--accent-rgb),0.3);
+      transition: border-color 0.2s;
+    }
+    .section-body a:hover { border-color: var(--accent); }
+
+    /* ── TABLE ── */
+    .table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+      margin: 24px 0;
+    }
+
+    .data-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    .data-table th {
+      text-align: left; font-weight: 500;
+      font-size: 0.75rem; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text3);
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--surface-border);
+    }
+    .data-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--surface-border);
+      color: var(--text2); font-weight: 300;
+      line-height: 1.55; vertical-align: top;
+    }
+    .data-table td:first-child { font-weight: 500; color: var(--text); white-space: nowrap; }
+    .data-table tr:last-child td { border-bottom: none; }
+
+    /* ── DIVIDER ── */
+    .section-divider {
+      height: 1px;
+      background: var(--surface-border);
+      margin: 56px 0;
+    }
+
+    /* ── PILL TAG ── */
+    .pill-tag {
+      display: inline-flex; align-items: center;
+      font-size: 0.75rem; font-weight: 500;
+      padding: 3px 10px; border-radius: 100px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      margin: 2px 4px 2px 0; white-space: nowrap;
+    }
+
+    /* ── HIGHLIGHT BLOCK ── */
+    .highlight-block {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 12px 12px 0;
+      padding: 16px 20px; margin: 20px 0;
+      font-size: 0.9rem; font-weight: 300;
+      color: var(--text2); line-height: 1.65;
+      backdrop-filter: blur(12px);
+    }
+
+    /* ── CONTACT CARD ── */
+    .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius);
+      padding: 28px 32px; margin-top: 12px;
+      backdrop-filter: blur(16px);
+      display: flex; align-items: center; gap: 16px;
+    }
+    .contact-card-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--accent-soft);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; color: var(--accent);
+    }
+    .contact-card-icon svg { width: 20px; height: 20px; stroke-width: 1.75; }
+    .contact-card-text { flex: 1; }
+    .contact-card-label {
+      font-size: 0.8rem; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text3); margin-bottom: 4px;
+    }
+    .contact-card-value { font-size: 1rem; font-weight: 400; color: var(--text); }
+    .contact-card-value a { color: var(--accent); text-decoration: none; }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1;
+      padding: 32px clamp(24px, 6vw, 64px);
+      border-top: 1px solid var(--surface-border);
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    }
+    .footer-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1rem; color: var(--text);
+      letter-spacing: -0.02em; text-decoration: none;
+    }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a {
+      font-size: 0.8125rem; color: var(--text3);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-text { font-size: 0.8125rem; color: var(--text3); }
+
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 640px) {
+      footer { justify-content: center; text-align: center; }
+      .footer-links { justify-content: center; }
+      .contact-card { flex-direction: column; align-items: flex-start; }
+      .data-table td:first-child { white-space: normal; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="particle-canvas"></canvas>
+
+  <nav>
+    <a href="/vocabrawl/" class="nav-logo">Vocabrawl</a>
+    <div class="nav-right">
+      <a href="/vocabrawl/" class="nav-back">← back</a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"></button>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-eyebrow">legal</div>
+    <h1 class="page-title">privacy<br />policy.</h1>
+    <!-- TODO: [Pre-publish] — update the effective date below before publishing -->
+    <p class="page-meta">Effective date: [EFFECTIVE DATE] &nbsp;·&nbsp; Last updated: [EFFECTIVE DATE]</p>
+
+    <div class="notice-card">
+      <strong>Plain language first.</strong> Vocabrawl is a word game. This policy explains exactly what data the app does and does not collect — which is very little, by design. We do not sell your data. We never will.
+    </div>
+
+    <!-- 01 -->
+    <div class="policy-section">
+      <div class="section-number">01</div>
+      <h2 class="section-heading">The Short Version</h2>
+      <div class="section-body">
+        <p>Vocabrawl does not collect, store, sell, or transmit your personal data. There are no accounts to create, no email addresses to enter, no analytics SDKs, and no advertising. Online multiplayer is handled entirely by Apple's Game Center — your identity stays with Apple, not with us.</p>
+        <p>Solo games run entirely on your device. Turn-based and competitive online matches use Apple's Game Center servers. We have no backend of our own.</p>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 02 -->
+    <div class="policy-section">
+      <div class="section-number">02</div>
+      <h2 class="section-heading">Information We Collect</h2>
+      <div class="section-body">
+        <p>Vocabrawl collects the following information to provide its functionality.</p>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>data</th>
+              <th>why we use it</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Appearance preference</td>
+              <td>Saved locally on your device so the app remembers your chosen light or dark mode setting</td>
+            </tr>
+            <tr>
+              <td>Onboarding state</td>
+              <td>A simple flag saved locally to track whether you have completed the intro — never leaves your device</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section-body">
+        <p>That is the complete list. No names, no email addresses, no device identifiers, no analytics events, no crash reports sent to our servers. Everything above is stored using your device's standard local preferences (UserDefaults) and is removed when you delete the app.</p>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 03 -->
+    <div class="policy-section">
+      <div class="section-number">03</div>
+      <h2 class="section-heading">What We Don't Collect</h2>
+      <div class="section-body">
+        <p>For absolute clarity:</p>
+        <p>
+          <span class="pill-tag">No name or username</span>
+          <span class="pill-tag">No email address</span>
+          <span class="pill-tag">No phone number</span>
+          <span class="pill-tag">No location data</span>
+          <span class="pill-tag">No analytics or tracking</span>
+          <span class="pill-tag">No advertising identifiers</span>
+          <span class="pill-tag">No payment information</span>
+          <span class="pill-tag">No crash reports to our servers</span>
+        </p>
+      </div>
+      <div class="highlight-block">
+        Vocabrawl is free and contains no advertising. It has no custom backend server. We have no database of users and never will.
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 04 -->
+    <div class="policy-section">
+      <div class="section-number">04</div>
+      <h2 class="section-heading">Game Center</h2>
+      <div class="section-body">
+        <p>Online competitive and turn-based matches use <strong>Apple Game Center</strong>. When you play online, Apple manages your player identity, matchmaking, and match state on its own servers under <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Apple's Privacy Policy</a>.</p>
+        <p>Vocabrawl never receives your Apple ID, your real name, or your email address. We receive only the anonymized player information Game Center provides so a match can take place — specifically, an anonymized Game Center player identifier and your Game Center display name. We do not log, store, or retain this information after the match session ends.</p>
+        <p>Game Center accounts for minors are governed by Apple's Family Sharing and parental controls. Apple handles all age restrictions and parental consent requirements for Game Center use.</p>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 05 -->
+    <div class="policy-section">
+      <div class="section-number">05</div>
+      <h2 class="section-heading">Data Stored on Your Device</h2>
+      <div class="section-body">
+        <p>Vocabrawl saves a small amount of non-sensitive information locally on your device using the system's standard preferences storage (UserDefaults):</p>
+        <p>
+          <span class="pill-tag">Appearance mode preference</span>
+          <span class="pill-tag">Intro completion flag</span>
+        </p>
+        <p>This data never leaves your device, is not backed up to any server, and is permanently removed when you delete the app from your device.</p>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 06 -->
+    <div class="policy-section">
+      <div class="section-number">06</div>
+      <h2 class="section-heading">Third-Party Services</h2>
+      <div class="section-body">
+        <p>Vocabrawl uses only one third-party service:</p>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>service</th>
+              <th>purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Apple Game Center</td>
+              <td>Player identity, matchmaking, and turn-based match state for online play. Governed by Apple's Privacy Policy.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section-body">
+        <p>No analytics SDKs, no advertising networks, no crash reporting services, no social media pixels. The app uses Apple's system frameworks only.</p>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 07 -->
+    <div class="policy-section">
+      <div class="section-number">07</div>
+      <h2 class="section-heading">Children's Privacy</h2>
+      <div class="section-body">
+        <p>Because Vocabrawl collects no personal data from any user, it meets the baseline requirements of children's privacy regulations including COPPA (Children's Online Privacy Protection Act) by virtue of not processing personal information.</p>
+        <p>Game Center accounts for users under 13 are governed by Apple's own parental consent and Family Sharing controls. We have no ability to verify or influence user age — Apple manages this entirely.</p>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 08 -->
+    <div class="policy-section">
+      <div class="section-number">08</div>
+      <h2 class="section-heading">GDPR &amp; CCPA</h2>
+      <div class="section-body">
+        <p>Vocabrawl does not process personal data as defined under the General Data Protection Regulation (GDPR) or the California Consumer Privacy Act (CCPA). Because no personal data is collected, stored, or processed by us:</p>
+        <p>
+          <span class="pill-tag">No consent required for data processing</span>
+          <span class="pill-tag">No data to access, correct, or delete</span>
+          <span class="pill-tag">No data sold — ever</span>
+          <span class="pill-tag">No data transferred internationally by us</span>
+        </p>
+      </div>
+      <div class="highlight-block">
+        If you have privacy concerns related to your Apple ID or Game Center data, those are governed by Apple's Privacy Policy and must be directed to Apple.
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 09 -->
+    <div class="policy-section">
+      <div class="section-number">09</div>
+      <h2 class="section-heading">Data Security</h2>
+      <div class="section-body">
+        <p>Because Vocabrawl stores no personal data on any server we control, there is no database to breach. Local preferences stored on your device are protected by iOS's built-in security model, including device encryption.</p>
+        <p>Online match data transmitted through Game Center is secured by Apple's infrastructure under their security standards.</p>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 10 -->
+    <div class="policy-section">
+      <div class="section-number">10</div>
+      <h2 class="section-heading">Changes to This Policy</h2>
+      <div class="section-body">
+        <p>If this Privacy Policy changes, we will update this page and revise the effective date at the top. For significant changes, we will make reasonable efforts to notify you via an in-app notice on next launch after the update.</p>
+        <p>Continued use of Vocabrawl after a policy update constitutes acceptance of the revised terms. If you do not agree with any changes, you should stop using the app and contact us using the details below.</p>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 11 -->
+    <div class="policy-section" id="contact">
+      <div class="section-number">11</div>
+      <h2 class="section-heading">Contact Us</h2>
+      <div class="section-body">
+        <p>If you have any questions or concerns about this Privacy Policy or how Vocabrawl handles data, please reach out:</p>
+      </div>
+
+      <div class="contact-card">
+        <div class="contact-card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        </div>
+        <div class="contact-card-text">
+          <div class="contact-card-label">privacy contact</div>
+          <div class="contact-card-value">
+            <a href="mailto:privacy@forfriendsake.com">privacy@forfriendsake.com</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-card">
+        <div class="contact-card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="contact-card-text">
+          <div class="contact-card-label">developer</div>
+          <div class="contact-card-value">Gurumanie Singh Dhiman — Ames, Iowa, United States</div>
+        </div>
+      </div>
+
+      <div class="contact-card">
+        <div class="contact-card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        </div>
+        <div class="contact-card-text">
+          <div class="contact-card-label">app website</div>
+          <div class="contact-card-value">
+            <a href="/vocabrawl/" target="_blank" rel="noopener">forfriendsake.com/vocabrawl</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <a href="/vocabrawl/" class="footer-logo">Vocabrawl</a>
+    <div class="footer-links">
+      <a href="/vocabrawl/">Home</a>
+      <a href="mailto:privacy@forfriendsake.com">Support</a>
+    </div>
+    <p class="footer-text">© 2026 Vocabrawl. All rights reserved.</p>
+  </footer>
+
+  <script>
+    if (history.scrollRestoration) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+  </script>
+
+  <script>
+    // THEME
+    const toggle  = document.getElementById('themeToggle');
+    const root    = document.documentElement;
+    const sunSVG  = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>`;
+    const moonSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+
+    function applyTheme(theme) {
+      root.setAttribute('data-theme', theme);
+      toggle.innerHTML = theme === 'dark' ? moonSVG : sunSVG;
+    }
+    applyTheme(localStorage.getItem('theme') || 'dark');
+    toggle.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      localStorage.setItem('theme', next);
+    });
+
+    // PARTICLES
+    const canvas = document.getElementById('particle-canvas');
+    const ctx    = canvas.getContext('2d');
+    let W, H;
+    function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function getAccentRgb() {
+      return root.getAttribute('data-theme') === 'dark' ? '106,168,79' : '74,124,63';
+    }
+
+    class Particle {
+      constructor(spread) { this.init(spread); }
+      init(spread) {
+        this.x     = Math.random() * W;
+        this.y     = spread ? Math.random() * H : -8;
+        this.r     = Math.random() * 1.8 + 0.4;
+        this.vy    = Math.random() * 0.55 + 0.18;
+        this.vx    = (Math.random() - 0.5) * 0.12;
+        this.alpha = Math.random() * 0.22 + 0.04;
+      }
+      update() {
+        this.y += this.vy; this.x += this.vx;
+        if (this.y > H + 10) this.init(false);
+        if (this.x < -5) this.x = W + 5;
+        if (this.x > W + 5) this.x = -5;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${getAccentRgb()},${this.alpha})`;
+        ctx.fill();
+      }
+    }
+
+    const particles = [];
+    for (let i = 0; i < 70; i++) particles.push(new Particle(true));
+    (function loop() {
+      ctx.clearRect(0, 0, W, H);
+      particles.forEach(p => { p.update(); p.draw(); });
+      requestAnimationFrame(loop);
+    })();
+
+    // SCROLL REVEAL
+    const sections = document.querySelectorAll('.policy-section');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    sections.forEach(s => io.observe(s));
+  </script>
+
+</body>
+</html>
