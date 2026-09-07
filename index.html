@@ -2,6 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("ffs-theme");
+        if (!t) t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="apple-itunes-app" content="app-id=6757169962, app-argument=https://www.forfriendsake.com/" />
   <title>ForFriendSake. Compete. Explore. Connect.</title>
@@ -13,7 +22,8 @@
   <meta property="og:title" content="ForFriendSake. Compete. Explore. Connect." />
   <meta property="og:description" content="Squads that actually meet up. Points come from turnout, not from talk." />
   <meta property="og:image" content="https://www.forfriendsake.com/assets/icon.png" />
-  <meta name="theme-color" content="#F9F5ED" />
+  <meta name="theme-color" content="#F9F5ED" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#211A15" media="(prefers-color-scheme: dark)" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet" />
@@ -48,10 +58,16 @@
           <li><a class="nav-link" href="https://apps.apple.com/us/app/forfriendsake/id6757169962">App Store</a></li>
         </ul>
       </nav>
-      <button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-controls="navPanel" aria-expanded="false">
-        <svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
-        <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
-      </button>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="2.5" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="21.5"/><line x1="4.2" y1="4.2" x2="5.6" y2="5.6"/><line x1="18.4" y1="18.4" x2="19.8" y2="19.8"/><line x1="2.5" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="21.5" y2="12"/><line x1="4.2" y1="19.8" x2="5.6" y2="18.4"/><line x1="18.4" y1="5.6" x2="19.8" y2="4.2"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.3A8.2 8.2 0 1 1 9.7 4a6.6 6.6 0 0 0 10.3 10.3Z"/></svg>
+        </button>
+        <button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-controls="navPanel" aria-expanded="false">
+          <svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+          <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+        </button>
+      </div>
     </div>
   </header>
   <nav class="nav-panel" id="navPanel" aria-label="Mobile">
@@ -119,8 +135,7 @@
         <article class="feature" data-reveal>
           <div class="feature-copy">
             <h3>Points you cannot game</h3>
-            <p>Scoring is settled entirely on the server after the hangout ends. The formula scales on turnout, so a squad where everyone turns up scores dramatically more than one where half drift off.</p>
-            <p class="formula"><code>base × (showed-up ÷ said-they’d-come)²</code></p>
+            <p>Scoring is settled entirely on the server after the hangout ends. Turnout drives the score, so a squad where everyone turns up scores dramatically more than one where half drift off.</p>
             <ul>
               <li>An activity needs at least 2 check-ins to score at all.</li>
               <li>Members returning after 3 or more weeks away earn a comeback bonus.</li>
@@ -146,15 +161,14 @@
 
     <section class="section" aria-labelledby="points-title">
       <div class="wrap points">
-        <div data-reveal>
+        <div class="section-head" data-reveal>
           <h2 class="section-title" id="points-title">How points work</h2>
           <p class="section-lead">This is the honest version. Nobody on the client awards the score. After the window closes, the server looks at who RSVP’d and who checked in, then writes the result once.</p>
-          <p class="formula"><code>activity points = round(base × turnout²) + comeback bonuses</code></p>
         </div>
         <div class="point-notes" data-reveal-group>
           <div class="point-note" data-reveal>
             <strong>Turnout is the lever</strong>
-            Squaring the ratio means 100% show-up is in a different league from 50%. Filling the room is the whole game.
+            Full turnout scores in a different league from a half-empty room. Filling the room is the whole game.
           </div>
           <div class="point-note" data-reveal>
             <strong>Two people, minimum</strong>
@@ -180,7 +194,7 @@
           </div>
           <div class="guide" data-reveal>
             <h3>Yours to theme</h3>
-            <p>Light and dark, plus 11 accent colours inside the app. The site stays on the cream-and-coral mark, the same face you see before you sign in.</p>
+            <p>Light and dark in the app, plus 11 accent colours. This site follows suit — toggle light or dark from the icon in the header, always in the cream-and-coral mark.</p>
           </div>
           <div class="guide" data-reveal>
             <h3>Leaderboards</h3>

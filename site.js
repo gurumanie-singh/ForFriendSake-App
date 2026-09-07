@@ -23,6 +23,25 @@ function initNavState() {
   }, { threshold: 0 }).observe(sentinel);
 }
 
+function initThemeToggle() {
+  const toggle = document.getElementById("themeToggle");
+  if (!toggle) return;
+
+  const sync = () => {
+    const isDark = root.getAttribute("data-theme") === "dark";
+    toggle.setAttribute("aria-pressed", String(isDark));
+    toggle.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
+  };
+  sync();
+
+  toggle.addEventListener("click", () => {
+    const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("ffs-theme", next); } catch (e) {}
+    sync();
+  });
+}
+
 function initMobileMenu() {
   const toggle = document.getElementById("navToggle");
   const panel = document.getElementById("navPanel");
@@ -82,7 +101,7 @@ function initReveal() {
       window.setTimeout(() => show(entry.target), delay);
       obs.unobserve(entry.target);
     });
-  }, { threshold: 0.08, rootMargin: "0px 0px -48px 0px" });
+  }, { threshold: 0.05, rootMargin: "0px 0px -10% 0px" });
 
   els.forEach((el) => observer.observe(el));
 }
@@ -256,6 +275,7 @@ function initParticleField(host) {
 document.addEventListener("DOMContentLoaded", () => {
   initNavState();
   initMobileMenu();
+  initThemeToggle();
   initReveal();
   initProgressBar();
   const hero = document.querySelector(".hero");

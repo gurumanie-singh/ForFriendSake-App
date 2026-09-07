@@ -19,6 +19,7 @@
   --border-strong:  rgba(51, 38, 31, 0.18);
   --shadow:         0 18px 40px rgba(51, 38, 31, 0.08);
   --nav-bg:         rgba(249, 245, 237, 0.78);
+  --btn-secondary-border: rgba(183, 65, 14, 0.28);
 
   --font-serif: "DM Serif Display", ui-serif, "Iowan Old Style", Palatino, Georgia, serif;
   --font-sans:  -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
@@ -57,6 +58,29 @@
   --z-nav: 100;
   --z-progress: 101;
   --z-skip: 200;
+}
+
+/* Dark mode — same coral, a warm dark-roast background instead of pitch black.
+   Toggled via data-theme on <html>; set pre-paint by an inline script in <head>. */
+:root[data-theme="dark"] {
+  --cream:          #211A15;
+  --ink:            #F5ECE1;
+  --ink-2:          #D8C7B8;
+  --ink-3:          #A6968A;
+  --cta-top:        #E8794F;
+  --cta-bottom:     #DD5A34;
+  --link:           #F2A16D;
+  --surface:        rgba(255, 255, 255, 0.05);
+  --border:         rgba(249, 245, 237, 0.10);
+  --border-strong:  rgba(249, 245, 237, 0.18);
+  --shadow:         0 18px 40px rgba(0, 0, 0, 0.35);
+  --nav-bg:         rgba(33, 26, 21, 0.80);
+  --btn-secondary-border: rgba(242, 161, 109, 0.35);
+}
+
+html {
+  background: var(--cream);
+  transition: background-color var(--dur-page) var(--ease-hover);
 }
 
 html { scroll-behavior: smooth; }
@@ -185,6 +209,35 @@ a:hover { color: var(--ink); }
 .nav-link:hover,
 .nav-link.is-current { color: var(--ink); }
 
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color var(--dur-hover) var(--ease-hover),
+              border-color var(--dur-hover) var(--ease-hover),
+              transform var(--dur-press) var(--ease-out);
+}
+.theme-toggle svg { width: 18px; height: 18px; }
+.theme-toggle .icon-moon { display: none; }
+:root[data-theme="dark"] .theme-toggle .icon-sun { display: none; }
+:root[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
+.theme-toggle:hover { border-color: var(--border-strong); }
+.theme-toggle:active { transform: scale(0.92); }
+
 .nav-toggle {
   display: none;
   width: 40px; height: 40px;
@@ -228,10 +281,20 @@ a:hover { color: var(--ink); }
   min-height: 100dvh;
   background:
     linear-gradient(to bottom,
-      rgba(242,171,108,0.00)   0%,
-      rgba(242,171,108,0.06)  45%,
-      rgba(242,171,108,0.22)  72%,
-      rgba(242,171,108,0.55) 100%),
+      rgba(242,171,108,0.10)   0%,
+      rgba(242,171,108,0.16)  30%,
+      rgba(242,171,108,0.24)  60%,
+      rgba(242,171,108,0.34) 100%),
+    var(--cream);
+  transition: background-color var(--dur-page) var(--ease-hover);
+}
+:root[data-theme="dark"] .page-bg {
+  background:
+    linear-gradient(to bottom,
+      rgba(242,171,108,0.05)   0%,
+      rgba(242,171,108,0.09)  30%,
+      rgba(242,171,108,0.14)  60%,
+      rgba(242,171,108,0.20) 100%),
     var(--cream);
 }
 
@@ -330,7 +393,7 @@ a:hover { color: var(--ink); }
 .btn-secondary {
   background: var(--cream);
   color: var(--link);
-  border-color: rgba(183, 65, 14, 0.28);
+  border-color: var(--btn-secondary-border);
 }
 .btn-secondary:hover { border-color: var(--link); color: var(--link); }
 
@@ -340,6 +403,8 @@ a:hover { color: var(--ink); }
   min-height: 90dvh;
   display: flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   padding: 88px var(--gutter) 64px;
   max-width: 1120px;
   margin-inline: auto;
@@ -351,7 +416,7 @@ a:hover { color: var(--ink); }
   z-index: 0;
   pointer-events: none;
 }
-.hero-copy { max-width: 40rem; }
+.hero-copy { max-width: 40rem; margin-inline: auto; }
 .hero-wordmark {
   font-family: var(--font-serif);
   font-size: var(--fs-display);
@@ -371,6 +436,7 @@ a:hover { color: var(--ink); }
 .hero-lead {
   margin-top: 16px;
   max-width: 38ch;
+  margin-inline: auto;
   color: var(--ink-2);
   font-size: var(--fs-lg);
   line-height: 1.55;
@@ -379,6 +445,7 @@ a:hover { color: var(--ink); }
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 12px;
   margin-top: 28px;
 }
@@ -388,8 +455,10 @@ a:hover { color: var(--ink); }
   scroll-margin-top: 72px;
 }
 .section-head {
-  max-width: 38rem;
+  max-width: 40rem;
+  margin-inline: auto;
   margin-bottom: clamp(36px, 5vw, 56px);
+  text-align: center;
 }
 .section-title {
   font-family: var(--font-serif);
@@ -402,6 +471,7 @@ a:hover { color: var(--ink); }
 }
 .section-lead {
   margin-top: 14px;
+  margin-inline: auto;
   color: var(--ink-2);
   max-width: 48ch;
   text-wrap: pretty;
@@ -410,24 +480,51 @@ a:hover { color: var(--ink); }
 .loop {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: var(--shadow);
+  gap: 18px;
 }
 .loop-step {
-  background: rgba(255,255,255,0.42);
-  padding: 28px 24px 32px;
-  min-height: 100%;
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 30px 24px 32px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform var(--dur-hover) var(--ease-out),
+              box-shadow var(--dur-hover) var(--ease-hover),
+              border-color var(--dur-hover) var(--ease-hover);
+}
+.loop-step::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--pin-light), var(--pin-deep));
+  opacity: 0;
+  transition: opacity var(--dur-hover) var(--ease-hover);
+}
+@media (hover: hover) and (pointer: fine) {
+  .loop-step:hover {
+    transform: translateY(-6px);
+    border-color: var(--border-strong);
+    box-shadow: 0 26px 52px rgba(20, 14, 10, 0.18);
+  }
+  .loop-step:hover::before { opacity: 1; }
 }
 .loop-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 18px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--cta-top), var(--cta-bottom));
+  box-shadow: 0 10px 22px rgba(217, 81, 42, 0.32);
   font-family: var(--font-serif);
-  font-size: 2rem;
-  color: var(--pin-deep);
+  font-size: 1.2rem;
+  color: #fff;
   line-height: 1;
-  margin-bottom: 16px;
 }
 .loop-title {
   font-size: 1.05rem;
@@ -444,6 +541,7 @@ a:hover { color: var(--ink); }
 
 .feature {
   max-width: 46rem;
+  margin-inline: auto;
 }
 .feature + .feature { margin-top: clamp(56px, 8vw, 96px); }
 .feature-copy h3 {
@@ -467,37 +565,22 @@ a:hover { color: var(--ink); }
 }
 .feature-copy li + li { margin-top: 8px; }
 
-.formula {
-  margin-top: 22px;
-  padding: 18px 20px;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.5);
-  border: 1px solid var(--border);
-  color: var(--ink);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.01em;
-  line-height: 1.5;
-}
-.formula code {
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 0.92em;
-}
-
 .points {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: clamp(24px, 5vw, 56px);
-  align-items: start;
+  max-width: 880px;
+  margin-inline: auto;
 }
 .point-notes {
   display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 14px;
+  margin-top: 8px;
 }
 .point-note {
   padding: 18px 20px;
   border-radius: 16px;
-  background: rgba(255,255,255,0.42);
+  background: var(--surface);
   border: 1px solid var(--border);
+  text-align: left;
 }
 .point-note strong {
   display: block;
@@ -672,12 +755,14 @@ details p { margin-top: 8px; max-width: 60ch; }
   grid-template-columns: 1fr 1fr;
   gap: 16px;
   margin-top: 16px;
+  max-width: 760px;
+  margin-inline: auto;
 }
 .guide {
   padding: 20px;
   border-radius: 16px;
   border: 1px solid var(--border);
-  background: rgba(255,255,255,0.42);
+  background: var(--surface);
 }
 .guide h3 { margin-top: 0; }
 .guide ol { margin-left: 1.1em; }
@@ -688,7 +773,7 @@ details p { margin-top: 8px; max-width: 60ch; }
     padding-top: 96px;
     padding-bottom: 48px;
   }
-  .points,
+  .point-notes,
   .guide-grid {
     grid-template-columns: 1fr;
   }

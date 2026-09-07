@@ -2,12 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("ffs-theme");
+        if (!t) t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Support · ForFriendSake</title>
   <meta name="description" content="Help for ForFriendSake: sign-in, squads, check-in within 250 metres, points, leaderboards, and account deletion. Email support@forfriendsake.com." />
   <link rel="icon" href="assets/favicon.png" type="image/png" />
   <link rel="canonical" href="https://www.forfriendsake.com/support/" />
-  <meta name="theme-color" content="#F9F5ED" />
+  <meta name="theme-color" content="#F9F5ED" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#211A15" media="(prefers-color-scheme: dark)" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet" />
@@ -31,10 +41,16 @@
           <li><a class="nav-link" href="https://apps.apple.com/us/app/forfriendsake/id6757169962">App Store</a></li>
         </ul>
       </nav>
-      <button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-controls="navPanel" aria-expanded="false">
-        <svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
-        <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
-      </button>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="2.5" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="21.5"/><line x1="4.2" y1="4.2" x2="5.6" y2="5.6"/><line x1="18.4" y1="18.4" x2="19.8" y2="19.8"/><line x1="2.5" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="21.5" y2="12"/><line x1="4.2" y1="19.8" x2="5.6" y2="18.4"/><line x1="18.4" y1="5.6" x2="19.8" y2="4.2"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.3A8.2 8.2 0 1 1 9.7 4a6.6 6.6 0 0 0 10.3 10.3Z"/></svg>
+        </button>
+        <button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-controls="navPanel" aria-expanded="false">
+          <svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+          <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+        </button>
+      </div>
     </div>
   </header>
   <nav class="nav-panel" id="navPanel" aria-label="Mobile">
@@ -54,13 +70,17 @@
       </header>
 
       <article>
+
+        <section class="doc-section" data-reveal>
         <h2>Contact</h2>
         <div class="contact-card">
           <p><strong>Email</strong> · <a href="mailto:support@forfriendsake.com">support@forfriendsake.com</a></p>
           <p>Monday to Friday, typically 24-48 hours.</p>
           <p>Developer: Gurumanie Singh Dhiman</p>
         </div>
+        </section>
 
+        <section class="doc-section" data-reveal>
         <h2>Getting started</h2>
         <div class="guide-grid">
           <div class="guide">
@@ -78,7 +98,9 @@
             <p>iOS 26.1 or later, iPhone or iPad, a network connection, and enough free storage for the app. Location is required for GPS check-in.</p>
           </div>
         </div>
+        </section>
 
+        <section class="doc-section" data-reveal>
         <h2>Common questions</h2>
 
         <details>
@@ -87,7 +109,7 @@
         </details>
         <details>
           <summary>How do points work?</summary>
-          <p>Points are not awarded at the moment you check in. After the hangout ends, the server scores it using turnout: <code>base × (showed-up ÷ said-they’d-come)²</code>. At least two check-ins are required to score. Members who return after three or more weeks away can add a comeback bonus.</p>
+          <p>Points are not awarded at the moment you check in. After the hangout ends, the server scores it based on turnout — how many of the people who said they'd come actually showed up. At least two check-ins are required to score. Members who return after three or more weeks away can add a comeback bonus.</p>
         </details>
         <details>
           <summary>Why can’t I check in?</summary>
@@ -113,7 +135,9 @@
           <summary>Is my location stored all day?</summary>
           <p>No. Location is used when you open the map or check in. See the <a href="privacy.html">privacy policy</a>.</p>
         </details>
+        </section>
 
+        <section class="doc-section" data-reveal>
         <h2>If something is broken</h2>
         <h3>The app will not open</h3>
         <ul>
@@ -133,13 +157,19 @@
         <p>Use the same method you created the account with (Apple, Google, or email). For email, check the verification message, including spam, sent from ForFriendSake.</p>
         <h3>Empty lists or stale data</h3>
         <p>Check the network, pull to refresh, then sign out and back in. If it continues, email support with the details in the table below.</p>
+        </section>
 
+        <section class="doc-section" data-reveal>
         <h2>Account</h2>
         <p>Edit your username and photo in Profile. Deleting your account is permanent. Squads you created, messages, and personal data are removed or anonymised within 30 days, except where we must keep records for law. Start from Settings in the app, or email support.</p>
+        </section>
 
+        <section class="doc-section" data-reveal>
         <h2>Safety</h2>
         <p>Use the report and block controls on a profile or a piece of content when you need them. Blocked people cannot keep chatting with you. For urgent harm, contact local authorities as well as us.</p>
+        </section>
 
+        <section class="doc-section" data-reveal>
         <h2>When you email us</h2>
         <div class="table-wrap">
           <table>
@@ -156,6 +186,8 @@
             </tbody>
           </table>
         </div>
+      
+        </section>
       </article>
     </div>
   </main>
