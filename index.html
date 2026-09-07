@@ -4,947 +4,218 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="apple-itunes-app" content="app-id=6757169962, app-argument=https://www.forfriendsake.com/" />
-  <title>ForFriendSake — Never Let Distance Diminish Friendship</title>
-  <meta name="description" content="ForFriendSake is an iOS social app that turns online friendships into real-world adventures. Create squads, plan activities, and compete on leaderboards." />
+  <title>ForFriendSake. Compete. Explore. Connect.</title>
+  <meta name="description" content="ForFriendSake turns friend groups into squads that meet up in real life. Plan at a real place, check in on location, and climb the leaderboard on turnout." />
+  <link rel="icon" href="assets/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="assets/icon.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.forfriendsake.com/" />
+  <meta property="og:title" content="ForFriendSake. Compete. Explore. Connect." />
+  <meta property="og:description" content="Squads that actually meet up. Points come from turnout, not from talk." />
+  <meta property="og:image" content="https://www.forfriendsake.com/assets/icon.png" />
+  <meta name="theme-color" content="#F9F5ED" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:              #f7f7f5;
-      --bg2:             #f0f0ec;
-      --surface:         rgba(255,255,255,0.72);
-      --surface-border:  rgba(0,0,0,0.07);
-      --text:            #111110;
-      --text2:           #5a5a56;
-      --text3:           #9a9a94;
-      --accent:          #9933cc;
-      --accent-rgb:      153,51,204;
-      --accent-soft:     rgba(153,51,204,0.10);
-      --accent-softer:   rgba(153,51,204,0.05);
-      --radius:          20px;
-      --transition:      0.4s cubic-bezier(0.16,1,0.3,1);
-    }
-
-    [data-theme="dark"] {
-      --bg:             #0d0d0c;
-      --bg2:            #131312;
-      --surface:        rgba(255,255,255,0.04);
-      --surface-border: rgba(255,255,255,0.08);
-      --text:           #f0f0ec;
-      --text2:          #9a9a94;
-      --text3:          #5a5a56;
-      --accent:         #b366e0;
-      --accent-rgb:     179,102,224;
-      --accent-soft:    rgba(179,102,224,0.12);
-      --accent-softer:  rgba(179,102,224,0.06);
-    }
-
-    html { scroll-behavior: smooth; }
-    html, body { scroll-snap-type: none; }
-
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      transition: background var(--transition), color var(--transition);
-      overflow-x: hidden;
-    }
-
-    #particle-canvas {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 clamp(24px, 5vw, 64px);
-      height: 64px;
-      background: rgba(247,247,245,0.82);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      border-bottom: 1px solid var(--surface-border);
-      transition: background var(--transition), border-color var(--transition);
-    }
-    [data-theme="dark"] nav { background: rgba(13,13,12,0.88); }
-
-    .nav-logo {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.2rem;
-      color: var(--text);
-      text-decoration: none;
-      letter-spacing: -0.02em;
-    }
-
-    .nav-right { display: flex; align-items: center; gap: 20px; }
-
-    .nav-link {
-      font-size: 0.8125rem; font-weight: 500;
-      color: var(--text3); text-decoration: none;
-      letter-spacing: 0.01em; transition: color 0.2s;
-    }
-    .nav-link:hover { color: var(--text); }
-
-    .theme-toggle {
-      width: 36px; height: 36px;
-      border-radius: 50%; border: none;
-      background: transparent; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--text2); transition: all 0.25s ease;
-    }
-    .theme-toggle:hover { color: var(--accent); }
-    .theme-toggle svg { width: 15px; height: 15px; stroke-width: 2; }
-
-    /* hide desktop links on mobile */
-    @media (max-width: 640px) {
-      .nav-links { display: none; }
-    }
-
-    main { position: relative; z-index: 1; }
-    section { position: relative; }
-
-    /* ── HERO ── */
-    .hero {
-      height: 100dvh;
-      min-height: 600px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: calc(64px + 48px) clamp(24px, 6vw, 80px) 60px;
-    }
-
-    .hero-eyebrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 0.75rem; font-weight: 500;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--accent);
-      background: var(--accent-soft);
-      border: 1px solid rgba(var(--accent-rgb),0.2);
-      padding: 6px 14px; border-radius: 100px;
-      margin-bottom: 36px;
-      opacity: 0; transform: translateY(16px);
-      animation: fadeUp 0.8s 0.05s cubic-bezier(0.16,1,0.3,1) forwards;
-    }
-
-    .hero-eyebrow-dot {
-      width: 5px; height: 5px; border-radius: 50%;
-      background: var(--accent);
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%,100% { opacity:1; transform:scale(1); }
-      50%      { opacity:0.4; transform:scale(0.7); }
-    }
-
-    .hero-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(2.8rem, 8vw, 7rem);
-      line-height: 0.95;
-      letter-spacing: -0.03em;
-      color: var(--text);
-      margin-bottom: 24px;
-      opacity: 0; transform: translateY(20px);
-      animation: fadeUp 0.9s 0.15s cubic-bezier(0.16,1,0.3,1) forwards;
-    }
-    .hero-title em { font-style: italic; color: var(--accent); }
-
-    .hero-sub {
-      font-size: clamp(1rem, 2.2vw, 1.15rem); font-weight: 300;
-      color: var(--text2); max-width: 480px;
-      line-height: 1.65; margin-bottom: 44px;
-      opacity: 0; transform: translateY(20px);
-      animation: fadeUp 0.9s 0.28s cubic-bezier(0.16,1,0.3,1) forwards;
-    }
-
-    .hero-actions {
-      display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
-      opacity: 0; transform: translateY(20px);
-      animation: fadeUp 0.9s 0.42s cubic-bezier(0.16,1,0.3,1) forwards;
-    }
-
-    .btn-primary {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--accent); color: #fff;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9375rem; font-weight: 500;
-      padding: 14px 28px; border-radius: 100px;
-      text-decoration: none; border: none; cursor: pointer;
-      transition: all 0.25s ease;
-      box-shadow: 0 8px 32px rgba(var(--accent-rgb),0.28);
-    }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(var(--accent-rgb),0.38); }
-    .btn-primary svg { width: 16px; height: 16px; stroke-width: 2; }
-
-    .btn-ghost {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--surface); color: var(--text2);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9375rem; font-weight: 400;
-      padding: 14px 28px; border-radius: 100px;
-      text-decoration: none;
-      border: 1px solid var(--surface-border);
-      backdrop-filter: blur(12px);
-      transition: all 0.25s ease;
-    }
-    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
-
-    /* ── SHARED SECTION LAYOUT ── */
-    .section-inner {
-      max-width: 1100px; margin: 0 auto;
-      padding: 100px clamp(24px, 6vw, 64px);
-    }
-
-    .section-label {
-      font-size: 0.75rem; font-weight: 500;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--accent); margin-bottom: 20px;
-    }
-
-    .section-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(2rem, 4.5vw, 3.5rem);
-      line-height: 1.05; letter-spacing: -0.025em;
-      color: var(--text); margin-bottom: 20px;
-    }
-    .section-title em { font-style: italic; color: var(--accent); }
-
-    .section-desc {
-      font-size: 1.0625rem; font-weight: 300;
-      color: var(--text2); max-width: 540px; line-height: 1.65;
-    }
-
-    /* ── FEATURES ── */
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 16px; margin-top: 60px;
-    }
-
-    .feature-card {
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: var(--radius); padding: 32px;
-      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      transition: all 0.35s ease;
-      opacity: 0; transform: translateY(24px);
-    }
-    .feature-card.visible { opacity: 1; transform: translateY(0); }
-    .feature-card:hover {
-      border-color: rgba(var(--accent-rgb),0.3);
-      box-shadow: 0 0 0 1px rgba(var(--accent-rgb),0.08), 0 20px 60px rgba(0,0,0,0.05);
-      transform: translateY(-4px);
-    }
-    [data-theme="dark"] .feature-card:hover {
-      box-shadow: 0 0 0 1px rgba(var(--accent-rgb),0.15), 0 20px 60px rgba(0,0,0,0.3);
-    }
-
-    .feature-icon {
-      width: 44px; height: 44px; border-radius: 12px;
-      background: var(--accent-soft);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 20px; color: var(--accent);
-    }
-    .feature-icon svg { width: 20px; height: 20px; stroke-width: 1.75; }
-
-    .feature-name {
-      font-size: 1rem; font-weight: 500;
-      color: var(--text); margin-bottom: 8px; letter-spacing: -0.01em;
-    }
-
-    .feature-desc {
-      font-size: 0.9rem; font-weight: 300;
-      color: var(--text2); line-height: 1.6;
-    }
-
-    /* ── HOW IT WORKS ── */
-    .hiw-bg { background: var(--bg2); transition: background var(--transition); }
-
-    .hiw-steps {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 2px; margin-top: 60px;
-      border-radius: var(--radius); overflow: hidden;
-      border: 1px solid var(--surface-border);
-    }
-
-    .hiw-step {
-      padding: 44px 36px;
-      background: var(--surface);
-      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      transition: all 0.3s ease;
-      opacity: 0; transform: translateY(20px);
-    }
-    .hiw-step.visible { opacity: 1; transform: translateY(0); }
-    .hiw-step:hover { background: var(--accent-softer); }
-
-    .step-num {
-      font-family: 'DM Serif Display', serif;
-      font-size: 3rem; color: var(--accent);
-      opacity: 0.35; line-height: 1; margin-bottom: 20px;
-    }
-
-    .step-title {
-      font-size: 1.0625rem; font-weight: 500;
-      color: var(--text); margin-bottom: 10px; letter-spacing: -0.01em;
-    }
-
-    .step-desc {
-      font-size: 0.9rem; font-weight: 300;
-      color: var(--text2); line-height: 1.6;
-    }
-
-    /* ── LEADERBOARD VISUAL ── */
-    .lb-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px; align-items: center;
-    }
-    @media (max-width: 768px) { .lb-inner { grid-template-columns: 1fr; gap: 40px; } }
-
-    .lb-visual {
-      border-radius: var(--radius); overflow: hidden;
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      padding: 28px;
-      backdrop-filter: blur(16px);
-      position: relative;
-    }
-
-    .lb-visual-bg {
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 30% 30%, var(--accent-soft) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .lb-label {
-      font-size: 0.7rem; letter-spacing: 0.08em;
-      text-transform: uppercase; color: var(--text3);
-      font-weight: 500; margin-bottom: 20px;
-      position: relative; z-index: 1;
-    }
-
-    .lb-row {
-      display: flex; align-items: center; gap: 14px;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--surface-border);
-      position: relative; z-index: 1;
-      opacity: 0; transform: translateX(-12px);
-      transition: opacity 0.4s ease, transform 0.4s ease;
-    }
-    .lb-row:last-child { border-bottom: none; }
-    .lb-row.visible { opacity: 1; transform: translateX(0); }
-    .lb-row.highlighted {
-      background: var(--accent-soft);
-      border-radius: 10px;
-      padding: 12px 12px;
-      margin: 0 -12px;
-    }
-
-    .lb-rank {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.1rem; color: var(--accent);
-      width: 24px; text-align: center; flex-shrink: 0;
-    }
-    .lb-rank.gold   { color: #c9a84c; }
-    .lb-rank.silver { color: #8a9aab; }
-    .lb-rank.bronze { color: #a0714a; }
-
-    .lb-avatar {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: var(--accent-soft);
-      border: 1.5px solid rgba(var(--accent-rgb),0.25);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.8rem; font-weight: 500; color: var(--accent);
-      flex-shrink: 0;
-    }
-
-    .lb-name {
-      font-size: 0.9rem; font-weight: 500; color: var(--text);
-      flex: 1;
-    }
-    .lb-name small {
-      display: block; font-size: 0.75rem;
-      font-weight: 300; color: var(--text3);
-    }
-
-    .lb-score {
-      font-size: 0.875rem; font-weight: 500; color: var(--accent);
-    }
-
-    /* ── STATS ── */
-    .stats-bg { background: var(--bg2); transition: background var(--transition); }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px; margin-top: 60px;
-    }
-
-    .stat-card {
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: var(--radius); padding: 32px 28px;
-      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      opacity: 0; transform: translateY(20px); transition: all 0.4s ease;
-    }
-    .stat-card.visible { opacity: 1; transform: translateY(0); }
-    .stat-card:hover { border-color: rgba(var(--accent-rgb),0.3); transform: translateY(-3px); }
-
-    .stat-value {
-      font-family: 'DM Serif Display', serif;
-      font-size: 2.75rem; color: var(--accent);
-      line-height: 1; margin-bottom: 8px;
-    }
-
-    .stat-label { font-size: 0.875rem; font-weight: 400; color: var(--text2); }
-    .stat-detail { font-size: 0.8rem; color: var(--text3); margin-top: 4px; }
-
-    /* ── DESIGN PILLS ── */
-    .design-pills { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 36px; }
-
-    .design-pill {
-      font-size: 0.875rem; font-weight: 400;
-      padding: 8px 18px; border-radius: 100px;
-      border: 1px solid var(--surface-border);
-      background: var(--surface); color: var(--text2);
-      backdrop-filter: blur(10px); transition: all 0.25s ease;
-    }
-    .design-pill:hover { border-color: var(--accent); color: var(--accent); }
-
-    /* ── PRIVACY ── */
-    .privacy-bg { background: var(--bg2); transition: background var(--transition); }
-
-    .privacy-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 16px; margin-top: 60px;
-    }
-
-    .privacy-card {
-      background: var(--surface); border: 1px solid var(--surface-border);
-      border-radius: var(--radius); padding: 28px;
-      backdrop-filter: blur(16px);
-      opacity: 0; transform: translateY(20px); transition: all 0.4s ease;
-    }
-    .privacy-card.visible { opacity: 1; transform: translateY(0); }
-
-    .privacy-card-icon {
-      width: 40px; height: 40px; border-radius: 10px;
-      background: var(--accent-soft);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--accent); margin-bottom: 14px;
-    }
-    .privacy-card-icon svg { width: 18px; height: 18px; stroke-width: 1.75; }
-
-    .privacy-card-title {
-      font-size: 0.9375rem; font-weight: 500;
-      color: var(--text); margin-bottom: 8px;
-    }
-
-    .privacy-card-desc {
-      font-size: 0.875rem; font-weight: 300;
-      color: var(--text2); line-height: 1.6;
-    }
-
-    /* ── CTA ── */
-    .cta-section {
-      padding: 120px clamp(24px, 6vw, 64px);
-      text-align: center;
-    }
-
-    .cta-card {
-      max-width: 700px; margin: 0 auto;
-      background: var(--surface); border: 1px solid var(--surface-border);
-      border-radius: 32px;
-      padding: clamp(52px,8vw,80px) clamp(32px,6vw,72px);
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      position: relative; overflow: hidden;
-      opacity: 0; transform: translateY(24px); transition: all 0.5s ease;
-    }
-    .cta-card.visible { opacity: 1; transform: translateY(0); }
-
-    .cta-card-glow {
-      position: absolute; top: -60px; left: 50%;
-      transform: translateX(-50%);
-      width: 400px; height: 200px;
-      background: radial-gradient(ellipse, var(--accent-soft) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .cta-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(1.8rem, 4vw, 3rem);
-      line-height: 1.1; letter-spacing: -0.025em;
-      color: var(--text); margin-bottom: 16px;
-      position: relative; z-index: 1;
-    }
-    .cta-title em { font-style: italic; color: var(--accent); }
-
-    .cta-sub {
-      font-size: 1rem; font-weight: 300;
-      color: var(--text2); margin-bottom: 40px; line-height: 1.6;
-      position: relative; z-index: 1;
-    }
-
-    .cta-actions {
-      display: flex; gap: 12px; justify-content: center;
-      flex-wrap: wrap; position: relative; z-index: 1;
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      padding: 32px clamp(24px, 6vw, 64px);
-      border-top: 1px solid var(--surface-border);
-      display: flex; align-items: center;
-      justify-content: space-between; flex-wrap: wrap; gap: 16px;
-    }
-
-    .footer-logo {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1rem; color: var(--text);
-      letter-spacing: -0.02em; text-decoration: none;
-    }
-
-    .footer-links {
-      display: flex; gap: 24px; align-items: center;
-    }
-
-    .footer-links a {
-      font-size: 0.8125rem; color: var(--text3);
-      text-decoration: none; transition: color 0.2s;
-    }
-    .footer-links a:hover { color: var(--accent); }
-
-    .footer-text { font-size: 0.8125rem; color: var(--text3); }
-
-    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-
-    @media (max-width: 640px) {
-      .hero-title { letter-spacing: -0.02em; }
-      .features-grid { grid-template-columns: 1fr; }
-      .hiw-steps { grid-template-columns: 1fr; }
-      footer { justify-content: center; text-align: center; }
-      .footer-links { justify-content: center; }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="site.css" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ForFriendSake",
+    "operatingSystem": "iOS 26.1+",
+    "applicationCategory": "SocialNetworkingApplication",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "downloadUrl": "https://apps.apple.com/us/app/forfriendsake/id6757169962"
+  }
+  </script>
 </head>
-<body>
+<body class="page-bg">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="progress-bar" id="progressBar" aria-hidden="true"></div>
 
-  <canvas id="particle-canvas"></canvas>
-
-  <nav>
-    <a href="#" class="nav-logo">ForFriendSake</a>
-    <div class="nav-right">
-      <div class="nav-links" style="display:flex;gap:24px;">
-        <a href="#features" class="nav-link">Features</a>
-        <a href="#how-it-works" class="nav-link">How It Works</a>
-        <a href="#privacy" class="nav-link">Privacy</a>
-      </div>
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"></button>
+  <header class="site-nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="index.html">
+        <img src="assets/icon.png" width="32" height="32" alt="" />
+        ForFriendSake
+      </a>
+      <nav aria-label="Primary">
+        <ul class="nav-links">
+          <li><a class="nav-link" href="#loop">How it works</a></li>
+          <li><a class="nav-link" href="privacy.html">Privacy</a></li>
+          <li><a class="nav-link" href="support.html">Support</a></li>
+          <li><a class="nav-link" href="https://apps.apple.com/us/app/forfriendsake/id6757169962">App Store</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-controls="navPanel" aria-expanded="false">
+        <svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+        <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+      </button>
     </div>
+  </header>
+  <nav class="nav-panel" id="navPanel" aria-label="Mobile">
+    <a href="#loop">How it works</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="support.html">Support</a>
+    <a href="https://apps.apple.com/us/app/forfriendsake/id6757169962">App Store</a>
   </nav>
 
-  <main>
-
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero-eyebrow">
-        <span class="hero-eyebrow-dot"></span>
-        available on the App Store
-      </div>
-      <h1 class="hero-title">
-        never let distance<br />
-        diminish <em>friendship.</em>
-      </h1>
-      <p class="hero-sub">
-        Turn online friendships into real-world adventures. Create squads, plan activities, and compete on leaderboards — because friendships are meant to be lived, not just liked.
-      </p>
-      <div class="hero-actions">
-        <a href="https://apps.apple.com/us/app/forfriendsake/id6757169962" class="btn-primary">
-          <i data-lucide="download"></i>
-          Download on iOS
-        </a>
-        <a href="#features" class="btn-ghost">
-          Explore features
-        </a>
-      </div>
-    </section>
-
-    <!-- FEATURES -->
-    <section id="features">
-      <div class="section-inner">
-        <p class="section-label">what it does</p>
-        <h2 class="section-title">from group chats to<br /><em>real hangouts.</em></h2>
-        <p class="section-desc">ForFriendSake transforms your friend groups into active squads. Plan activities, discover what's happening nearby, and compete on leaderboards — all in one place.</p>
-        <div class="features-grid">
-          <div class="feature-card">
-            <div class="feature-icon"><i data-lucide="users"></i></div>
-            <div class="feature-name">Squad Creation</div>
-            <div class="feature-desc">Form squads with your closest friends or join existing ones. Each squad gets its own chat for planning and staying connected.</div>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon"><i data-lucide="calendar-plus"></i></div>
-            <div class="feature-name">Activity Planning</div>
-            <div class="feature-desc">Create activities in your squad chat and invite members to join — from casual hangouts to epic weekend adventures.</div>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon"><i data-lucide="map-pin"></i></div>
-            <div class="feature-name">Map Discovery</div>
-            <div class="feature-desc">See all activities happening around you on an interactive map. Request to join or open yours to the public to expand your circle.</div>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon"><i data-lucide="check-circle-2"></i></div>
-            <div class="feature-name">Location Check-ins</div>
-            <div class="feature-desc">Show up, check in with GPS verification, and earn squad points. Proof that your squad doesn't just talk — you actually do it.</div>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon"><i data-lucide="trophy"></i></div>
-            <div class="feature-name">Leaderboards</div>
-            <div class="feature-desc">Squads with 3+ members compete on global leaderboards. Claim the top spot and prove you're the most active friend group around.</div>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon"><i data-lucide="message-circle"></i></div>
-            <div class="feature-name">Activity Chats</div>
-            <div class="feature-desc">Each activity gets its own temporary chat that expires 6 hours after the event starts — coordinate in real-time, preserve the memory after.</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- HOW IT WORKS -->
-    <section class="hiw-bg" id="how-it-works">
-      <div class="section-inner">
-        <p class="section-label">how it works</p>
-        <h2 class="section-title">four steps.<br /><em>real friendships.</em></h2>
-        <div class="hiw-steps">
-          <div class="hiw-step">
-            <div class="step-num">01</div>
-            <div class="step-title">Create your squad</div>
-            <div class="step-desc">Start a squad with your closest friends or join existing ones. Your squad is your home base for planning hangouts.</div>
-          </div>
-          <div class="hiw-step">
-            <div class="step-num">02</div>
-            <div class="step-title">Plan an activity</div>
-            <div class="step-desc">Bars, hikes, game nights — anything. Create activities in your squad chat, set the time and place, invite your people.</div>
-          </div>
-          <div class="hiw-step">
-            <div class="step-num">03</div>
-            <div class="step-title">Discover and join</div>
-            <div class="step-desc">See activities on the map, request to join others' plans, or let new people join yours. Expand your circle.</div>
-          </div>
-          <div class="hiw-step">
-            <div class="step-num">04</div>
-            <div class="step-title">Check in and compete</div>
-            <div class="step-desc">Show up, check in, earn squad points. Climb the leaderboards and prove your squad is the most active around.</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- LEADERBOARD SECTION -->
-    <section id="leaderboard">
-      <div class="section-inner">
-        <div class="lb-inner">
-          <div>
-            <p class="section-label">leaderboards</p>
-            <h2 class="section-title">compete with<br /><em>every squad.</em></h2>
-            <p class="section-desc">Squads with 3 or more members appear on the global leaderboard. Every check-in earns points. Every hangout is a chance to climb. Bragging rights included.</p>
-            <div class="design-pills" style="margin-top:36px;">
-              <div class="design-pill">Global rankings</div>
-              <div class="design-pill">Real check-ins only</div>
-              <div class="design-pill">GPS verified</div>
-              <div class="design-pill">3+ members to compete</div>
-            </div>
-          </div>
-          <div class="lb-visual">
-            <div class="lb-visual-bg"></div>
-            <div class="lb-label">Global Leaderboard</div>
-            <div class="lb-row highlighted" id="lbr1">
-              <div class="lb-rank gold">1</div>
-              <div class="lb-avatar">AS</div>
-              <div class="lb-name">Ames Squad<small>5 members · 12 activities</small></div>
-              <div class="lb-score">340 pts</div>
-            </div>
-            <div class="lb-row" id="lbr2">
-              <div class="lb-rank silver">2</div>
-              <div class="lb-avatar">NW</div>
-              <div class="lb-name">Night Wolves<small>4 members · 9 activities</small></div>
-              <div class="lb-score">280 pts</div>
-            </div>
-            <div class="lb-row" id="lbr3">
-              <div class="lb-rank bronze">3</div>
-              <div class="lb-avatar">TC</div>
-              <div class="lb-name">Trail Crew<small>3 members · 8 activities</small></div>
-              <div class="lb-score">215 pts</div>
-            </div>
-            <div class="lb-row" id="lbr4">
-              <div class="lb-rank">4</div>
-              <div class="lb-avatar">WE</div>
-              <div class="lb-name">Weekend Edit<small>4 members · 6 activities</small></div>
-              <div class="lb-score">190 pts</div>
-            </div>
-            <div class="lb-row" id="lbr5">
-              <div class="lb-rank">5</div>
-              <div class="lb-avatar">SG</div>
-              <div class="lb-name">Social Guild<small>6 members · 5 activities</small></div>
-              <div class="lb-score">165 pts</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- STATS -->
-    <section class="stats-bg">
-      <div class="section-inner">
-        <p class="section-label">built for activity</p>
-        <h2 class="section-title">friendships that<br /><em>actually happen.</em></h2>
-        <p class="section-desc">Real check-ins. Real hangouts. Real connections. ForFriendSake is built around doing things, not just planning them.</p>
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-value" id="squadCount">0</div>
-            <div class="stat-label">Squads created</div>
-            <div class="stat-detail">and growing every day</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value" id="activityCount">0</div>
-            <div class="stat-label">Activities planned</div>
-            <div class="stat-detail">real hangouts, not just chats</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value" id="checkinCount">0</div>
-            <div class="stat-label">Check-ins logged</div>
-            <div class="stat-detail">GPS-verified attendance</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- DESIGN -->
-    <section id="design">
-      <div class="section-inner">
-        <p class="section-label">design</p>
-        <h2 class="section-title">minimal. native.<br /><em>intentional.</em></h2>
-        <p class="section-desc">Built entirely in SwiftUI with Apple's Human Interface Guidelines at its core. Every interaction feels earned — from squad formation to leaderboard celebrations.</p>
-        <div class="design-pills">
-          <div class="design-pill">Custom tab bar</div>
-          <div class="design-pill">Accent color system</div>
-          <div class="design-pill">Light + dark mode</div>
-          <div class="design-pill">MapKit integration</div>
-          <div class="design-pill">Real-time chat</div>
-          <div class="design-pill">Native SwiftUI animations</div>
-          <div class="design-pill">Firebase backend</div>
-          <div class="design-pill">GPS check-ins</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PRIVACY -->
-    <section class="privacy-bg" id="privacy">
-      <div class="section-inner">
-        <p class="section-label">privacy</p>
-        <h2 class="section-title">your data stays<br /><em>protected.</em></h2>
-        <p class="section-desc">Built on Firebase with strict security rules. Location data is only collected when you need it, and your squad activity stays between your squad.</p>
-        <div class="privacy-grid">
-          <div class="privacy-card">
-            <div class="privacy-card-icon"><i data-lucide="map-pin-off"></i></div>
-            <div class="privacy-card-title">Location on demand</div>
-            <div class="privacy-card-desc">Location data is only collected during active check-ins. We never track you in the background.</div>
-          </div>
-          <div class="privacy-card">
-            <div class="privacy-card-icon"><i data-lucide="lock"></i></div>
-            <div class="privacy-card-title">Encrypted data</div>
-            <div class="privacy-card-desc">End-to-end encryption for sensitive data. Firebase Security Rules protect every collection.</div>
-          </div>
-          <div class="privacy-card">
-            <div class="privacy-card-icon"><i data-lucide="users"></i></div>
-            <div class="privacy-card-title">Squad-private chats</div>
-            <div class="privacy-card-desc">Squad messages and activity chats are visible only to members. Non-members see limited public details.</div>
-          </div>
-          <div class="privacy-card">
-            <div class="privacy-card-icon"><i data-lucide="shield-check"></i></div>
-            <div class="privacy-card-title">GDPR & CCPA compliant</div>
-            <div class="privacy-card-desc">We follow global privacy standards. Your data is never sold or shared with third parties.</div>
-          </div>
-        </div>
-        <a href="https://www.forfriendsake.com/privacy/" target="_blank" rel="noopener"
-           style="display:inline-flex;align-items:center;gap:6px;margin-top:32px;font-size:0.8125rem;font-weight:500;color:var(--accent);background:var(--accent-soft);border:1px solid rgba(var(--accent-rgb),0.2);padding:8px 16px;border-radius:100px;text-decoration:none;transition:background 0.2s,border-color 0.2s;"
-           onmouseover="this.style.background='rgba(var(--accent-rgb),0.18)'"
-           onmouseout="this.style.background='var(--accent-soft)'">
-          View full privacy policy →
-        </a>
-      </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="cta-section">
-      <div class="cta-card" id="ctaCard">
-        <div class="cta-card-glow"></div>
-        <h2 class="cta-title">stop planning.<br />start <em>hanging out.</em></h2>
-        <p class="cta-sub">ForFriendSake is available now on the App Store. Your squad is waiting.</p>
-        <div class="cta-actions">
-          <a href="https://apps.apple.com/us/app/forfriendsake/id6757169962?itscg=30200&itsct=apps_box_badge&mttnsubad=6757169962" class="btn-primary">
-            <i data-lucide="download"></i>
-            Download on the App Store
+  <main id="main">
+    <section class="hero" aria-label="Introduction">
+      <div class="hero-copy">
+        <h1 class="hero-wordmark">
+          <span class="mask-in"><span class="mask-inner">ForFriendSake</span></span>
+        </h1>
+        <p class="hero-tag rise d2">Compete. Explore. Connect.</p>
+        <p class="hero-lead rise d3">You compete as a squad, against other squads. Points come from turnout: how many of the people who said they would come actually showed up.</p>
+        <div class="hero-actions rise d4">
+          <a class="btn btn-primary" href="https://apps.apple.com/us/app/forfriendsake/id6757169962">
+            View on the App Store
+            <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
           </a>
         </div>
       </div>
     </section>
 
+    <section class="section" id="loop">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <h2 class="section-title">The loop</h2>
+          <p class="section-lead">Create or join a squad, plan something at a real place, show up, and let the server score the hangout.</p>
+        </div>
+        <div class="loop" data-reveal-group>
+          <article class="loop-step" data-reveal>
+            <p class="loop-num">1</p>
+            <h3 class="loop-title">Form a squad</h3>
+            <p class="loop-copy">Create one and invite friends with an 8-character share code. Codes rotate every 7 days and cap their redemptions, so a leak in a group chat stops working.</p>
+          </article>
+          <article class="loop-step" data-reveal>
+            <p class="loop-num">2</p>
+            <h3 class="loop-title">Plan something real</h3>
+            <p class="loop-copy">Pick a place through Apple Maps, pin it, and let squadmates RSVP. The hangout has a real address, not a vague maybe.</p>
+          </article>
+          <article class="loop-step" data-reveal>
+            <p class="loop-num">3</p>
+            <h3 class="loop-title">Show up and check in</h3>
+            <p class="loop-copy">GPS check-in unlocks within 250 metres of the pin. Being further away is treated as not there yet, not as an error.</p>
+          </article>
+          <article class="loop-step" data-reveal>
+            <p class="loop-num">4</p>
+            <h3 class="loop-title">Climb the board</h3>
+            <p class="loop-copy">After the hangout ends, the server scores it. Squads rank worldwide and in your country, weekly and all-time.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="features-title">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <h2 class="section-title" id="features-title">Built around showing up</h2>
+          <p class="section-lead">The distinctive parts are turnout scoring and a map of what is actually happening. Everything else supports those two.</p>
+        </div>
+
+        <article class="feature" data-reveal>
+          <div class="feature-copy">
+            <h3>Points you cannot game</h3>
+            <p>Scoring is settled entirely on the server after the hangout ends. The formula scales on turnout, so a squad where everyone turns up scores dramatically more than one where half drift off.</p>
+            <p class="formula"><code>base × (showed-up ÷ said-they’d-come)²</code></p>
+            <ul>
+              <li>An activity needs at least 2 check-ins to score at all.</li>
+              <li>Members returning after 3 or more weeks away earn a comeback bonus.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="feature" data-reveal>
+          <div class="feature-copy">
+            <h3>A map of what is happening</h3>
+            <p>Activities appear as branded pins, filterable by type. Tap one for details. If it belongs to a squad you are not in, you can request to join.</p>
+          </div>
+        </article>
+
+        <article class="feature" data-reveal>
+          <div class="feature-copy">
+            <h3>Chat, three ways</h3>
+            <p>A thread per squad, a thread per activity, and direct messages. DMs open automatically between people who already share a squad. Typing indicators, unread badges, and read state are included.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="points-title">
+      <div class="wrap points">
+        <div data-reveal>
+          <h2 class="section-title" id="points-title">How points work</h2>
+          <p class="section-lead">This is the honest version. Nobody on the client awards the score. After the window closes, the server looks at who RSVP’d and who checked in, then writes the result once.</p>
+          <p class="formula"><code>activity points = round(base × turnout²) + comeback bonuses</code></p>
+        </div>
+        <div class="point-notes" data-reveal-group>
+          <div class="point-note" data-reveal>
+            <strong>Turnout is the lever</strong>
+            Squaring the ratio means 100% show-up is in a different league from 50%. Filling the room is the whole game.
+          </div>
+          <div class="point-note" data-reveal>
+            <strong>Two people, minimum</strong>
+            A hangout with a single check-in does not score. It has to be a meetup, not a solo pin drop.
+          </div>
+          <div class="point-note" data-reveal>
+            <strong>Coming back still counts</strong>
+            Drift off for three weeks or more, then show up again, and the squad still gets a comeback bonus. Leaving does not lock you out.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="more-title">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <h2 class="section-title" id="more-title">The rest of the kit</h2>
+        </div>
+        <div class="guide-grid" data-reveal-group>
+          <div class="guide" data-reveal>
+            <h3>Sign in</h3>
+            <p>Apple, Google, or email. Age-gated 13+.</p>
+          </div>
+          <div class="guide" data-reveal>
+            <h3>Yours to theme</h3>
+            <p>Light and dark, plus 11 accent colours inside the app. The site stays on the cream-and-coral mark, the same face you see before you sign in.</p>
+          </div>
+          <div class="guide" data-reveal>
+            <h3>Leaderboards</h3>
+            <p>Squads ranked worldwide and within your country, weekly and all-time.</p>
+          </div>
+          <div class="guide" data-reveal>
+            <h3>Requires</h3>
+            <p>iOS 26.1 or later. iPhone and iPad.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-band" data-reveal>
+      <h2>Your squad, in real life</h2>
+      <p>Create a squad, pick a place, and let turnout do the talking.</p>
+      <a class="btn btn-primary" href="https://apps.apple.com/us/app/forfriendsake/id6757169962">View on the App Store</a>
+    </section>
   </main>
 
-  <footer>
-    <a href="#" class="footer-logo">ForFriendSake</a>
-    <div class="footer-links">
-      <a href="https://www.forfriendsake.com/support/">Support</a>
-      <a href="https://www.forfriendsake.com/privacy/">Privacy</a>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div>
+        <p class="footer-brand">ForFriendSake</p>
+        <p class="footer-meta">Compete. Explore. Connect.<br />13+ · iOS 26.1+ · © 2026 Gurumanie Singh Dhiman</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="https://apps.apple.com/us/app/forfriendsake/id6757169962">App Store</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="support.html">Support</a>
+        <a href="mailto:support@forfriendsake.com">support@forfriendsake.com</a>
+      </nav>
     </div>
-    <p class="footer-text">© 2026 ForFriendSake. All rights reserved.</p>
   </footer>
 
-  <script>
-    if (history.scrollRestoration) history.scrollRestoration = 'manual';
-    window.scrollTo(0, 0);
-  </script>
-
-  <script>
-    // LUCIDE
-    function initLucide() {
-      if (typeof lucide !== 'undefined') lucide.createIcons();
-    }
-    initLucide();
-    window.addEventListener('load', initLucide);
-
-    // THEME
-    const toggle   = document.getElementById('themeToggle');
-    const root     = document.documentElement;
-    const sunSVG   = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>`;
-    const moonSVG  = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
-
-    function applyTheme(theme) {
-      root.setAttribute('data-theme', theme);
-      toggle.innerHTML = theme === 'dark' ? moonSVG : sunSVG;
-    }
-
-    applyTheme(localStorage.getItem('theme') || 'light');
-
-    toggle.addEventListener('click', () => {
-      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      applyTheme(next);
-      localStorage.setItem('theme', next);
-    });
-
-    // PARTICLES
-    const canvas = document.getElementById('particle-canvas');
-    const ctx    = canvas.getContext('2d');
-    let W, H;
-
-    function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
-    resize();
-    window.addEventListener('resize', resize);
-
-    function getAccentRgb() {
-      return root.getAttribute('data-theme') === 'dark' ? '179,102,224' : '153,51,204';
-    }
-
-    class Particle {
-      constructor(spread) { this.init(spread); }
-      init(spread) {
-        this.x  = Math.random() * W;
-        this.y  = spread ? Math.random() * H : -8;
-        this.r  = Math.random() * 1.8 + 0.4;
-        this.vy = Math.random() * 0.5 + 0.18;
-        this.vx = (Math.random() - 0.5) * 0.1;
-        this.alpha = Math.random() * 0.22 + 0.04;
-      }
-      update() {
-        this.y += this.vy; this.x += this.vx;
-        if (this.y > H + 10) this.init(false);
-        if (this.x < -5)    this.x = W + 5;
-        if (this.x > W + 5) this.x = -5;
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${getAccentRgb()},${this.alpha})`;
-        ctx.fill();
-      }
-    }
-
-    const particles = [];
-    for (let i = 0; i < 80; i++) particles.push(new Particle(true));
-    (function loop() {
-      ctx.clearRect(0, 0, W, H);
-      particles.forEach(p => { p.update(); p.draw(); });
-      requestAnimationFrame(loop);
-    })();
-
-    // SCROLL REVEAL
-    const revealEls = document.querySelectorAll(
-      '.feature-card, .hiw-step, .stat-card, .privacy-card, .cta-card'
-    );
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          const idx = Array.from(e.target.parentElement?.children || []).indexOf(e.target);
-          setTimeout(() => e.target.classList.add('visible'), idx * 80);
-          io.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.1 });
-    revealEls.forEach(el => io.observe(el));
-
-    // LEADERBOARD ROWS REVEAL
-    ['lbr1','lbr2','lbr3','lbr4','lbr5'].forEach((id, i) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const lbIo = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-          if (e.isIntersecting) {
-            setTimeout(() => e.target.classList.add('visible'), i * 100);
-            lbIo.unobserve(e.target);
-          }
-        });
-      }, { threshold: 0.1 });
-      lbIo.observe(el);
-    });
-
-    // COUNTERS
-    function animateCounter(el, target, duration = 1800) {
-      let start = null;
-      (function step(ts) {
-        if (!start) start = ts;
-        const prog = Math.min((ts - start) / duration, 1);
-        el.textContent = Math.floor((1 - Math.pow(1 - prog, 3)) * target);
-        if (prog < 1) requestAnimationFrame(step);
-        else el.textContent = target;
-      })(performance.now());
-    }
-
-    new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          animateCounter(document.getElementById('squadCount'),   120);
-          animateCounter(document.getElementById('activityCount'), 430);
-          animateCounter(document.getElementById('checkinCount'), 1280);
-        }
-      });
-    }, { threshold: 0.3 }).observe(document.querySelector('.stats-bg'));
-  </script>
-
+  <script src="site.js" defer></script>
 </body>
 </html>
