@@ -294,25 +294,9 @@ a:hover { color: var(--ink); }
 
 .page-bg {
   min-height: 100dvh;
-  background:
-    linear-gradient(to bottom,
-      rgba(242,171,108,0.10)   0%,
-      rgba(242,171,108,0.16)  30%,
-      rgba(242,171,108,0.24)  60%,
-      rgba(242,171,108,0.34) 100%),
-    var(--cream);
+  background: var(--cream);
   transition: background-color var(--dur-page) var(--ease-hover);
 }
-:root[data-theme="dark"] .page-bg {
-  background:
-    linear-gradient(to bottom,
-      rgba(236,119,86,0.03)   0%,
-      rgba(236,119,86,0.05)  30%,
-      rgba(236,119,86,0.08)  60%,
-      rgba(236,119,86,0.12) 100%),
-    var(--cream);
-}
-
 .wrap {
   width: 100%;
   max-width: 1120px;
@@ -426,6 +410,11 @@ a:hover { color: var(--ink); }
   padding: 88px var(--gutter) 64px;
   max-width: 1120px;
   margin-inline: auto;
+  background: radial-gradient(ellipse 70% 60% at 50% 30%, rgba(236,119,86,0.14), transparent 70%);
+  transition: background var(--dur-page) var(--ease-hover);
+}
+:root[data-theme="dark"] .hero {
+  background: radial-gradient(ellipse 70% 60% at 50% 30%, rgba(236,119,86,0.22), transparent 70%);
 }
 .hero > :not(.hero-canvas) { position: relative; z-index: 1; }
 .hero-canvas {
@@ -569,36 +558,51 @@ a:hover { color: var(--ink); }
   line-height: 1.55;
 }
 
-.feature {
-  max-width: 46rem;
-  margin-inline: auto;
-  text-align: center;
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
 }
-.feature + .feature { margin-top: clamp(56px, 8vw, 96px); }
+.feature {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  text-align: left;
+  transition: transform var(--dur-hover) var(--ease-out),
+              border-color var(--dur-hover) var(--ease-hover),
+              box-shadow var(--dur-hover) var(--ease-hover);
+}
 .feature-copy h3 {
-  font-family: var(--font-serif);
-  font-size: clamp(1.6rem, 3vw, 2.15rem);
-  font-weight: 400;
+  font-size: 1.05rem;
+  font-weight: 600;
   color: var(--ink);
-  letter-spacing: -0.02em;
-  line-height: 1.15;
-  text-wrap: balance;
+  letter-spacing: -0.015em;
+  margin-bottom: 8px;
 }
 .feature-copy p {
-  margin-top: 14px;
-  margin-inline: auto;
-  max-width: 46ch;
-  text-wrap: pretty;
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  line-height: 1.55;
 }
 .feature-copy ul {
-  margin-top: 18px;
-  margin-inline: auto;
-  max-width: 42ch;
+  margin-top: 12px;
   padding-left: 1.1em;
+  font-size: var(--fs-sm);
   color: var(--ink-2);
-  text-align: left;
+  line-height: 1.55;
 }
-.feature-copy li + li { margin-top: 8px; }
+.feature-copy li + li { margin-top: 6px; }
+@media (hover: hover) and (pointer: fine) {
+  .feature:hover {
+    transform: translateY(-5px);
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow);
+  }
+}
+@media (max-width: 900px) {
+  .feature-grid { grid-template-columns: 1fr; }
+}
 
 .points {
   max-width: 880px;
@@ -617,18 +621,27 @@ a:hover { color: var(--ink); }
   border: 1px solid var(--border);
   text-align: left;
   transition: transform var(--dur-hover) var(--ease-out),
-              border-color var(--dur-hover) var(--ease-hover);
+              border-color var(--dur-hover) var(--ease-hover),
+              box-shadow var(--dur-hover) var(--ease-hover);
 }
 .point-note strong {
   display: block;
+  font-size: 1.05rem;
   color: var(--ink);
   font-weight: 600;
-  margin-bottom: 4px;
+  letter-spacing: -0.015em;
+  margin-bottom: 6px;
+}
+.point-note p {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  line-height: 1.55;
 }
 @media (hover: hover) and (pointer: fine) {
   .point-note:hover {
-    transform: translateY(-4px);
+    transform: translateY(-5px);
     border-color: var(--border-strong);
+    box-shadow: var(--shadow);
   }
 }
 
@@ -651,7 +664,7 @@ a:hover { color: var(--ink); }
 .site-footer {
   border-top: 1px solid var(--border);
   padding: 36px 0 48px;
-  background: rgba(249, 245, 237, 0.65);
+  background: var(--nav-bg);
 }
 .footer-inner {
   display: flex;
@@ -807,14 +820,33 @@ details p { margin-top: 8px; max-width: 60ch; }
   border: 1px solid var(--border);
   background: var(--surface);
   transition: transform var(--dur-hover) var(--ease-out),
-              border-color var(--dur-hover) var(--ease-hover);
+              border-color var(--dur-hover) var(--ease-hover),
+              box-shadow var(--dur-hover) var(--ease-hover);
 }
-.guide h3 { margin-top: 0; }
-.guide ol { margin-left: 1.1em; }
+.guide h3 {
+  margin-top: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.015em;
+  margin-bottom: 6px;
+}
+.guide p {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  line-height: 1.55;
+}
+.guide ol {
+  margin-left: 1.1em;
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  line-height: 1.55;
+}
 @media (hover: hover) and (pointer: fine) {
   .guide:hover {
-    transform: translateY(-4px);
+    transform: translateY(-5px);
     border-color: var(--border-strong);
+    box-shadow: var(--shadow);
   }
 }
 
