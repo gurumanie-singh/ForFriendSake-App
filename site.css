@@ -30,6 +30,7 @@
   --max: 1160px;
   --measure: 62ch;
   --nav-h: 64px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
   color-scheme: light;
 }
@@ -212,12 +213,50 @@ a:hover { color: var(--accent-text); }
 
 @media (prefers-reduced-motion: no-preference) {
   .ring.will-fill .dot.is-in { fill: var(--surface); stroke: var(--ink-2); }
+  .ring.will-fill .ring-track { stroke-dasharray: 100; stroke-dashoffset: 100; }
+  .ring.will-fill .ring-pin { opacity: 0; transform: translateY(-18px); }
+  .ring-pin { transform-box: fill-box; transform-origin: 50% 100%; }
+  .ring.is-filled .ring-track {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 900ms var(--ease-out);
+  }
+  .ring.is-filled .ring-pin {
+    opacity: 1; transform: none;
+    transition: opacity 300ms ease 200ms, transform 520ms var(--ease-out) 200ms;
+  }
   .ring.is-filled .dot.is-in {
     fill: var(--pin); stroke: var(--pin);
-    transition: fill 180ms ease, stroke 180ms ease;
-    transition-delay: calc(var(--i) * 140ms + 200ms);
+    transition: fill 220ms ease, stroke 220ms ease;
+    transition-delay: calc(var(--i) * 140ms + 700ms);
+  }
+
+  /* Hero: one entrance on load. */
+  .hero-title, .hero-lead, .hero-actions { animation: rise 760ms var(--ease-out) both; }
+  .hero-lead { animation-delay: 90ms; }
+  .hero-actions { animation-delay: 180ms; }
+  .hero-phone { animation: phone-in 1100ms var(--ease-out) 150ms both; }
+
+  /* Scroll: gentle fade-up, driven by the browser, no script. */
+  @supports (animation-timeline: view()) {
+    .section > .section-title, .ring-copy, .steps li, .details > div, .join-copy, .join-form {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+    .steps li:nth-child(2) { animation-range: entry 6% entry 76%; }
+    .steps li:nth-child(3) { animation-range: entry 12% entry 82%; }
+    .steps li:nth-child(4) { animation-range: entry 18% entry 88%; }
+    @media (min-width: 761px) {
+      .screens-row .phone { animation: drift linear both; animation-timeline: view(); }
+      .screens-row .phone:nth-child(2) { animation-name: drift-far; }
+    }
   }
 }
+
+@keyframes rise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+@keyframes phone-in { from { opacity: 0; transform: translateY(80px); } to { opacity: 1; transform: none; } }
+@keyframes drift { from { transform: translateY(40px); } to { transform: translateY(-20px); } }
+@keyframes drift-far { from { transform: translateY(90px); } to { transform: translateY(-50px); } }
 
 @media (max-width: 820px) {
   .ring-layout { grid-template-columns: 1fr; }
