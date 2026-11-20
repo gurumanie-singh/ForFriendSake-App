@@ -278,8 +278,66 @@ a:hover { color: var(--accent-text); }
   .details > div { grid-template-columns: 1fr; gap: 4px; }
 }
 
-.maker { padding-top: 0; }
-.maker p { margin-top: 18px; max-width: 52ch; font-size: var(--fs-lead); line-height: 1.55; }
+/* Founding Squad */
+.join {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(32px, 6vw, 88px);
+  align-items: start;
+  padding-top: 0;
+}
+.join-copy p { margin-top: 18px; max-width: 48ch; font-size: var(--fs-lead); line-height: 1.55; }
+.perks { list-style: none; margin-top: 20px; display: grid; gap: 14px; max-width: 48ch; }
+.perks li { padding-left: 26px; position: relative; }
+.perks li::before {
+  content: ""; position: absolute; left: 0; top: 0.45em;
+  width: 12px; height: 12px; border-radius: 50%; background: var(--pin);
+}
+.perks strong { color: var(--ink); }
+.join-copy .join-note { font-size: var(--fs-base); }
+
+.join-form {
+  display: grid; gap: 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: clamp(20px, 3vw, 32px);
+}
+.field { display: grid; gap: 8px; border: 0; min-width: 0; }
+.field > label:not(.choice), .field legend { color: var(--ink); font-weight: 600; font-size: var(--fs-sm); }
+.field legend { margin-bottom: 8px; }
+.optional { color: var(--ink-2); font-weight: 400; margin-left: 6px; }
+.field input[type="email"], .field textarea, .field input[type="text"] {
+  width: 100%;
+  font: inherit; color: var(--ink);
+  background: var(--ground);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.field textarea { min-height: 140px; resize: vertical; }
+.field input:focus-visible, .field textarea:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+.checks { gap: 12px; }
+.choice {
+  display: grid; grid-template-columns: 20px 1fr; gap: 10px; align-items: start;
+  font-size: var(--fs-sm); color: var(--ink-2); font-weight: 400; cursor: pointer;
+}
+.choice input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--pin); }
+.join-form .btn { justify-self: start; }
+.form-status { font-size: var(--fs-sm); color: var(--ink); padding: 12px 14px; border-radius: 10px; background: var(--ground); }
+.form-status.is-error { color: var(--accent-text); }
+.form-status:focus { outline: none; }
+.form-fine { font-size: 0.8125rem; }
+
+@media (max-width: 820px) {
+  .join { grid-template-columns: 1fr; }
+}
+
+/* Confirm, ideas and unsubscribe pages */
+.flow { max-width: 36rem; }
+.flow .btn { margin-top: 24px; }
+.flow .form-status { margin-top: 20px; }
+.flow .join-form { margin-top: 28px; }
 
 /* Footer */
 .site-footer { border-top: 1px solid var(--line); padding-block: 28px 40px; }
