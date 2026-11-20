@@ -13,20 +13,24 @@
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="apple-itunes-app" content="app-id=6757169962, app-argument=https://www.forfriendsake.com/" />
-  <title>ForFriendSake. Compete. Explore. Connect.</title>
-  <meta name="description" content="ForFriendSake turns friend groups into squads that meet up in real life. Plan at a real place, check in on location, and climb the leaderboard on turnout." />
+  <title>ForFriendSake: points for showing up</title>
+  <meta name="description" content="An iPhone app for friend groups. Make a squad, plan at a real place, check in when you get there, and climb the leaderboard for meetups that actually happen." />
+  <link rel="canonical" href="https://www.forfriendsake.com/" />
   <link rel="icon" href="assets/favicon.png" type="image/png" />
   <link rel="apple-touch-icon" href="assets/icon.png" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.forfriendsake.com/" />
-  <meta property="og:title" content="ForFriendSake. Compete. Explore. Connect." />
-  <meta property="og:description" content="Squads that actually meet up. Points come from turnout, not from talk." />
-  <meta property="og:image" content="https://www.forfriendsake.com/assets/icon.png" />
-  <meta name="theme-color" content="#F9F5ED" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#0B0A09" media="(prefers-color-scheme: dark)" />
+  <meta property="og:title" content="ForFriendSake: points for showing up" />
+  <meta property="og:description" content="Make a squad, plan at a real place, and check in when you get there. Squads rank on the meetups that actually happen." />
+  <meta property="og:image" content="https://www.forfriendsake.com/assets/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#F3F5F4" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0E1113" media="(prefers-color-scheme: dark)" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="site.css" />
   <script type="application/ld+json">
   {
@@ -36,29 +40,29 @@
     "operatingSystem": "iOS 26.1+",
     "applicationCategory": "SocialNetworkingApplication",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "downloadUrl": "https://apps.apple.com/us/app/forfriendsake/id6757169962"
+    "downloadUrl": "https://apps.apple.com/app/id6757169962",
+    "author": { "@type": "Person", "name": "Gurumanie Singh Dhiman" }
   }
   </script>
 </head>
-<body class="page-bg">
+<body>
   <a class="skip-link" href="#main">Skip to content</a>
-  <div class="progress-bar" id="progressBar" aria-hidden="true"></div>
 
   <header class="site-nav">
     <div class="nav-inner">
       <a class="nav-brand" href="index.html">
-        <img src="assets/icon.png" width="32" height="32" alt="" />
+        <img src="assets/icon.png" width="28" height="28" alt="" />
         ForFriendSake
       </a>
       <nav aria-label="Primary">
         <ul class="nav-links">
-          <li><a class="nav-link" href="#loop">How it works</a></li>
+          <li><a class="nav-link" href="#how">How it works</a></li>
           <li><a class="nav-link" href="privacy.html">Privacy</a></li>
           <li><a class="nav-link" href="support.html">Support</a></li>
-          <li><a class="nav-link" href="https://apps.apple.com/us/app/forfriendsake/id6757169962">App Store</a></li>
         </ul>
       </nav>
       <div class="nav-actions">
+        <a class="btn btn-small" href="https://apps.apple.com/app/id6757169962">Get the app</a>
         <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
           <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="2.5" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="21.5"/><line x1="4.2" y1="4.2" x2="5.6" y2="5.6"/><line x1="18.4" y1="18.4" x2="19.8" y2="19.8"/><line x1="2.5" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="21.5" y2="12"/><line x1="4.2" y1="19.8" x2="5.6" y2="18.4"/><line x1="18.4" y1="5.6" x2="19.8" y2="4.2"/></svg>
           <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.3A8.2 8.2 0 1 1 9.7 4a6.6 6.6 0 0 0 10.3 10.3Z"/></svg>
@@ -71,160 +75,119 @@
     </div>
   </header>
   <nav class="nav-panel" id="navPanel" aria-label="Mobile">
-    <a href="#loop">How it works</a>
+    <a href="#how">How it works</a>
     <a href="privacy.html">Privacy</a>
     <a href="support.html">Support</a>
-    <a href="https://apps.apple.com/us/app/forfriendsake/id6757169962">App Store</a>
+    <a href="https://apps.apple.com/app/id6757169962">App Store</a>
   </nav>
 
   <main id="main">
-    <section class="hero" aria-label="Introduction">
+    <section class="hero wrap">
       <div class="hero-copy">
-        <h1 class="hero-wordmark">
-          <span class="mask-in"><span class="mask-inner">ForFriendSake</span></span>
-        </h1>
-        <p class="hero-tag rise d2">Compete. Explore. Connect.</p>
-        <p class="hero-lead rise d3">You compete as a squad, against other squads. Points come from turnout: how many of the people who said they would come actually showed up.</p>
-        <div class="hero-actions rise d4">
-          <a class="btn btn-primary" href="https://apps.apple.com/us/app/forfriendsake/id6757169962">
-            View on the App Store
-            <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
-          </a>
+        <h1 class="display hero-title">Points for showing up.</h1>
+        <p class="hero-lead">ForFriendSake is an iPhone app for friend groups that keep saying “we should hang out.” Make a squad, pin a real place, and check in when you get there. Squads earn points for the meetups that happen, and rank against every other squad.</p>
+        <p class="hero-actions">
+          <a class="btn" href="https://apps.apple.com/app/id6757169962">Download on the App Store</a>
+          <span class="hero-meta">Free · iPhone and iPad · iOS 26.1 or later</span>
+        </p>
+      </div>
+      <figure class="phone hero-phone">
+        <img src="assets/screens/checkin.jpg" width="739" height="1600" alt="The ForFriendSake map with an activity called Hike at Golden Gate selected and a Check In button." />
+      </figure>
+    </section>
+
+    <section class="band" aria-labelledby="ring-title">
+      <div class="wrap ring-layout">
+        <svg class="ring" id="ring" viewBox="0 0 240 240" role="img" aria-labelledby="ring-desc">
+          <desc id="ring-desc">A map pin with eight friends around it. Five are filled in because they checked in at the place. Three are outlines because they said they would come and did not.</desc>
+          <circle class="ring-track" cx="120" cy="120" r="92" pathLength="100" />
+          <g class="ring-dots">
+            <circle class="dot is-in" style="--i:0" cx="120" cy="28" r="15" />
+            <circle class="dot is-in" style="--i:1" cx="185.1" cy="54.9" r="15" />
+            <circle class="dot is-in" style="--i:2" cx="212" cy="120" r="15" />
+            <circle class="dot" cx="185.1" cy="185.1" r="15" />
+            <circle class="dot is-in" style="--i:3" cx="120" cy="212" r="15" />
+            <circle class="dot" cx="54.9" cy="185.1" r="15" />
+            <circle class="dot is-in" style="--i:4" cx="28" cy="120" r="15" />
+            <circle class="dot" cx="54.9" cy="54.9" r="15" />
+          </g>
+          <path class="ring-pin" d="M120 82c-17.7 0-32 14-32 31.4 0 23.3 32 52.6 32 52.6s32-29.3 32-52.6C152 96 137.7 82 120 82Zm0 44a12.5 12.5 0 1 1 0-25 12.5 12.5 0 0 1 0 25Z" />
+        </svg>
+        <div class="ring-copy">
+          <h2 class="display section-title" id="ring-title">Only check-ins count.</h2>
+          <p>Saying you’ll come is free. Points come from the people who turn up: check-in opens when your phone is within 250 metres of the pin, and a hangout only scores when enough of the squad checks in.</p>
+          <p>The score is worked out after the hangout ends, on ForFriendSake’s server rather than on anyone’s phone, so nobody can tap their way up the leaderboard.</p>
+          <ul class="ring-key" aria-hidden="true">
+            <li><span class="key-dot is-in"></span>Checked in at the place</li>
+            <li><span class="key-dot"></span>Said they’d come</li>
+          </ul>
         </div>
       </div>
     </section>
 
-    <section class="section" id="loop">
-      <div class="wrap">
-        <div class="section-head" data-reveal>
-          <h2 class="section-title">The loop</h2>
-          <p class="section-lead">Create or join a squad, plan something at a real place, show up, and let the server score the hangout.</p>
-        </div>
-        <div class="loop" data-reveal-group>
-          <article class="loop-step" data-reveal>
-            <p class="loop-num">1</p>
-            <h3 class="loop-title">Form a squad</h3>
-            <p class="loop-copy">Create one and invite friends with an 8-character share code. Codes rotate every 7 days and cap their redemptions, so a leak in a group chat stops working.</p>
-          </article>
-          <article class="loop-step" data-reveal>
-            <p class="loop-num">2</p>
-            <h3 class="loop-title">Plan something real</h3>
-            <p class="loop-copy">Pick a place through Apple Maps, pin it, and let squadmates RSVP. The hangout has a real address, not a vague maybe.</p>
-          </article>
-          <article class="loop-step" data-reveal>
-            <p class="loop-num">3</p>
-            <h3 class="loop-title">Show up and check in</h3>
-            <p class="loop-copy">GPS check-in unlocks within 250 metres of the pin. Being further away is treated as not there yet, not as an error.</p>
-          </article>
-          <article class="loop-step" data-reveal>
-            <p class="loop-num">4</p>
-            <h3 class="loop-title">Climb the board</h3>
-            <p class="loop-copy">After the hangout ends, the server scores it. Squads rank worldwide and in your country, weekly and all-time.</p>
-          </article>
-        </div>
+    <section class="section wrap" id="how" aria-labelledby="how-title">
+      <h2 class="display section-title" id="how-title">How it works</h2>
+      <ol class="steps">
+        <li>
+          <h3>Start a squad</h3>
+          <p>Invite friends with an 8-character code. Codes change every 7 days and stop working after a set number of uses, so one that escapes the group chat goes dead.</p>
+        </li>
+        <li>
+          <h3>Plan at a real place</h3>
+          <p>Search Apple Maps, drop a pin, set a time. Your squad RSVPs and talks it over in a chat thread just for that plan.</p>
+        </li>
+        <li>
+          <h3>Turn up and check in</h3>
+          <p>Open the activity when you arrive and tap Check In. If you’re still on your way, the app waits for you.</p>
+        </li>
+        <li>
+          <h3>Climb the board</h3>
+          <p>Leaderboards rank squads worldwide and in your country, for this week and for all time.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section class="section screens" aria-label="Screens from the app">
+      <div class="screens-row">
+        <figure class="phone">
+          <img src="assets/screens/home.jpg" width="739" height="1600" loading="lazy" alt="Home screen showing a favourite squad with 50 points, buttons to create or join a squad, and the global leaderboard." />
+          <figcaption>Home: your squads and where they rank.</figcaption>
+        </figure>
+        <figure class="phone">
+          <img src="assets/screens/squad-chat.jpg" width="739" height="1600" loading="lazy" alt="A squad chat with a new activity, Arcade Night, posted as a card in the conversation." />
+          <figcaption>Plans land in the squad chat as you make them.</figcaption>
+        </figure>
+        <figure class="phone">
+          <img src="assets/screens/map-request.jpg" width="739" height="1600" loading="lazy" alt="The map with activity pins filtered by type, and a Request to Join button on another squad's hike." />
+          <figcaption>The map shows what’s on. Ask to join another squad’s plan.</figcaption>
+        </figure>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="features-title">
-      <div class="wrap">
-        <div class="section-head" data-reveal>
-          <h2 class="section-title" id="features-title">Built around showing up</h2>
-          <p class="section-lead">The distinctive parts are turnout scoring and a map of what is actually happening. Everything else supports those two.</p>
-        </div>
-
-        <div class="feature-grid" data-reveal-group>
-          <article class="feature" data-reveal>
-            <div class="feature-copy">
-              <h3>Points you cannot game</h3>
-              <p>Scoring is settled entirely on the server after the hangout ends. Turnout drives the score, so a squad where everyone turns up scores dramatically more than one where half drift off.</p>
-              <ul>
-                <li>An activity needs at least 2 check-ins to score at all.</li>
-                <li>Members returning after 3 or more weeks away earn a comeback bonus.</li>
-              </ul>
-            </div>
-          </article>
-
-          <article class="feature" data-reveal>
-            <div class="feature-copy">
-              <h3>A map of what is happening</h3>
-              <p>Activities appear as branded pins, filterable by type. Tap one for details. If it belongs to a squad you are not in, you can request to join.</p>
-            </div>
-          </article>
-
-          <article class="feature" data-reveal>
-            <div class="feature-copy">
-              <h3>Chat, three ways</h3>
-              <p>A thread per squad, a thread per activity, and direct messages. DMs open automatically between people who already share a squad. Typing indicators, unread badges, and read state are included.</p>
-            </div>
-          </article>
-        </div>
-      </div>
+    <section class="section wrap" aria-labelledby="details-title">
+      <h2 class="display section-title" id="details-title">The details</h2>
+      <dl class="details">
+        <div><dt>Sign in</dt><dd>Apple, Google or email. For ages 13 and up.</dd></div>
+        <div><dt>Chat</dt><dd>A thread for each squad and each plan, plus direct messages with anyone you share a squad with.</dd></div>
+        <div><dt>Location</dt><dd>Read while you’re using the map or checking in. You can turn it off in iOS Settings.</dd></div>
+        <div><dt>Your data</dt><dd>No ads, and nothing sold. The <a href="privacy.html">privacy policy</a> lists everything that’s collected.</dd></div>
+        <div><dt>Appearance</dt><dd>Light or dark, with an accent colour you choose.</dd></div>
+        <div><dt>Requires</dt><dd>iOS 26.1 or later, on iPhone or iPad.</dd></div>
+      </dl>
     </section>
 
-    <section class="section" aria-labelledby="points-title">
-      <div class="wrap points">
-        <div class="section-head" data-reveal>
-          <h2 class="section-title" id="points-title">How points work</h2>
-          <p class="section-lead">This is the honest version. Nobody on the client awards the score. After the window closes, the server looks at who RSVP’d and who checked in, then writes the result once.</p>
-        </div>
-        <div class="point-notes" data-reveal-group>
-          <div class="point-note" data-reveal>
-            <strong>Turnout is the lever</strong>
-            <p>Full turnout scores in a different league from a half-empty room. Filling the room is the whole game.</p>
-          </div>
-          <div class="point-note" data-reveal>
-            <strong>Two people, minimum</strong>
-            <p>A hangout with a single check-in does not score. It has to be a meetup, not a solo pin drop.</p>
-          </div>
-          <div class="point-note" data-reveal>
-            <strong>Coming back still counts</strong>
-            <p>Drift off for three weeks or more, then show up again, and the squad still gets a comeback bonus. Leaving does not lock you out.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" aria-labelledby="more-title">
-      <div class="wrap">
-        <div class="section-head" data-reveal>
-          <h2 class="section-title" id="more-title">The rest of the kit</h2>
-        </div>
-        <div class="guide-grid" data-reveal-group>
-          <div class="guide" data-reveal>
-            <h3>Sign in</h3>
-            <p>Apple, Google, or email. Age-gated 13+.</p>
-          </div>
-          <div class="guide" data-reveal>
-            <h3>Yours to theme</h3>
-            <p>Light and dark in the app, plus 11 accent colours. This site follows suit — toggle light or dark from the icon in the header, always in the cream-and-coral mark.</p>
-          </div>
-          <div class="guide" data-reveal>
-            <h3>Leaderboards</h3>
-            <p>Squads ranked worldwide and within your country, weekly and all-time.</p>
-          </div>
-          <div class="guide" data-reveal>
-            <h3>Requires</h3>
-            <p>iOS 26.1 or later. iPhone and iPad.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="cta-band" data-reveal>
-      <h2>Your squad, in real life</h2>
-      <p>Create a squad, pick a place, and let turnout do the talking.</p>
-      <a class="btn btn-primary" href="https://apps.apple.com/us/app/forfriendsake/id6757169962">View on the App Store</a>
+    <section class="section wrap maker" aria-labelledby="maker-title">
+      <h2 class="display section-title" id="maker-title">Made by one person</h2>
+      <p>I’m Gurumanie, and I build ForFriendSake on my own. Every bug report and feature idea comes straight to me, and I read all of them.</p>
+      <p>Tell me what would get your friends out more: <a href="mailto:support@forfriendsake.com">support@forfriendsake.com</a></p>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">
-      <div>
-        <p class="footer-brand">ForFriendSake</p>
-        <p class="footer-meta">Compete. Explore. Connect.<br />13+ · iOS 26.1+ · © 2026 Gurumanie Singh Dhiman</p>
-      </div>
+      <p class="footer-meta">ForFriendSake · 13+ · © 2026 Gurumanie Singh Dhiman</p>
       <nav class="footer-links" aria-label="Footer">
-        <a href="https://apps.apple.com/us/app/forfriendsake/id6757169962">App Store</a>
+        <a href="https://apps.apple.com/app/id6757169962">App Store</a>
         <a href="privacy.html">Privacy</a>
         <a href="support.html">Support</a>
         <a href="mailto:support@forfriendsake.com">support@forfriendsake.com</a>
