@@ -57,6 +57,7 @@
       <nav aria-label="Primary">
         <ul class="nav-links">
           <li><a class="nav-link" href="#how">How it works</a></li>
+          <li><a class="nav-link" href="#join">Founding Squad</a></li>
           <li><a class="nav-link" href="privacy.html">Privacy</a></li>
           <li><a class="nav-link" href="support.html">Support</a></li>
         </ul>
@@ -76,6 +77,7 @@
   </header>
   <nav class="nav-panel" id="navPanel" aria-label="Mobile">
     <a href="#how">How it works</a>
+    <a href="#join">Founding Squad</a>
     <a href="privacy.html">Privacy</a>
     <a href="support.html">Support</a>
     <a href="https://apps.apple.com/app/id6757169962">App Store</a>
@@ -176,10 +178,39 @@
       </dl>
     </section>
 
-    <section class="section wrap maker" aria-labelledby="maker-title">
-      <h2 class="display section-title" id="maker-title">Made by one person</h2>
-      <p>I’m Gurumanie, and I build ForFriendSake on my own. Every bug report and feature idea comes straight to me, and I read all of them.</p>
-      <p>Tell me what would get your friends out more: <a href="mailto:support@forfriendsake.com">support@forfriendsake.com</a></p>
+    <section class="section wrap join" id="join" aria-labelledby="join-title">
+      <div class="join-copy">
+        <h2 class="display section-title" id="join-title">Join the Founding Squad</h2>
+        <p>I’m Gurumanie, and I build ForFriendSake on my own. The app is live, and what it does next depends on the people using it. Members get:</p>
+        <ul class="perks">
+          <li><strong>Your name in the release notes</strong> when an idea you sent me ships.</li>
+          <li><strong>Beta builds through TestFlight</strong> before they reach the App Store.</li>
+          <li><strong>A direct line.</strong> Reply to any email and it comes to me.</li>
+        </ul>
+        <p class="join-note">There’s no waiting list. The app is already free on the App Store, and the emails are occasional.</p>
+      </div>
+
+      <form class="join-form" id="joinForm">
+        <div class="field">
+          <label for="joinEmail">Email address</label>
+          <input id="joinEmail" name="email" type="email" autocomplete="email" required maxlength="254" />
+        </div>
+        <fieldset class="field">
+          <legend>Have you tried the app? <span class="optional">Optional</span></legend>
+          <label class="choice"><input type="radio" name="appUsage" value="tried" /> Yes, I’ve used it</label>
+          <label class="choice"><input type="radio" name="appUsage" value="downloaded" /> I downloaded it but haven’t used it much</label>
+          <label class="choice"><input type="radio" name="appUsage" value="not-yet" /> Not yet</label>
+        </fieldset>
+        <div class="field checks">
+          <label class="choice"><input type="checkbox" name="wantsBeta" /> Send me TestFlight beta invites</label>
+          <label class="choice"><input type="checkbox" name="consent" required /> Email me about ForFriendSake: what’s new, beta builds, and the odd question about what to build next. I can unsubscribe at any time.</label>
+          <label class="choice"><input type="checkbox" name="age" required /> I’m 13 or older</label>
+        </div>
+        <div class="cf-turnstile" data-sitekey="TURNSTILE_SITE_KEY" data-theme="auto" data-size="flexible"></div>
+        <button class="btn" type="submit">Join the Founding Squad</button>
+        <p class="form-status" id="joinStatus" role="status" tabindex="-1" hidden></p>
+        <p class="form-fine">How your email is used: <a href="privacy.html#founding-squad">privacy policy</a>.</p>
+      </form>
     </section>
   </main>
 
@@ -196,5 +227,7 @@
   </footer>
 
   <script src="site.js" defer></script>
+  <script src="community.js" defer></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </body>
 </html>

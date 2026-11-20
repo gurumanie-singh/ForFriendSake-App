@@ -12,6 +12,8 @@ Plain HTML, CSS and JavaScript served by GitHub Pages from `main`. No build step
 | `support.html` | Help and FAQ |
 | `privacy.html` | Privacy policy |
 | `404.html` | Served by GitHub Pages for unknown paths |
+| `confirm.html`, `founding-squad.html`, `unsubscribe.html` | Founding Squad email list: confirm, send an idea, unsubscribe |
+| `community.js` | Calls the Founding Squad Cloud Functions (source in the app repo, `functions/community/`) |
 | `privacy/`, `support/` | Redirects for the old folder-style URLs |
 | `site.css`, `site.js` | Shared styles and behaviour (theme toggle, mobile menu, the check-in ring) |
 | `assets/screens/` | Phone screens cropped from the App Store screenshots |
