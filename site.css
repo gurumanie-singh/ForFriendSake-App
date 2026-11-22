@@ -1,27 +1,32 @@
 /* ForFriendSake marketing site.
-   Pin orange is the app icon's colour. It is used flat, for the primary
-   action and the check-in state, and nowhere decorative.
-   Orange is never a text colour on the light ground (fails contrast);
-   text accents use --accent-text. */
+   Brand refresh 2026-11-21: matches the app and the "ffs" mark.
+   --accent fills buttons (#F2642E light with an ink label, 5.38:1; #FF7A45
+   dark). --accent-text is for small orange text (#C2410C light, 5.18:1). --orange / --yellow / --mint are the mark's own
+   colours: graphics only, never text. Spec:
+   docs/design/2026-11-21-brand-refresh-spec.md § 5 (app repo). */
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --ground:       #F3F5F4;
+  --ground:       #F2F2F7;
   --surface:      #FFFFFF;
-  --ink:          #14181C;
-  --ink-2:        #49525A;
-  --line:         #D9DFDC;
-  --pin:          #F26B3A;
-  --on-pin:       #14181C;
-  --accent-text:  #B23C10;
-  --phone-edge:   rgba(20, 24, 28, 0.14);
+  --ink:          #1C1C1E;
+  --ink-2:        #555559;
+  --line:         #E5E5EA;
+  --accent:       #F2642E;
+  --on-accent:    #1C1C1E;
+  --accent-text:  #C2410C;   /* small orange text (errors): 5.18:1 on white */
+  --orange:       #F2642E;
+  --yellow:       #F0B400;
+  --mint:         #16B892;
+  --on-trio:      #1C1C1E;
+  --phone-edge:   rgba(28, 28, 30, 0.14);
 
-  --font-display: "Big Shoulders Display", "Arial Narrow", "Helvetica Neue", sans-serif;
+  --font-display: ui-rounded, "SF Pro Rounded", "Nunito", system-ui, -apple-system, sans-serif;
   --font-body:    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
 
-  --fs-hero:  clamp(3.4rem, 9.5vw, 7.25rem);
-  --fs-h2:    clamp(2.2rem, 5vw, 3.6rem);
+  --fs-hero:  clamp(2.75rem, 7.5vw, 5.5rem);
+  --fs-h2:    clamp(2rem, 4.4vw, 3.1rem);
   --fs-lead:  clamp(1.075rem, 1.6vw, 1.25rem);
   --fs-base:  1.0625rem;
   --fs-sm:    0.9375rem;
@@ -32,19 +37,24 @@
   --nav-h: 64px;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
+  --spark-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cpath d='M60 0 Q60 60 120 60 Q60 60 60 120 Q60 60 0 60 Q60 60 60 0 Z'/%3E%3C/svg%3E");
+
   color-scheme: light;
 }
 
 :root[data-theme="dark"] {
-  --ground:       #0E1113;
-  --surface:      #171B1E;
-  --ink:          #EEF1F2;
-  --ink-2:        #A7B0B7;
-  --line:         #283035;
-  --pin:          #F47A4C;
-  --on-pin:       #14181C;
-  --accent-text:  #F7A37F;
-  --phone-edge:   rgba(238, 241, 242, 0.16);
+  --ground:       #000000;
+  --surface:      #1C1C1E;
+  --ink:          #F2F2F7;
+  --ink-2:        #AEAEB2;
+  --line:         #2C2C2E;
+  --accent:       #FF7A45;
+  --on-accent:    #1C1C1E;
+  --accent-text:  #FF7A45;
+  --orange:       #FF7A45;
+  --yellow:       #FFD447;
+  --mint:         #7CF0D2;
+  --phone-edge:   rgba(242, 242, 247, 0.16);
   color-scheme: dark;
 }
 
@@ -65,7 +75,7 @@ img { max-width: 100%; height: auto; display: block; }
 a { color: var(--ink); text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
 a:hover { color: var(--accent-text); }
 :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
-::selection { background: var(--pin); color: var(--on-pin); }
+::selection { background: var(--yellow); color: var(--on-trio); }
 
 .wrap { width: 100%; max-width: var(--max); margin-inline: auto; padding-inline: var(--gutter); }
 
@@ -73,8 +83,8 @@ a:hover { color: var(--accent-text); }
   font-family: var(--font-display);
   font-weight: 800;
   color: var(--ink);
-  line-height: 0.92;
-  letter-spacing: -0.005em;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
@@ -100,9 +110,16 @@ a:hover { color: var(--accent-text); }
 }
 .nav-brand {
   display: inline-flex; align-items: center; gap: 10px;
-  color: var(--ink); text-decoration: none; font-weight: 650; letter-spacing: -0.01em;
+  color: var(--ink); text-decoration: none;
+  font: 800 1.0625rem/1 var(--font-display); letter-spacing: -0.01em;
 }
-.nav-brand img { border-radius: 7px; }
+/* The mark, recoloured by the theme variables (no second SVG). */
+.mark path { fill: none; stroke-linecap: round; stroke-width: 112; }
+.mark .m-arm { stroke-width: 96; }
+.mark .m-o { stroke: var(--orange); }
+.mark .m-y { stroke: var(--yellow); }
+.mark path.m-y:first-child { fill: var(--yellow); stroke: none; }
+.mark .m-m { stroke: var(--mint); }
 .nav-inner > nav { margin-left: auto; }
 .nav-links { display: flex; gap: 24px; list-style: none; }
 .nav-link { color: var(--ink-2); text-decoration: none; font-size: var(--fs-sm); font-weight: 500; }
@@ -149,15 +166,15 @@ a:hover { color: var(--accent-text); }
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
   min-height: 52px; padding: 0 24px;
-  border-radius: 12px; border: 0;
-  background: var(--pin); color: var(--on-pin);
-  font: 650 1rem/1 var(--font-body); letter-spacing: -0.01em;
+  border-radius: 999px; border: 0;
+  background: var(--accent); color: var(--on-accent);
+  font: 700 1rem/1 var(--font-display); letter-spacing: -0.005em;
   text-decoration: none; cursor: pointer;
   transition: background-color 150ms ease;
 }
-.btn:hover { color: var(--on-pin); background: color-mix(in srgb, var(--pin) 88%, var(--ink)); }
-.btn:active { background: color-mix(in srgb, var(--pin) 78%, var(--ink)); }
-.btn-small { white-space: nowrap; min-height: 40px; padding: 0 14px; border-radius: 10px; font-size: var(--fs-sm); }
+.btn:hover { color: var(--on-accent); background: color-mix(in srgb, var(--accent) 88%, var(--ink)); }
+.btn:active { background: color-mix(in srgb, var(--accent) 78%, var(--ink)); }
+.btn-small { white-space: nowrap; min-height: 40px; padding: 0 16px; border-radius: 999px; font-size: var(--fs-sm); }
 
 /* Phones: crops of the App Store screenshots, corners clipped to the screen. */
 .phone { margin: 0; }
@@ -178,8 +195,14 @@ a:hover { color: var(--accent-text); }
   align-items: end;
   padding-top: clamp(48px, 8vw, 96px);
 }
+.hero > * { min-width: 0; }
 .hero-copy { padding-bottom: clamp(32px, 6vw, 88px); }
-.hero-title { font-size: var(--fs-hero); max-width: 10.5ch; }
+.hero-title { font-size: var(--fs-hero); max-width: 12ch; position: relative; }
+/* The mark's sparkle, top-left of the first word, as on the icon. */
+.hero-spark {
+  position: absolute; width: 0.42em; height: 0.42em;
+  left: -0.36em; top: -0.18em; fill: var(--yellow);
+}
 .hero-lead { margin-top: 28px; font-size: var(--fs-lead); line-height: 1.55; max-width: 46ch; text-wrap: pretty; }
 .hero-actions { margin-top: 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
 .hero-meta { font-size: var(--fs-sm); }
@@ -204,17 +227,26 @@ a:hover { color: var(--accent-text); }
 .ring-track { fill: none; stroke: var(--line); stroke-width: 2; }
 .ring-pin { fill: var(--ink); }
 .dot { fill: var(--surface); stroke: var(--ink-2); stroke-width: 2.5; }
-.dot.is-in { fill: var(--pin); stroke: var(--pin); }
+.dot.is-in { fill: var(--orange); stroke: var(--orange); }
+.ring-spark { fill: var(--mint); }
 .ring-copy p { margin-top: 18px; max-width: var(--measure); text-wrap: pretty; }
 .ring-key { list-style: none; margin-top: 28px; display: flex; flex-wrap: wrap; gap: 10px 28px; font-size: var(--fs-sm); }
 .ring-key li { display: inline-flex; align-items: center; gap: 10px; }
 .key-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--ink-2); }
-.key-dot.is-in { background: var(--pin); border-color: var(--pin); }
+.key-dot.is-in { background: var(--orange); border-color: var(--orange); }
 
 @media (prefers-reduced-motion: no-preference) {
   .ring.will-fill .dot.is-in { fill: var(--surface); stroke: var(--ink-2); }
   .ring.will-fill .ring-track { stroke-dasharray: 100; stroke-dashoffset: 100; }
   .ring.will-fill .ring-pin { opacity: 0; transform: translateY(-18px); }
+  .ring.will-fill .ring-spark { opacity: 0; transform: scale(0.3); }
+  .ring-spark { transform-box: fill-box; transform-origin: center; }
+  .ring.is-filled .ring-spark {
+    opacity: 1; transform: none;
+    transition: opacity 260ms ease, transform 520ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition-delay: calc(4 * 140ms + 900ms);
+  }
+  .hero-spark { animation: spark-in 520ms cubic-bezier(0.34, 1.56, 0.64, 1) 300ms both; transform-origin: center; }
   .ring-pin { transform-box: fill-box; transform-origin: 50% 100%; }
   .ring.is-filled .ring-track {
     stroke-dashoffset: 0;
@@ -225,7 +257,7 @@ a:hover { color: var(--accent-text); }
     transition: opacity 300ms ease 200ms, transform 520ms var(--ease-out) 200ms;
   }
   .ring.is-filled .dot.is-in {
-    fill: var(--pin); stroke: var(--pin);
+    fill: var(--orange); stroke: var(--orange);
     transition: fill 220ms ease, stroke 220ms ease;
     transition-delay: calc(var(--i) * 140ms + 700ms);
   }
@@ -265,7 +297,8 @@ a:hover { color: var(--accent-text); }
 
 /* Sections */
 .section { padding-block: clamp(64px, 9vw, 120px); }
-.section-title { font-size: var(--fs-h2); }
+.section-title { font-size: var(--fs-h2); overflow-wrap: break-word; }
+.join > * { min-width: 0; }
 
 .steps {
   list-style: none; counter-reset: step;
@@ -273,11 +306,13 @@ a:hover { color: var(--accent-text); }
   gap: 32px clamp(20px, 3vw, 40px);
   margin-top: clamp(32px, 5vw, 56px);
 }
-.steps li { counter-increment: step; border-top: 2px solid var(--ink); padding-top: 18px; }
+.steps li { counter-increment: step; border-top: 3px solid var(--orange); padding-top: 18px; }
+.steps li:nth-child(3n+2) { border-top-color: var(--yellow); }
+.steps li:nth-child(3n) { border-top-color: var(--mint); }
 .steps li::before {
   content: counter(step);
   display: block;
-  font: 800 3rem/1 var(--font-display);
+  font: 800 2.5rem/1 var(--font-display);
   color: var(--ink);
   margin-bottom: 14px;
 }
@@ -330,13 +365,17 @@ a:hover { color: var(--accent-text); }
 .perks li { padding-left: 26px; position: relative; }
 .perks li::before {
   content: ""; position: absolute; left: 0; top: 0.45em;
-  width: 12px; height: 12px; border-radius: 50%; background: var(--pin);
+  width: 14px; height: 14px; background: var(--orange);
+  -webkit-mask: var(--spark-mask) center / contain no-repeat;
+  mask: var(--spark-mask) center / contain no-repeat;
 }
+.perks li:nth-child(3n+2)::before { background: var(--yellow); }
+.perks li:nth-child(3n)::before { background: var(--mint); }
 .perks strong { color: var(--ink); }
 .join-copy .join-note { font-size: var(--fs-base); }
 
 .join-form {
-  display: grid; gap: 20px;
+  display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr);
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -361,7 +400,7 @@ a:hover { color: var(--accent-text); }
   display: grid; grid-template-columns: 20px 1fr; gap: 10px; align-items: start;
   font-size: var(--fs-sm); color: var(--ink-2); font-weight: 400; cursor: pointer;
 }
-.choice input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--pin); }
+.choice input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--accent); }
 .join-form .btn { justify-self: start; }
 .form-status { font-size: var(--fs-sm); color: var(--ink); padding: 12px 14px; border-radius: 10px; background: var(--ground); }
 .form-status.is-error { color: var(--accent-text); }
@@ -388,7 +427,7 @@ a:hover { color: var(--accent-text); }
 /* Privacy, support and 404 */
 .doc { padding-block: clamp(48px, 7vw, 88px) 88px; }
 .doc-header { max-width: 44rem; margin-bottom: 40px; }
-.doc h1 { font: 800 clamp(2.8rem, 7vw, 4.5rem)/0.92 var(--font-display); color: var(--ink); }
+.doc h1 { font: 800 clamp(2.4rem, 6vw, 3.75rem)/1.02 var(--font-display); color: var(--ink); }
 .doc-updated { margin-top: 14px; font-size: var(--fs-sm); }
 .doc-lede { margin-top: 16px; max-width: var(--measure); text-wrap: pretty; }
 .doc article { max-width: var(--measure); }
@@ -425,3 +464,15 @@ details p { margin-top: 8px; max-width: 60ch; }
 .guide p, .guide ol { font-size: var(--fs-sm); }
 .guide ol { margin-left: 1.1em; }
 @media (max-width: 760px) { .guide-grid { grid-template-columns: 1fr; } }
+
+@keyframes spark-in { from { opacity: 0; transform: scale(0.3); } to { opacity: 1; transform: none; } }
+
+/* Cloudflare Turnstile has a fixed 300px minimum. Below 360px the form
+   runs edge to edge so the widget fits instead of widening the page. */
+@media (max-width: 359px) {
+  .join-form {
+    margin-inline: calc(-1 * var(--gutter));
+    border-radius: 0; border-inline: 0;
+    padding-inline: 10px;
+  }
+}

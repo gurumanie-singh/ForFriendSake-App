@@ -57,6 +57,9 @@ function initSignup() {
     setStatus(status, "", false);
     const out = await post("communitySubscribe", {
       email: data.get("email"),
+      // The version of the consent sentence shown on this page. Must match
+      // CONSENT_VERSION in functions/community/core.js; bump both together.
+      consentVersion: 1,
       appUsage: data.get("appUsage") || null,
       wantsBeta: data.get("wantsBeta") === "on",
       consent: data.get("consent") === "on",
