@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="177 185 927 765" width="927" height="765">
+  <title>ForFriendSake ffs mark</title>
+  <!-- mono only: cuts a transparent gap in the second f where the arm crosses, so the overlap stays visible -->
+  <defs>
+    <mask id="arm-gap" maskUnits="userSpaceOnUse" x="177" y="185" width="927" height="765">
+      <rect x="177" y="185" width="927" height="765" fill="#FFFFFF"/>
+      <path d="M282 480 H746" fill="none" stroke="#000000" stroke-width="140" stroke-linecap="round"/>
+    </mask>
+  </defs>
+  <!-- sparkle -->
+  <path id="sparkle" d="M260 210 Q260 270 320 270 Q260 270 260 330 Q260 270 200 270 Q260 270 260 210 Z" fill="currentColor"/>
+  <!-- s : third friend -->
+  <path id="s" d="M1010 600 C988 552 860 548 860 628 C860 708 1024 704 1024 792 C1024 880 872 890 846 836" fill="none" stroke="currentColor" stroke-width="112" stroke-linecap="round"/>
+  <!-- first f : stem + hook -->
+  <path id="f1" d="M392 830 V430 C392 310 446 258 522 266" fill="none" stroke="currentColor" stroke-width="112" stroke-linecap="round"/>
+  <!-- second f : stem + hook -->
+  <path id="f2" mask="url(#arm-gap)" d="M636 830 V430 C636 310 690 258 766 266" fill="none" stroke="currentColor" stroke-width="112" stroke-linecap="round"/>
+  <!-- crossbar = first f's arm, drawn last so it sits over the second f -->
+  <path id="arm" d="M282 480 H746" fill="none" stroke="currentColor" stroke-width="96" stroke-linecap="round"/>
+</svg>
