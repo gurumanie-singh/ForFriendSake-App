@@ -40,6 +40,27 @@ function busy(button, label) {
 
 function initSignup() {
   const form = document.getElementById("joinForm");
+  // Turnstile loads only when the form is near or touched — most visitors
+  // never reach it (performance + privacy; see privacy.html § 6).
+  if (form) {
+    let loaded = false;
+    const loadTurnstile = () => {
+      if (loaded) return;
+      loaded = true;
+      const s = document.createElement("script");
+      s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+      s.async = true;
+      document.head.append(s);
+    };
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(([e], o) => {
+        if (e.isIntersecting) { loadTurnstile(); o.disconnect(); }
+      }, { rootMargin: "600px" }).observe(form);
+    } else {
+      loadTurnstile();
+    }
+    form.addEventListener("focusin", loadTurnstile, { once: true });
+  }
   if (!form) return;
   const status = document.getElementById("joinStatus");
   const button = form.querySelector("button[type=submit]");
@@ -70,6 +91,7 @@ function initSignup() {
     if (window.turnstile) window.turnstile.reset();
     if (!out.ok) {
       setStatus(status, out.error, true);
+      status.focus();
       return;
     }
     form.hidden = true;

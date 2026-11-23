@@ -5,7 +5,22 @@
    colours: graphics only, never text. Spec:
    docs/design/2026-11-21-brand-refresh-spec.md § 5 (app repo). */
 
+/* Nunito 800, self-hosted (SIL OFL, assets/fonts/OFL.txt). Only non-Apple
+   devices use it; Apple devices render ui-rounded (SF Rounded) and never
+   download it. No preload for that reason. */
+@font-face {
+  font-family: "Nunito"; font-style: normal; font-weight: 800; font-display: swap;
+  src: url("assets/fonts/nunito-800-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Touch baseline (mobile-native, Vercel): no grey tap flash, no double-tap
+   zoom delay, controls not text-selected on long-press. */
+html { -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; }
+a, button, summary, .choice { touch-action: manipulation; }
+button { -webkit-user-select: none; user-select: none; }
 
 :root {
   --ground:       #F2F2F7;
@@ -20,6 +35,7 @@
   --yellow:       #F0B400;
   --mint:         #16B892;
   --on-trio:      #1C1C1E;
+  --field-line:   #86868B;   /* input edges: 3.6:1 on white (WCAG 1.4.11) */
   --phone-edge:   rgba(28, 28, 30, 0.14);
 
   --font-display: ui-rounded, "SF Pro Rounded", "Nunito", system-ui, -apple-system, sans-serif;
@@ -51,6 +67,7 @@
   --accent:       #FF7A45;
   --on-accent:    #1C1C1E;
   --accent-text:  #FF7A45;
+  --field-line:   #8E8E93;
   --orange:       #FF7A45;
   --yellow:       #FFD447;
   --mint:         #7CF0D2;
@@ -73,7 +90,7 @@ body {
 
 img { max-width: 100%; height: auto; display: block; }
 a { color: var(--ink); text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
-a:hover { color: var(--accent-text); }
+@media (hover: hover) and (pointer: fine) { a:hover { color: var(--accent-text); } }
 :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
 ::selection { background: var(--yellow); color: var(--on-trio); }
 
@@ -123,7 +140,8 @@ a:hover { color: var(--accent-text); }
 .nav-inner > nav { margin-left: auto; }
 .nav-links { display: flex; gap: 24px; list-style: none; }
 .nav-link { color: var(--ink-2); text-decoration: none; font-size: var(--fs-sm); font-weight: 500; }
-.nav-link:hover, .nav-link[aria-current="page"] { color: var(--ink); }
+.nav-link[aria-current="page"] { color: var(--ink); }
+@media (hover: hover) and (pointer: fine) { .nav-link:hover { color: var(--ink); } }
 .nav-actions { display: flex; align-items: center; gap: 8px; }
 
 .theme-toggle, .nav-toggle {
@@ -131,7 +149,11 @@ a:hover { color: var(--accent-text); }
   width: 40px; height: 40px; border-radius: 10px;
   border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer;
 }
-.theme-toggle:hover, .nav-toggle:hover { background: var(--surface); }
+@media (hover: hover) and (pointer: fine) { .theme-toggle:hover, .nav-toggle:hover { background: var(--surface); } }
+@media (pointer: coarse) {
+  .theme-toggle, .nav-toggle { width: 44px; height: 44px; }
+  .footer-links a { padding-block: 10px; }
+}
 .theme-toggle svg, .nav-toggle svg { width: 18px; height: 18px; }
 .theme-toggle .icon-moon { display: none; }
 :root[data-theme="dark"] .theme-toggle .icon-sun { display: none; }
@@ -170,9 +192,12 @@ a:hover { color: var(--accent-text); }
   background: var(--accent); color: var(--on-accent);
   font: 700 1rem/1 var(--font-display); letter-spacing: -0.005em;
   text-decoration: none; cursor: pointer;
-  transition: background-color 150ms ease;
+  transition: background-color 150ms ease, transform 160ms var(--ease-out);
 }
-.btn:hover { color: var(--on-accent); background: color-mix(in srgb, var(--accent) 88%, var(--ink)); }
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover { color: var(--on-accent); background: color-mix(in srgb, var(--accent) 88%, var(--ink)); }
+}
+@media (prefers-reduced-motion: no-preference) { .btn:active { transform: scale(0.97); } }
 .btn:active { background: color-mix(in srgb, var(--accent) 78%, var(--ink)); }
 .btn-small { white-space: nowrap; min-height: 40px; padding: 0 16px; border-radius: 999px; font-size: var(--fs-sm); }
 
@@ -207,6 +232,13 @@ a:hover { color: var(--accent-text); }
 .hero-actions { margin-top: 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
 .hero-meta { font-size: var(--fs-sm); }
 .hero-phone { max-width: 360px; justify-self: end; width: 100%; }
+/* Desktop: size the phone to the viewport so the App Store button is above
+   the fold at 1280x800 / 1366x768 / 1024x768 (it sat 60-100px below). */
+@media (min-width: 821px) {
+  .hero { align-items: center; }
+  .hero-copy { padding-bottom: 0; }
+  .hero-phone { max-width: min(360px, calc((100svh - var(--nav-h) - 72px) * 739 / 1600)); }
+}
 
 @media (max-width: 820px) {
   .hero { grid-template-columns: 1fr; align-items: start; }
@@ -263,10 +295,10 @@ a:hover { color: var(--accent-text); }
   }
 
   /* Hero: one entrance on load. */
-  .hero-title, .hero-lead, .hero-actions { animation: rise 760ms var(--ease-out) both; }
-  .hero-lead { animation-delay: 90ms; }
-  .hero-actions { animation-delay: 180ms; }
-  .hero-phone { animation: phone-in 1100ms var(--ease-out) 150ms both; }
+  .hero-title, .hero-lead, .hero-actions { animation: hero-rise 420ms var(--ease-out) both; }
+  .hero-lead { animation-delay: 40ms; }
+  .hero-actions { animation-delay: 80ms; }
+  .hero-phone { animation: phone-in 600ms var(--ease-out) 60ms both; }
 
   /* Scroll: gentle fade-up, driven by the browser, no script. */
   @supports (animation-timeline: view()) {
@@ -286,7 +318,8 @@ a:hover { color: var(--accent-text); }
 }
 
 @keyframes rise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
-@keyframes phone-in { from { opacity: 0; transform: translateY(80px); } to { opacity: 1; transform: none; } }
+@keyframes hero-rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes phone-in { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
 @keyframes drift { from { transform: translateY(40px); } to { transform: translateY(-20px); } }
 @keyframes drift-far { from { transform: translateY(90px); } to { transform: translateY(-50px); } }
 
@@ -323,6 +356,7 @@ a:hover { color: var(--accent-text); }
 
 .screens { padding-top: 0; }
 .screens-row {
+  overscroll-behavior-x: contain;
   max-width: var(--max); margin-inline: auto; padding-inline: var(--gutter);
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(20px, 4vw, 56px);
@@ -389,7 +423,7 @@ a:hover { color: var(--accent-text); }
   width: 100%;
   font: inherit; color: var(--ink);
   background: var(--ground);
-  border: 1px solid var(--line);
+  border: 1px solid var(--field-line);
   border-radius: 10px;
   padding: 12px 14px;
 }
@@ -422,7 +456,7 @@ a:hover { color: var(--accent-text); }
 .footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px; font-size: var(--fs-sm); }
 .footer-links { display: flex; flex-wrap: wrap; gap: 8px 20px; }
 .footer-links a { color: var(--ink-2); text-decoration: none; }
-.footer-links a:hover { color: var(--ink); text-decoration: underline; }
+@media (hover: hover) and (pointer: fine) { .footer-links a:hover { color: var(--ink); text-decoration: underline; } }
 
 /* Privacy, support and 404 */
 .doc { padding-block: clamp(48px, 7vw, 88px) 88px; }
@@ -475,4 +509,16 @@ details p { margin-top: 8px; max-width: 60ch; }
     border-radius: 0; border-inline: 0;
     padding-inline: 10px;
   }
+}
+
+/* Theme-aware app screenshots: light screens in the light theme, dark in the
+   dark one, keyed to data-theme (which the toggle writes), not the OS. A lazy
+   image that is display:none is not fetched, so the twin costs nothing until
+   the theme flips. */
+.shot-dark { display: none; }
+:root[data-theme="dark"] .shot-light { display: none; }
+:root[data-theme="dark"] .shot-dark { display: block; }
+/* Light screens share the page's #F2F2F7 ground; give them a soft lift. */
+:root:not([data-theme="dark"]) .phone img.shot {
+  box-shadow: 0 0 0 1px var(--phone-edge), 0 24px 40px -28px rgba(28, 28, 30, 0.35);
 }
