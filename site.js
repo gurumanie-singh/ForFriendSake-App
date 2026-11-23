@@ -8,6 +8,9 @@ function initThemeToggle() {
 
   const sync = () => {
     const isDark = root.getAttribute("data-theme") === "dark";
+    // Browser chrome / status bar follow the chosen theme, not just the OS.
+    document.querySelectorAll('meta[name="theme-color"]')
+      .forEach((m) => m.setAttribute("content", isDark ? "#000000" : "#F2F2F7"));
     toggle.setAttribute("aria-pressed", String(isDark));
     toggle.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
   };
@@ -63,3 +66,14 @@ document.addEventListener("DOMContentLoaded", () => {
   initMobileMenu();
   initRing();
 });
+
+/* The phone row scrolls sideways on small screens; give it a tab stop there
+   so keyboard users can scroll it too (desktop is a static grid). */
+(function initScreensRow() {
+  const row = document.getElementById("screensRow");
+  if (!row || !window.matchMedia) return;
+  const mq = window.matchMedia("(max-width: 760px)");
+  const set = () => (mq.matches ? row.setAttribute("tabindex", "0") : row.removeAttribute("tabindex"));
+  set();
+  mq.addEventListener("change", set);
+})();

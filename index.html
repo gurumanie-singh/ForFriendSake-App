@@ -23,14 +23,13 @@
   <meta property="og:title" content="ForFriendSake: points for showing up" />
   <meta property="og:description" content="Make a squad, plan at a real place, and check in when you get there. Squads rank on the meetups that actually happen." />
   <meta property="og:image" content="https://www.forfriendsake.com/assets/og.png" />
+  <meta property="og:image:alt" content="ForFriendSake: points for showing up. Free on the App Store for iPhone and iPad." />
+  <meta property="og:site_name" content="ForFriendSake" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="site.css" />
   <script type="application/ld+json">
   {
@@ -90,11 +89,11 @@
         <p class="hero-lead">ForFriendSake is an iPhone app for friend groups that keep saying “we should hang out.” Make a squad, pin a real place, and check in when you get there. Squads earn points for the meetups that happen, and rank against every other squad.</p>
         <p class="hero-actions">
           <a class="btn" href="https://apps.apple.com/app/id6757169962">Download on the App Store</a>
-          <span class="hero-meta">Free · iPhone and iPad · iOS 26.1 or later</span>
+          <span class="hero-meta">Free · iPhone and iPad · iOS&nbsp;26.1 or later</span>
         </p>
       </div>
       <figure class="phone hero-phone">
-        <img src="assets/screens/checkin.jpg" width="739" height="1600" alt="The check-in screen: an orange tick with sparkles and the words You're checked in!" />
+        <img src="assets/screens/checkin.webp" width="739" height="1600" fetchpriority="high" alt="The check-in screen: an orange tick with sparkles and the words You’re checked in!" />
       </figure>
     </section>
 
@@ -151,17 +150,20 @@
     </section>
 
     <section class="section screens" aria-label="Screens from the app">
-      <div class="screens-row">
+      <div class="screens-row" id="screensRow" role="region" aria-label="Screens from the app, scroll sideways">
         <figure class="phone">
-          <img src="assets/screens/home.jpg" width="739" height="1600" loading="lazy" alt="Home screen with upcoming activities at Tiong Bahru Market and Marina Bay, the favourite squad Sunday Runners, and the leaderboard." />
+          <img class="shot shot-light" src="assets/screens/home-light.webp" width="739" height="1600" loading="lazy" alt="Home screen with upcoming activities at Tiong Bahru Market and Marina Bay, the favourite squad Sunday Runners, and the leaderboard." />
+          <img class="shot shot-dark" src="assets/screens/home-dark.webp" width="739" height="1600" loading="lazy" alt="Home screen with upcoming activities at Tiong Bahru Market and Marina Bay, the favourite squad Sunday Runners, and the leaderboard." />
           <figcaption>Home: your squads and where they rank.</figcaption>
         </figure>
         <figure class="phone">
-          <img src="assets/screens/squad-chat.jpg" width="739" height="1600" loading="lazy" alt="The Sunday Runners squad chat, with a new activity, East Coast Park Long Run, posted as a card in the conversation." />
+          <img class="shot shot-light" src="assets/screens/squad-chat-light.webp" width="739" height="1600" loading="lazy" alt="The Sunday Runners squad chat, with a new activity, East Coast Park Long Run, posted as a card in the conversation." />
+          <img class="shot shot-dark" src="assets/screens/squad-chat-dark.webp" width="739" height="1600" loading="lazy" alt="The Sunday Runners squad chat, with a new activity, East Coast Park Long Run, posted as a card in the conversation." />
           <figcaption>Plans land in the squad chat as you make them.</figcaption>
         </figure>
         <figure class="phone">
-          <img src="assets/screens/map-request.jpg" width="739" height="1600" loading="lazy" alt="The map of Singapore with activity pins around Marina Bay, the city and the Botanic Gardens." />
+          <img class="shot shot-light" src="assets/screens/map-light.webp" width="739" height="1600" loading="lazy" alt="The map of Singapore with activity pins around Marina Bay, the city and the Botanic Gardens." />
+          <img class="shot shot-dark" src="assets/screens/map-dark.webp" width="739" height="1600" loading="lazy" alt="The map of Singapore with activity pins around Marina Bay, the city and the Botanic Gardens." />
           <figcaption>The map shows what’s on near you.</figcaption>
         </figure>
       </div>
@@ -175,7 +177,7 @@
         <div><dt>Location</dt><dd>Read while you’re using the map or checking in. You can turn it off in iOS Settings.</dd></div>
         <div><dt>Your data</dt><dd>No ads, and nothing sold. The <a href="privacy.html">privacy policy</a> lists everything that’s collected.</dd></div>
         <div><dt>Appearance</dt><dd>Light or dark, with an accent colour you choose.</dd></div>
-        <div><dt>Requires</dt><dd>iOS 26.1 or later, on iPhone or iPad.</dd></div>
+        <div><dt>Requires</dt><dd>iOS&nbsp;26.1 or later, on iPhone or iPad.</dd></div>
       </dl>
     </section>
 
@@ -194,7 +196,7 @@
       <form class="join-form" id="joinForm">
         <div class="field">
           <label for="joinEmail">Email address</label>
-          <input id="joinEmail" name="email" type="email" autocomplete="email" required maxlength="254" />
+          <input id="joinEmail" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false" required maxlength="254" />
         </div>
         <fieldset class="field">
           <legend>Have you tried the app? <span class="optional">Optional</span></legend>
@@ -229,6 +231,5 @@
 
   <script src="site.js" defer></script>
   <script src="community.js" defer></script>
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </body>
 </html>
