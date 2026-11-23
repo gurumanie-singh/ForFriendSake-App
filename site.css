@@ -29,7 +29,7 @@ button { -webkit-user-select: none; user-select: none; }
   --ink-2:        #555559;
   --line:         #E5E5EA;
   --accent:       #F2642E;
-  --on-accent:    #1C1C1E;
+  --on-accent:    #FFFFFF;   /* matches the app: white on the Light orange (founder, 2026-11-23) */
   --accent-text:  #C2410C;   /* small orange text (errors): 5.18:1 on white */
   --orange:       #F2642E;
   --yellow:       #F0B400;
